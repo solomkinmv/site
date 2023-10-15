@@ -7,10 +7,10 @@ theme = 'github.com/canstand/compost'
 [Params]
 Logo = 'logo-192.png'
 
-#[taxonomies]
-#category = "categories"
-#series = "series"
-#tag = "tags"
+[taxonomies]
+category = "categories"
+series = "series"
+tag = "tags"
 
 [[menu.main]]
 name = "Home"

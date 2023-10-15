@@ -1,8 +1,9 @@
-+++
-title = 'Safari Web Apps'
-date = 2023-10-15T00:09:15-04:00
-draft = false
-+++
+---
+title: "Safari Web Apps"
+date: 2023-10-15T00:09:15-04:00
+draft: false
+tags: ["macos"]
+---
 
 # Safari Web Apps
 
