@@ -7,6 +7,31 @@ theme = 'github.com/canstand/compost'
 [Params]
 Logo = 'logo-192.png'
 
+#[taxonomies]
+#category = "categories"
+#series = "series"
+#tag = "tags"
+
+[[menu.main]]
+name = "Home"
+pageRef = "/"
+weight = 1
+
+[[menu.main]]
+name = "Blog"
+pageRef = "posts"
+weight = 10
+
+[[menu.main]]
+name = "Tags"
+pageRef = "tags"
+weight = 20
+
+[[menu.main]]
+name = "GitHub"
+url = "https://github.com/solomkinmv"
+weight = 30
+
 # required
 [build]
 _merge = 'deep'
