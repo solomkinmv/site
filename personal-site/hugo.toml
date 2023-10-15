@@ -1,3 +1,20 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Maksym Solomkin Site'
+
+theme = 'github.com/canstand/compost'
+
+[Params]
+Logo = 'logo-192.png'
+
+# required
+[build]
+_merge = 'deep'
+
+# required
+[markup]
+_merge = 'deep'
+
+# for better seo
+[minify]
+_merge = 'deep'
