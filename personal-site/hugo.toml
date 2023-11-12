@@ -4,6 +4,8 @@ title = 'Maksym Solomkin'
 
 theme = 'github.com/canstand/compost'
 
+googleAnalytics = 'G-4V433C415C'
+
 [Params]
 Logo = 'logo-192.png'
 
