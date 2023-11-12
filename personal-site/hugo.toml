@@ -1,6 +1,6 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'Maksym Solomkin Site'
+title = 'Maksym Solomkin'
 
 theme = 'github.com/canstand/compost'
 

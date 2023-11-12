@@ -39,7 +39,6 @@
       "template",
       "th",
       "thead",
-      "time",
       "title",
       "tr",
       "ul"
@@ -243,7 +242,11 @@
       "z-30"
     ],
     "ids": [
+      "leetcode-tree-visualizer",
+      "medical-classification-австралійський-класифікатор-медичних-інтервенцій-акмі",
+      "my-projects",
       "safari-web-apps",
+      "shortcuts-disco",
       "switchTheme"
     ]
   }
