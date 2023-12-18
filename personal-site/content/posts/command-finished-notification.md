@@ -1,9 +1,9 @@
-+++
-title = 'Notify After Command Finishes'
-date = 2023-12-17T23:36:32
-draft = false
-tags = ["macos", "shell"]
-+++
+---
+title: "Notify After Command Finishes"
+date: 2023-12-17
+draft: false
+tags: ["macos", "shell"]
+---
 
 ## Problem
 

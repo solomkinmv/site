@@ -1,6 +1,8 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://solomk.in/'
 languageCode = 'en-us'
 title = 'Maksym Solomkin'
+enableEmoji = true
+enableRobotsTXT = true
 
 theme = 'github.com/canstand/compost'
 
@@ -9,10 +11,27 @@ googleAnalytics = 'G-4V433C415C'
 [Params]
 Logo = 'logo-192.png'
 
+[params]
+colorScheme = "auto"
+
+[params.homepage]
+  showRecent = true
+
+[params.article]
+  showBreadcrumbs = true
+
+[author]
+  name = "Maksym Solomkin"
+  image = "/logo-192.png"
+  links = [
+    { twitter = "https://twitter.com/solomkinmv" },
+    { github = "https://github.com/solomkinmv" },
+  ]
+
 [taxonomies]
-category = "categories"
-series = "series"
-tag = "tags"
+  category = "categories"
+  series = "series"
+  tag = "tags"
 
 [[menu.main]]
 name = "Home"
@@ -36,12 +55,23 @@ weight = 30
 
 # required
 [build]
-_merge = 'deep'
+  _merge = 'deep'
 
 # required
 [markup]
-_merge = 'deep'
+  _merge = 'deep'
 
 # for better seo
 [minify]
-_merge = 'deep'
+  _merge = 'deep'
+
+# required
+[module]
+[[module.mounts]]
+  source = 'assets'
+  target = 'assets'
+[[module.mounts]]
+  source = "hugo_stats.json"
+  target = "assets/watching/hugo_stats.json"
+[[module.imports]]
+  path="github.com/canstand/compost"
