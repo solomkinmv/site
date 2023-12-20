@@ -2,3 +2,5 @@ github.com/canstand/compost v0.6.0 h1:MqMcuPeH5s2KCdNzb/UCXIsdXyhLrOPmoujsJTKpmU
 github.com/canstand/compost v0.6.0/go.mod h1:wUf2xCY8s0i4zIiQZwebZR80lwldaFgp7nam+Rn+Vlk=
 github.com/canstand/compost v0.6.3 h1:l6Rhcdm5EoolQK0EqiI65HSrPDiPzbTTXzbFa8FmEG8=
 github.com/canstand/compost v0.6.3/go.mod h1:aX2G4Yo+cLUCO5jTAw92TT6MmJUf4ed5VV4gm63NMgk=
+github.com/canstand/compost v0.6.4 h1:3Bz4wiFrihJ+YNVYq+RA8iGvVkf+ZF7PoVQidpwysEc=
+github.com/canstand/compost v0.6.4/go.mod h1:aX2G4Yo+cLUCO5jTAw92TT6MmJUf4ed5VV4gm63NMgk=
