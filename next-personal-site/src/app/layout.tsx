@@ -24,16 +24,17 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "flex flex-col min-h-screen bg-white dark:bg-gray-900 font-sans antialiased",
             fontSans.variable
         )}>
         <Header/>
-        <main
-            className={cn('blog-content', 'flex', 'flex-col', 'justify-center', 'p-4', 'max-w-3xl', 'mx-auto')}>
-            {children}
+        <main className="flex-1 p-6 md:p-10">
+            <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
+                {children}
+            </article>
         </main>
         <Footer/>
         </body>
         </html>
-    );
+);
 }
