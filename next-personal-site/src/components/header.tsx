@@ -1,8 +1,8 @@
 import React from 'react';
-import {cn} from "@/lib/utils";
 import Image from "next/image";
 import Link from 'next/link';
-import {Button} from "@/components/ui/button";
+import {GithubIcon, MoonIcon, TwitterIcon} from "@/components/ui/icons";
+import {Toggle} from "@/components/ui/toggle";
 
 export const Header = () => {
     return (
@@ -23,29 +23,17 @@ export const Header = () => {
                     Tags
                 </Link>
             </nav>
-            <Button className="rounded-full" size="icon" variant="outline">
-                <MoonIcon className="h-6 w-6"/>
-                <span className="sr-only">Toggle theme</span>
-            </Button>
+            <div className="flex items-center space-x-4">
+                <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://twitter.com/solomkinmv">
+                    <TwitterIcon className="h-5 w-5"/>
+                </Link>
+                <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://github.com/solomkinmv">
+                    <GithubIcon className="h-5 w-5"/>
+                </Link>
+                <Toggle aria-label="Toggle dark mode" variant="outline">
+                    <MoonIcon className="h-5 w-5"/>
+                </Toggle>
+            </div>
         </header>
     );
 };
-
-function MoonIcon(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-    )
-}
