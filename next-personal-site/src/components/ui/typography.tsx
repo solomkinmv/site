@@ -49,6 +49,25 @@ export function TypographyBlockquote({children}: any) {
     )
 }
 
-export function TypographyLink({href, children}: any) {
-    return <Link href={href} className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">{children}</Link>
+export function TypographyList(props: any) {
+    console.log("list", props);
+    return (
+        <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+            {props.children}
+        </ul>
+    )
+}
+
+export function TypographyListItem({children}: any) {
+    return (
+        <li className="my-2">
+            {children}
+        </li>
+    )
+}
+
+
+export function TypographyLink(props: any) {
+    console.log("link", props);
+    return <Link href={props.href} className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">{props.children}</Link>
 }

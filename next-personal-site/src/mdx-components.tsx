@@ -4,7 +4,7 @@ import {
     TypographyH2,
     TypographyH3,
     TypographyH4,
-    TypographyLink,
+    TypographyLink, TypographyList, TypographyListItem,
     TypographyP
 } from "@/components/ui/typography";
 
@@ -17,6 +17,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         h4: TypographyH4,
         p: TypographyP,
         a: TypographyLink,
+        ul: TypographyList,
+        li: TypographyListItem,
         // img: (props) => (
         //   <Image
         //     sizes="100vw"
