@@ -60,7 +60,7 @@ export function TypographyList(props: any) {
 
 export function TypographyListItem({children}: any) {
     return (
-        <li className="my-2">
+        <li>
             {children}
         </li>
     )
