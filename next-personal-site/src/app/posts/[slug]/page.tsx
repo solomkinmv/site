@@ -6,6 +6,7 @@ import * as fs from "fs";
 import {getPostByName, getPostsMeta} from "@/lib/posts";
 import getFormattedDate from "@/lib/getFormattedDate";
 import Link from "next/link";
+import {Tag} from "@/components/ui/tag";
 
 export const revalidate = 86400
 
@@ -51,7 +52,7 @@ export default async function Post({ params: { slug } }: Props) {
     const pubDate = getFormattedDate(meta.date)
 
     const tags = meta.tags.map((tag, i) => (
-        <Link key={i} href={`/tags/${tag}`}>{tag}</Link>
+        <Link key={i} href={`/tags/${tag}`}><Tag text={tag}/></Link>
     ))
 
     return (
