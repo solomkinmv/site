@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'next-personal-site/dist'
+          path: 'next-personal-site/out'
 
       - name: Deploy to GitHub Pages
         id: deployment
