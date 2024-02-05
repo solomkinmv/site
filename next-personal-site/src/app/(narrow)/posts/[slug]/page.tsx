@@ -71,7 +71,7 @@ export default async function Post({ params: { slug } }: Props) {
                 </div>
             </section>
             <p className="mb-10">
-                <Link href="/">← Back to home</Link>
+                <Link href="/next-personal-site/public">← Back to home</Link>
             </p>
         </>
     )

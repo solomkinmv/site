@@ -38,7 +38,7 @@ export default async function TagPostList({ params: { tag } }: Props) {
         return (
             <div className="text-center">
                 <p className="mt-10">Sorry, no posts for that keyword.</p>
-                <Link href="/">Back to Home</Link>
+                <Link href="/next-personal-site/public">Back to Home</Link>
             </div>
         )
     }

@@ -27,7 +27,7 @@ export default function Error({
                 Try again
             </button>
             <p className="text-xl">
-                Or go back to <Link href="/" className="underline">Home 🏠</Link>
+                Or go back to <Link href="/next-personal-site/public" className="underline">Home 🏠</Link>
             </p>
         </main>
     );
