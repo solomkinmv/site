@@ -4,8 +4,8 @@ import {useEffect, useRef, useState} from "react";
 import {Tree, Visualizer} from "@/app/leetcode-tree-visualizer/tree";
 
 export default function Page() {
-    const [inputActual, setInputActual] = useState("");
-    const [inputExpected, setInputExpected] = useState("");
+    const [inputActual, setInputActual] = useState("[1,2,3,null,5,null,4]");
+    const [inputExpected, setInputExpected] = useState("[1,2,3,null,5,null,4]");
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     function displayTree(inputChunksActual: string[] | undefined,
@@ -36,8 +36,18 @@ export default function Page() {
 
     return (
         <>
-            <input id="input-actual" placeholder="LeetCode-style input for actual tree" style={{width: 1000}} onChange={(e) => setInputActual(e.target.value)}/>
-            <input id="input-expected" placeholder="LeetCode-style input for expected tree" style={{width: 1000}} onChange={(e) => setInputExpected(e.target.value)}/>
+            <input id="input-actual"
+                   placeholder="LeetCode-style input for actual tree"
+                   style={{width: 1000}}
+                   onChange={(e) => setInputActual(e.target.value)}
+                   value={inputActual}
+            />
+            <input id="input-expected"
+                   placeholder="LeetCode-style input for expected tree"
+                   style={{width: 1000}}
+                   onChange={(e) => setInputExpected(e.target.value)}
+                   value={inputExpected}
+            />
             <canvas id="canvas" ref={canvas}></canvas>
         </>
     );
