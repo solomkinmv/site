@@ -19,8 +19,8 @@ export const Header = () => {
                 <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/posts">
                     Posts
                 </Link>
-                <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/tags">
-                    Tags
+                <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/leetcode-tree-visualizer">
+                    LeetCode Tree Visualizer
                 </Link>
             </nav>
             <div className="flex items-center space-x-4">
