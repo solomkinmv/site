@@ -38,12 +38,10 @@ export class Visualizer {
         if (node.valueActual === node.valueExpected) {
             this.ctx.fillText(node.valueActual!, x, y);
         } else if (!node.valueExpected) {
-            // todo: set color red
             this.ctx.fillStyle = "red";
             this.ctx.fillText(node.valueActual!, x, y);
             this.ctx.fillStyle = "black";
         } else if (!node.valueActual) {
-            // todo: set color green
             this.ctx.fillStyle = "green";
             this.ctx.fillText(node.valueExpected, x, y);
             this.ctx.fillStyle = "black";
@@ -120,7 +118,7 @@ export class Tree {
     }
 
     build(chunksActual: string[] | undefined, chunksExpected: string[] | undefined) {
-        this.root = new TreeNode(chunksActual?.[0], undefined); // todo: handle zero length
+        this.root = new TreeNode(chunksActual?.[0], undefined);
         let actualNodes = [this.root];
         for (let i = 1, api = 0; i < (chunksActual?.length || 0); i += 2, api++) {
             // actual
@@ -136,7 +134,7 @@ export class Tree {
             actualNodes.push(rightNode);
         }
 
-        this.root.valueExpected = chunksExpected?.[0]; // todo: handle zero length
+        this.root.valueExpected = chunksExpected?.[0];
         let expectedNodes = [this.root];
         for (let i = 1, pi = 0; i < (chunksExpected?.length || 0); i += 2, pi++) {
             let parent = expectedNodes[pi];
@@ -215,25 +213,3 @@ export class Tree {
         return node;
     }
 }
-
-// displayRawTree("[1,2,null,4,5,6]");
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]");
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]");
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]");
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]");
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,null,19]");
-// displayRawTree("[1,2,3,4,5,6,7]");
-// displayRawTree("[1,2,3,4,5,null,7]");
-// displayRawTree("[1,2,3,4,5,null,7,null,null,null,null,8]");
-// displayRawTree("[1,2,3,4,5,6,7,null,null,10]");
-// displayRawTree("[1,2,null,4,null,6]");
-// displayRawTree("[1,2,3,4,5,null,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,null,null,23]");
-// displayRawTree("[1,2,3,4,5,null,7,8,9,10,11,12,13,14,15,null,17,18,19,20,21,22,null,null,23]");
-// displayRawTree("[1,null,3]");
-// displayRawTree("[1,null,3,4]");
-// displayRawTree("[1,null,3,4,5]");
-// displayRawTree("[1]");
-// displayRawTree("[]")
-// displayRawTree("[1,2,3,4,5,6,7,8,9,10,11,12,null,14,15,16,17,18,19,20,21,22,23,24,null,15,null,28,29,30,31,null,null,2,3,4,5,null,6,7,5,4,null,6,null,null,null,5,4,null,null,5,null,null,null,null,null,null,null,5,null,null,null,null,null,null,5,null,null,null,null,null,null,null,4,null,5,null,5,null,null,4,3,null,223214124125122321412412512232141241251,123,123456,1234567]");
-// displayRawTree("[1,2,3,4,555555,6,7]");
-// displayRawTree("[1,null,3,5,6,7,9]", "[2,3,null,4,5,6]")
