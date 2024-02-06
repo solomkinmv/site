@@ -21,7 +21,6 @@ export default function Page() {
         let tree = new Tree(new Visualizer(canvas));
         const noExpected = !inputChunksExpected || inputChunksExpected.length === 0;
         tree.build(inputChunksActual, noExpected ? inputChunksActual : inputChunksExpected);
-        tree.bfs();
     }
 
     function parseInput(stringValue: string): string[] | undefined {
