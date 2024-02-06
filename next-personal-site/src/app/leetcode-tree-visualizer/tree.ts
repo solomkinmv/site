@@ -2,13 +2,15 @@ export class Visualizer {
     private ctx: CanvasRenderingContext2D;
 
     constructor(private readonly c: HTMLCanvasElement) {
-        c.setAttribute("style", "width: 1500px; height: 1000px;");
-        c.width = 3000;
-        c.height = 2000;
+        const height = 1000;
+        c.setAttribute("style", `width: ${window.innerWidth}px; height: ${height}px;`);
+        c.width = window.innerWidth * 2;
+        c.height = height * 2;
         this.ctx = c.getContext("2d")!;
-        this.ctx.font = '16px arial';
+        this.ctx.font = '32px arial';
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
+        this.ctx.lineWidth = 2;
         this.ctx.clearRect(0, 0, c.width, c.height);
     }
 
@@ -55,8 +57,7 @@ export class Visualizer {
     }
 
     getWidth(value: string | undefined) {
-        if (!value) return 0;
-        return this.ctx.measureText(value).width;
+        return value ? this.ctx.measureText(value).width : 0;
     }
 
     getInnerWidth(node: TreeNode) {
@@ -96,10 +97,9 @@ export class TreeNode {
 
 export class Tree {
     private root: TreeNode | undefined;
-    private axisY: number;
-    private visualizer: Visualizer;
+    private readonly axisY: number;
 
-    constructor(visualizer: Visualizer) {
+    constructor(private readonly visualizer: Visualizer) {
         this.axisY = 80;
         this.visualizer = visualizer;
     }
@@ -158,7 +158,7 @@ export class Tree {
         while (queue.length !== 0) {
             let node = queue.shift()!
             console.log(node);
-            this.visualizer.drawNode(node)
+            this.visualizer.drawNode(node);
 
             if (node.left) {
                 this.visualizer.drawNodeLink(node, node.left)
