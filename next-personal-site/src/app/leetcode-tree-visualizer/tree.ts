@@ -1,16 +1,26 @@
 export class Visualizer {
-    private ctx: CanvasRenderingContext2D;
+    private static readonly BASE_TEXT_SIZE: number = 16;
+
+    private readonly ctx: CanvasRenderingContext2D;
+    private readonly padding: number = 2;
+    private readonly textScale: number = 2;
+    private readonly textSize: number = Visualizer.BASE_TEXT_SIZE * this.textScale;
+    public readonly radius: number = this.textSize + this.padding * 2;
+    public readonly initialVerticalSpacing: number = this.radius + this.padding;
+    public readonly verticalSpacing: number = this.radius * 2 + this.textSize;
+    private readonly scale: number = 2;
+    private readonly lineWidth: number = 2;
 
     constructor(private readonly c: HTMLCanvasElement) {
         const height = 1000;
         c.setAttribute("style", `width: ${window.innerWidth}px; height: ${height}px;`);
-        c.width = window.innerWidth * 2;
-        c.height = height * 2;
+        c.width = window.innerWidth * this.scale;
+        c.height = height * this.scale;
         this.ctx = c.getContext("2d")!;
-        this.ctx.font = '32px arial';
+        this.ctx.font = `${this.textSize}px arial`;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = this.lineWidth;
         this.ctx.clearRect(0, 0, c.width, c.height);
     }
 
@@ -18,6 +28,7 @@ export class Visualizer {
         let {x, y} = node.position
         let actualTextWidth = this.getWidth(node.valueActual);
         let expectedTextWidth = this.getWidth(node.valueExpected);
+        console.log("width", actualTextWidth, expectedTextWidth, node.valueActual, node.valueExpected);
         let totalWidth = actualTextWidth + expectedTextWidth;
 
         if (node.valueActual === node.valueExpected) {
@@ -41,17 +52,19 @@ export class Visualizer {
             this.ctx.fillStyle = "black";
             totalWidth += 4;
         }
-        if (totalWidth < 30) {
+
+        const circle = this.textSize * 2;
+        if (totalWidth <= circle) {
             this.ctx.beginPath();
-            this.ctx.arc(x, y, node.radius, 0, 2 * Math.PI)
+            this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI)
             this.ctx.stroke();
         } else {
-            let additionalShift = (totalWidth - 30) / 2.;
+            let additionalShift = (totalWidth - circle) / 4.;
             this.ctx.beginPath();
-            this.ctx.arc(x - additionalShift, y, node.radius, Math.PI / 2, Math.PI * 3 / 2);
-            this.ctx.lineTo(x + additionalShift, y - node.radius);
-            this.ctx.arc(x + additionalShift, y, node.radius, -Math.PI / 2, -Math.PI * 3 / 2);
-            this.ctx.lineTo(x - additionalShift, y + node.radius);
+            this.ctx.arc(x - additionalShift, y, this.radius, Math.PI / 2, Math.PI * 3 / 2);
+            this.ctx.lineTo(x + additionalShift, y - this.radius);
+            this.ctx.arc(x + additionalShift, y, this.radius, -Math.PI / 2, -Math.PI * 3 / 2);
+            this.ctx.lineTo(x - additionalShift, y + this.radius);
             this.ctx.stroke();
         }
     }
@@ -65,15 +78,15 @@ export class Visualizer {
     }
 
     getOuterWidth(node: TreeNode) {
-        return Math.max(node.radius * 2, this.getInnerWidth(node) + 10);
+        return Math.max(this.radius * 2, this.getInnerWidth(node));
     }
 
     drawNodeLink(parent: TreeNode, child: TreeNode) {
         let {x: x1, y: y1} = parent.position
         let {x: x2, y: y2} = child.position;
         this.ctx.beginPath();
-        this.ctx.moveTo(x1, y1 + parent.radius);
-        this.ctx.lineTo(x2, y2 - child.radius)
+        this.ctx.moveTo(x1, y1 + this.radius);
+        this.ctx.lineTo(x2, y2 - this.radius)
         this.ctx.stroke();
     }
 }
@@ -85,22 +98,18 @@ export class TreeNode {
     left: TreeNode | undefined;
     right: TreeNode | undefined;
     position: { x: number; y: number };
-    radius: number;
 
     constructor(valueActual: string | undefined, valueExpected: string | undefined) {
         this.valueActual = valueActual
         this.valueExpected = valueExpected;
         this.position = {x: 0, y: 0}
-        this.radius = 20
     }
 }
 
 export class Tree {
     private root: TreeNode | undefined;
-    private readonly axisY: number;
 
     constructor(private readonly visualizer: Visualizer) {
-        this.axisY = 80;
         this.visualizer = visualizer;
     }
 
@@ -177,23 +186,23 @@ export class Tree {
 
     traverse(node: TreeNode | undefined, h: number, hToRightmostX: number[], leanLeft: boolean) {
         if (!node) return;
-        hToRightmostX[h] = Math.max(hToRightmostX[h] || 0, (hToRightmostX[h - 1] || 0) + (leanLeft ? -node.radius / 2 : node.radius / 2));
+        hToRightmostX[h] = Math.max(hToRightmostX[h] || 0, (hToRightmostX[h - 1] || 0) + (leanLeft ? -this.visualizer.radius / 2 : this.visualizer.radius / 2));
         let left = this.traverse(node.left, h + 1, hToRightmostX, true);
         let right = this.traverse(node.right, h + 1, hToRightmostX, false);
-        node.position.y = h * this.axisY + node.radius;
+        node.position.y = h * this.visualizer.verticalSpacing + this.visualizer.initialVerticalSpacing;
         let horizontalShift = this.visualizer.getOuterWidth(node) / 2;
         if (!left && !right) {
             console.log("leaf " + node.valueActual + " h shift " + horizontalShift);
-            node.position.x = Math.max((hToRightmostX[h] || 0) + horizontalShift + node.radius / 2);
+            node.position.x = Math.max((hToRightmostX[h] || 0) + horizontalShift + this.visualizer.radius / 2);
         } else if (left && right) {
             console.log("link " + node.valueActual);
             node.position.x = (node.left!.position.x + node.right!.position.x) / 2;
         } else if (left && !right) {
-            node.position.x = node.left!.position.x + node.radius / 2;
+            node.position.x = node.left!.position.x + this.visualizer.radius / 2;
             console.log("some left", node);
         } else if (!left && right) {
-            node.position.x = hToRightmostX[h] + node.radius + node.radius / 2;
-            node.position.x = (node.position.x + right.position.x - node.radius / 2) / 2;
+            node.position.x = hToRightmostX[h] + this.visualizer.radius + this.visualizer.radius / 2;
+            node.position.x = (node.position.x + right.position.x - this.visualizer.radius / 2) / 2;
             console.log("some right", node);
         }
         hToRightmostX[h] = node.position.x + horizontalShift;
