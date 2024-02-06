@@ -1,5 +1,8 @@
+import {boolean} from "property-information/lib/util/types";
+
 export class Visualizer {
     private static readonly BASE_TEXT_SIZE: number = 16;
+    private static readonly BASE_LINE_WIDTH: number = 1;
 
     private readonly ctx: CanvasRenderingContext2D;
     private readonly padding: number = 2;
@@ -8,14 +11,14 @@ export class Visualizer {
     public readonly radius: number = this.textSize + this.padding * 2;
     public readonly initialVerticalSpacing: number = this.radius + this.padding;
     public readonly verticalSpacing: number = this.radius * 2 + this.textSize;
-    private readonly scale: number = 2;
-    private readonly lineWidth: number = 2;
+    private readonly qualityScale: number = 2;
+    private readonly lineWidth: number = Visualizer.BASE_LINE_WIDTH * this.textScale;
 
     constructor(private readonly c: HTMLCanvasElement) {
         const height = 1000;
         c.setAttribute("style", `width: ${window.innerWidth}px; height: ${height}px;`);
-        c.width = window.innerWidth * this.scale;
-        c.height = height * this.scale;
+        c.width = window.innerWidth * this.qualityScale;
+        c.height = height * this.qualityScale;
         this.ctx = c.getContext("2d")!;
         this.ctx.font = `${this.textSize}px arial`;
         this.ctx.textAlign = 'center';
@@ -26,8 +29,9 @@ export class Visualizer {
 
     drawNode(node: TreeNode) {
         let {x, y} = node.position
+        const singleText = node.valueActual === node.valueExpected;
         let actualTextWidth = this.getWidth(node.valueActual);
-        let expectedTextWidth = this.getWidth(node.valueExpected);
+        let expectedTextWidth = singleText ? 0 : this.getWidth(node.valueExpected);
         console.log("width", actualTextWidth, expectedTextWidth, node.valueActual, node.valueExpected);
         let totalWidth = actualTextWidth + expectedTextWidth;
 
@@ -45,10 +49,12 @@ export class Visualizer {
             this.ctx.fillStyle = "black";
         } else {
             console.log("draw dif", node);
+            const actualX = x - expectedTextWidth / 2 - this.padding;
+            const expectedX = x + actualTextWidth / 2 + this.padding;
             this.ctx.fillStyle = "red";
-            this.ctx.fillText(node.valueActual, x - actualTextWidth / 2 - 2, y);
+            this.ctx.fillText(node.valueActual, actualX, y);
             this.ctx.fillStyle = "green";
-            this.ctx.fillText(node.valueExpected, x + expectedTextWidth / 2 + 2, y);
+            this.ctx.fillText(node.valueExpected, expectedX , y);
             this.ctx.fillStyle = "black";
             totalWidth += 4;
         }
@@ -59,7 +65,7 @@ export class Visualizer {
             this.ctx.arc(x, y, this.radius, 0, 2 * Math.PI)
             this.ctx.stroke();
         } else {
-            let additionalShift = (totalWidth - circle) / 4.;
+            let additionalShift = (totalWidth - circle) / 2.;
             this.ctx.beginPath();
             this.ctx.arc(x - additionalShift, y, this.radius, Math.PI / 2, Math.PI * 3 / 2);
             this.ctx.lineTo(x + additionalShift, y - this.radius);
@@ -78,7 +84,7 @@ export class Visualizer {
     }
 
     getOuterWidth(node: TreeNode) {
-        return Math.max(this.radius * 2, this.getInnerWidth(node));
+        return Math.max(this.radius * 2, this.getInnerWidth(node) + this.padding);
     }
 
     drawNodeLink(parent: TreeNode, child: TreeNode) {
