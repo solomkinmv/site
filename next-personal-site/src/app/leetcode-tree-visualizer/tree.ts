@@ -1,33 +1,42 @@
-import {boolean} from "property-information/lib/util/types";
-
 export class Visualizer {
     private static readonly BASE_TEXT_SIZE: number = 16;
     private static readonly BASE_LINE_WIDTH: number = 1;
+    private static readonly BASE_PADDING: number = 2;
 
-    private readonly ctx: CanvasRenderingContext2D;
-    private readonly padding: number = 2;
     private readonly textScale: number = 2;
     private readonly textSize: number = Visualizer.BASE_TEXT_SIZE * this.textScale;
-    public readonly radius: number = this.textSize + this.padding * 2;
-    public readonly initialVerticalSpacing: number = this.radius + this.padding;
+    public readonly radius: number = this.textSize + Visualizer.BASE_PADDING * 2;
+    public readonly initialVerticalSpacing: number = this.radius + Visualizer.BASE_PADDING;
     public readonly verticalSpacing: number = this.radius * 2 + this.textSize;
     private readonly qualityScale: number = 2;
     private readonly lineWidth: number = Visualizer.BASE_LINE_WIDTH * this.textScale;
 
+    private ctx?: CanvasRenderingContext2D;
+
     constructor(private readonly c: HTMLCanvasElement) {
-        const height = 1000;
-        c.setAttribute("style", `width: ${window.innerWidth}px; height: ${height}px;`);
-        c.width = window.innerWidth * this.qualityScale;
-        c.height = height * this.qualityScale;
-        this.ctx = c.getContext("2d")!;
+    }
+
+    resize(heightNodes: number) {
+        const actualHeight = heightNodes * (3 * Visualizer.BASE_TEXT_SIZE + 4 * Visualizer.BASE_PADDING) +
+            Visualizer.BASE_TEXT_SIZE + 3 * Visualizer.BASE_PADDING;
+        console.log("resize", heightNodes, actualHeight);
+        this.c.setAttribute("style", `width: ${innerWidth}px; height: ${actualHeight}px;`);
+        this.c.height = actualHeight * this.qualityScale;
+        this.c.width = innerWidth * this.qualityScale;
+
+        this.ctx = this.c.getContext("2d")!;
         this.ctx.font = `${this.textSize}px arial`;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.ctx.lineWidth = this.lineWidth;
-        this.ctx.clearRect(0, 0, c.width, c.height);
+        this.ctx.clearRect(0, 0, this.c.width, actualHeight);
     }
 
     drawNode(node: TreeNode) {
+        if (!this.ctx) {
+            throw new Error("Canvas context not initialized");
+        }
+
         let {x, y} = node.position
         const singleText = node.valueActual === node.valueExpected;
         let actualTextWidth = this.getWidth(node.valueActual);
@@ -47,12 +56,12 @@ export class Visualizer {
             this.ctx.fillStyle = "black";
         } else {
             console.log("draw dif", node);
-            const actualX = x - expectedTextWidth / 2 - this.padding;
-            const expectedX = x + actualTextWidth / 2 + this.padding;
+            const actualX = x - expectedTextWidth / 2 - Visualizer.BASE_PADDING;
+            const expectedX = x + actualTextWidth / 2 + Visualizer.BASE_PADDING;
             this.ctx.fillStyle = "red";
             this.ctx.fillText(node.valueActual, actualX, y);
             this.ctx.fillStyle = "green";
-            this.ctx.fillText(node.valueExpected, expectedX , y);
+            this.ctx.fillText(node.valueExpected, expectedX, y);
             this.ctx.fillStyle = "black";
             totalWidth += 4;
         }
@@ -73,19 +82,26 @@ export class Visualizer {
         }
     }
 
-    getWidth(value: string | undefined) {
+    private getWidth(value: string | undefined) {
+        if (!this.ctx) {
+            throw new Error("Canvas context not initialized");
+        }
         return value ? this.ctx.measureText(value).width : 0;
     }
 
-    getInnerWidth(node: TreeNode) {
+    private getInnerWidth(node: TreeNode) {
         return this.getWidth(node.valueActual) + this.getWidth(node.valueExpected);
     }
 
     getOuterWidth(node: TreeNode) {
-        return Math.max(this.radius * 2, this.getInnerWidth(node) + this.padding);
+        return Math.max(this.radius * 2, this.getInnerWidth(node) + Visualizer.BASE_PADDING);
     }
 
     drawNodeLink(parent: TreeNode, child: TreeNode) {
+        if (!this.ctx) {
+            throw new Error("Canvas context not initialized");
+        }
+
         let {x: x1, y: y1} = parent.position
         let {x: x2, y: y2} = child.position;
         this.ctx.beginPath();
@@ -117,7 +133,7 @@ export class Tree {
         this.visualizer = visualizer;
     }
 
-    build(chunksActual: string[] | undefined, chunksExpected: string[] | undefined) {
+    public build(chunksActual: string[] | undefined, chunksExpected: string[] | undefined) {
         this.root = new TreeNode(chunksActual?.[0], undefined);
         let actualNodes = [this.root];
         for (let i = 1, api = 0; i < (chunksActual?.length || 0); i += 2, api++) {
@@ -159,10 +175,17 @@ export class Tree {
             expectedNodes.push(rightNode);
         }
 
+        this.visualizer.resize(this.findDepth(this.root));
         this.reposition();
+        this.breadthFirstDraw();
     }
 
-    bfs() {
+    private findDepth(node: TreeNode | undefined): number {
+        if (!node) return 0;
+        return 1 + Math.max(this.findDepth(node.left), this.findDepth(node.right));
+    }
+
+    private breadthFirstDraw() {
         if (!this.root) return;
 
         let queue: TreeNode[] = [];
@@ -170,7 +193,6 @@ export class Tree {
 
         while (queue.length !== 0) {
             let node = queue.shift()!
-            console.log(node);
             this.visualizer.drawNode(node);
 
             if (node.left) {
@@ -184,30 +206,27 @@ export class Tree {
         }
     }
 
-    reposition() {
-        this.traverse(this.root, 0, [], true);
+
+    private reposition() {
+        this.fillPositions(this.root, 0, [], true);
     }
 
-    traverse(node: TreeNode | undefined, h: number, hToRightmostX: number[], leanLeft: boolean) {
+    private fillPositions(node: TreeNode | undefined, h: number, hToRightmostX: number[], leanLeft: boolean) {
         if (!node) return;
         hToRightmostX[h] = Math.max(hToRightmostX[h] || 0, (hToRightmostX[h - 1] || 0) + (leanLeft ? -this.visualizer.radius / 2 : this.visualizer.radius / 2));
-        let left = this.traverse(node.left, h + 1, hToRightmostX, true);
-        let right = this.traverse(node.right, h + 1, hToRightmostX, false);
+        let left = this.fillPositions(node.left, h + 1, hToRightmostX, true);
+        let right = this.fillPositions(node.right, h + 1, hToRightmostX, false);
         node.position.y = h * this.visualizer.verticalSpacing + this.visualizer.initialVerticalSpacing;
         let horizontalShift = this.visualizer.getOuterWidth(node) / 2;
         if (!left && !right) {
-            console.log("leaf " + node.valueActual + " h shift " + horizontalShift);
             node.position.x = Math.max((hToRightmostX[h] || 0) + horizontalShift + this.visualizer.radius / 2);
         } else if (left && right) {
-            console.log("link " + node.valueActual);
             node.position.x = (node.left!.position.x + node.right!.position.x) / 2;
         } else if (left && !right) {
             node.position.x = node.left!.position.x + this.visualizer.radius / 2;
-            console.log("some left", node);
         } else if (!left && right) {
             node.position.x = hToRightmostX[h] + this.visualizer.radius + this.visualizer.radius / 2;
             node.position.x = (node.position.x + right.position.x - this.visualizer.radius / 2) / 2;
-            console.log("some right", node);
         }
         hToRightmostX[h] = node.position.x + horizontalShift;
         return node;
