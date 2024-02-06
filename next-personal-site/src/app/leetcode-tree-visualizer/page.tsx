@@ -38,7 +38,7 @@ export default function Page() {
 
 
     return (
-        <main className="p-6 md:p-10">
+        <main className="flex-1 p-6 md:p-10">
             <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="input-actual">Actual tree</Label>
                 <Input type="text"
