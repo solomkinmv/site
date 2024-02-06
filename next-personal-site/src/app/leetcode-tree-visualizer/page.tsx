@@ -2,6 +2,9 @@
 
 import {useEffect, useRef, useState} from "react";
 import {Tree, Visualizer} from "@/app/leetcode-tree-visualizer/tree";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 
 export default function Page() {
     const [inputActual, setInputActual] = useState("[1,2,3,null,5,null,4]");
@@ -36,20 +39,30 @@ export default function Page() {
 
 
     return (
-        <main>
-            <input id="input-actual"
-                   placeholder="LeetCode-style input for actual tree"
-                   style={{width: 1000}}
-                   onChange={(e) => setInputActual(e.target.value)}
-                   value={inputActual}
+        <main className="p-6 md:p-10">
+            <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="input-actual">Actual tree</Label>
+                <Input type="text"
+                       id="input-actual"
+                       placeholder="LeetCode-style input for actual tree"
+                       value={inputActual}
+                       onChange={(e) => setInputActual(e.target.value)}
+                />
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="input-expected">Expected tree</Label>
+                <Input type="text"
+                       id="input-expected"
+                       placeholder="LeetCode-style input for expected tree"
+                       value={inputExpected}
+                       onChange={(e) => setInputExpected(e.target.value)}
+                />
+            </div>
+
+            <canvas id="canvas"
+                    ref={canvas}
+                    className="mt-2"
             />
-            <input id="input-expected"
-                   placeholder="LeetCode-style input for expected tree"
-                   style={{width: 1000}}
-                   onChange={(e) => setInputExpected(e.target.value)}
-                   value={inputExpected}
-            />
-            <canvas id="canvas" ref={canvas}></canvas>
         </main>
     );
 }
