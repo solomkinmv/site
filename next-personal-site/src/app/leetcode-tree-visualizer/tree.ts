@@ -8,7 +8,7 @@ export class Visualizer {
     public readonly radius: number = this.textSize + Visualizer.BASE_PADDING * 2;
     public readonly initialVerticalSpacing: number = this.radius + Visualizer.BASE_PADDING;
     public readonly verticalSpacing: number = this.radius * 2 + this.textSize;
-    private readonly qualityScale: number = 2;
+    public readonly qualityScale: number = 2;
     private readonly lineWidth: number = Visualizer.BASE_LINE_WIDTH * this.textScale;
 
     private ctx?: CanvasRenderingContext2D;
@@ -16,20 +16,31 @@ export class Visualizer {
     constructor(private readonly c: HTMLCanvasElement) {
     }
 
-    resize(heightNodes: number) {
+    resizeHeight(heightNodes: number) {
         const actualHeight = heightNodes * (3 * Visualizer.BASE_TEXT_SIZE + 4 * Visualizer.BASE_PADDING) +
             Visualizer.BASE_TEXT_SIZE + 3 * Visualizer.BASE_PADDING;
-        console.log("resize", heightNodes, actualHeight);
-        this.c.setAttribute("style", `width: ${innerWidth}px; height: ${actualHeight}px;`);
-        this.c.height = actualHeight * this.qualityScale;
-        this.c.width = innerWidth * this.qualityScale;
+
+        this.resize(innerWidth, actualHeight);
+    }
+
+    resizeWidth(width: number) {
+        if (this.c.width == width) return;
+
+        this.resize(width, this.c.height / this.qualityScale);
+    }
+
+    resize(width: number, height: number) {
+        console.log("resize", width, height)
+        this.c.setAttribute("style", `width: ${width}px; height: ${height}px;`);
+        this.c.height = height * this.qualityScale;
+        this.c.width = width * this.qualityScale;
 
         this.ctx = this.c.getContext("2d")!;
         this.ctx.font = `${this.textSize}px arial`;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.ctx.lineWidth = this.lineWidth;
-        this.ctx.clearRect(0, 0, this.c.width, actualHeight);
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
     }
 
     drawNode(node: TreeNode) {
@@ -41,7 +52,7 @@ export class Visualizer {
         const singleText = node.valueActual === node.valueExpected;
         let actualTextWidth = this.getWidth(node.valueActual);
         let expectedTextWidth = singleText ? 0 : this.getWidth(node.valueExpected);
-        console.log("width", actualTextWidth, expectedTextWidth, node.valueActual, node.valueExpected);
+
         let totalWidth = actualTextWidth + expectedTextWidth;
 
         if (node.valueActual === node.valueExpected) {
@@ -55,7 +66,7 @@ export class Visualizer {
             this.ctx.fillText(node.valueExpected, x, y);
             this.ctx.fillStyle = "black";
         } else {
-            console.log("draw dif", node);
+
             const actualX = x - expectedTextWidth / 2 - Visualizer.BASE_PADDING;
             const expectedX = x + actualTextWidth / 2 + Visualizer.BASE_PADDING;
             this.ctx.fillStyle = "red";
@@ -90,6 +101,10 @@ export class Visualizer {
     }
 
     private getInnerWidth(node: TreeNode) {
+        const singleText = node.valueActual === node.valueExpected;
+        if (singleText) {
+            return this.getWidth(node.valueActual);
+        }
         return this.getWidth(node.valueActual) + this.getWidth(node.valueExpected);
     }
 
@@ -175,14 +190,21 @@ export class Tree {
             expectedNodes.push(rightNode);
         }
 
-        this.visualizer.resize(this.findDepth(this.root));
+        this.visualizer.resizeHeight(this.findDepth(this.root));
         this.reposition();
+        this.visualizer.resizeWidth(this.findWidth(this.root));
         this.breadthFirstDraw();
     }
 
     private findDepth(node: TreeNode | undefined): number {
         if (!node) return 0;
         return 1 + Math.max(this.findDepth(node.left), this.findDepth(node.right));
+    }
+
+    private findWidth(node: TreeNode | undefined): number {
+        if (!node) return 0;
+        const currentWidth = (node.position.x + this.visualizer.getOuterWidth(node) / 2.) / this.visualizer.qualityScale
+        return Math.max(currentWidth, this.findWidth(node.left), this.findWidth(node.right));
     }
 
     private breadthFirstDraw() {
