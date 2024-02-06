@@ -24,12 +24,18 @@ export default function Page() {
     }
 
     function parseInput(stringValue: string): string[] | undefined {
-        if (!stringValue || stringValue[0] !== "[" || stringValue[stringValue.length - 1] !== "]") {
+        if (!stringValue) {
             console.log("Incorrect input " + stringValue)
             return;
         }
         // todo: add more validation
-        return stringValue.slice(1, -1).split(",").map(v => v.trim()).filter(s => s.length > 0);
+        if (stringValue[0] === "[") {
+            stringValue = stringValue.slice(1);
+        }
+        if (stringValue[stringValue.length - 1] === "]") {
+            stringValue = stringValue.slice(0, -1);
+        }
+        return stringValue.split(",").map(v => v.trim()).filter(s => s.length > 0);
     }
 
     useEffect(() => {
