@@ -8,7 +8,7 @@ import {Textarea} from "@/components/ui/textarea";
 
 export default function Page() {
     const [inputActual, setInputActual] = useState("[1,2,3,null,5,null,4]");
-    const [inputExpected, setInputExpected] = useState("[1,2,3,null,5,null,4]");
+    const [inputExpected, setInputExpected] = useState("");
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     function displayTree(inputChunksActual: string[] | undefined,
