@@ -16,7 +16,8 @@ export default function Page() {
             return;
         }
         let tree = new Tree(new Visualizer(canvas));
-        tree.build(inputChunksActual, inputChunksExpected);
+        const noExpected = !inputChunksExpected || inputChunksExpected.length === 0;
+        tree.build(inputChunksActual, noExpected ? inputChunksActual : inputChunksExpected);
         tree.bfs();
     }
 
@@ -35,7 +36,7 @@ export default function Page() {
 
 
     return (
-        <>
+        <main>
             <input id="input-actual"
                    placeholder="LeetCode-style input for actual tree"
                    style={{width: 1000}}
@@ -49,6 +50,6 @@ export default function Page() {
                    value={inputExpected}
             />
             <canvas id="canvas" ref={canvas}></canvas>
-        </>
+        </main>
     );
 }
