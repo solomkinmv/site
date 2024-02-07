@@ -5,6 +5,7 @@ import React from "react";
 import {cn} from "@/lib/utils";
 import {Header} from "@/components/header";
 import {Footer} from "@/components/footer";
+import {GoogleAnalytics} from "@next/third-parties/google";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -32,7 +33,8 @@ export default function RootLayout({
         {children}
 
         <Footer/>
+        <GoogleAnalytics gaId="G-4V433C415C"/>
         </body>
         </html>
-);
+    );
 }
