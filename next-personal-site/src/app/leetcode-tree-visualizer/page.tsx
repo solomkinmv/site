@@ -4,7 +4,6 @@ import {useEffect, useRef, useState} from "react";
 import {Tree, Visualizer} from "@/app/leetcode-tree-visualizer/tree";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
 
 export default function Page() {
     const [inputActual, setInputActual] = useState("[1,2,3,null,5,null,4]");
