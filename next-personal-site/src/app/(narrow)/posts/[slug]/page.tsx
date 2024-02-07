@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params: { slug } }: Props) {
 
-    const post = await getPostByName(`${slug}.mdx`) //deduped!
+    const post = await getPostByName(`${slug}`) //deduped!
 
     if (!post) {
         return {
