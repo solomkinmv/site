@@ -1,0 +1,57 @@
+---
+title: "LeetCode Tree Visualizer"
+date: 2024-02-06
+draft: false
+tags: ["leetcode"]
+---
+
+LeetCode offers a useful tree visualizer, yet it comes with several limitations that have consistently impacted my
+experience. Firstly, it is not universally available across all problems, leading to frequent discussions like [this
+one on LeetCode](https://leetcode.com/discuss/general-discussion/1966120/where-is-the-tree-visualizer-tool), with no
+official clarification from the LeetCode team.
+
+For example, the problem [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
+lacks tree visualizer support.
+
+Additionally, the visualizer restricts node displays to no more than three symbols and fails to handle large trees.
+An example input that demonstrates this limitation and results in a truncated display:
+`[3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null]`
+
+![LeetCode native tree visualizer display only three symbols](/images/leetcode-tree-visualizer/leetcode-width-limitation.png)
+
+![LeetCode native tree visualizer cuts large trees](/images/leetcode-tree-visualizer/leetcode-native-size-limitation.png)
+
+And finally, analyzing difference between actual and expected answers can be challenging.
+
+![LeetCode tree difference new UI](/images/leetcode-tree-visualizer/leetcode-diff-new.png)
+![LeetCode tree difference old UI](/images/leetcode-tree-visualizer/leetcode-diff-old.png)
+
+## My Solution
+
+After exploring various drawing libraries and finding none that met my criteria for compact drawing and multicolor
+nodes, I decided to use canvas for manual drawing.
+
+My solution can be found at https://solomk.in/leetcode-tree-visualizer.
+
+Nice things about it:
+* Manual input for trees in LeetCode format (with or without brackets)
+* Compact drawing style
+* Display of differences between actual and expected answers
+* Support for long node text
+* bigger trees support comparing to LeetCode native visualizer
+
+![LeetCode Tree Visualizer diff](/images/leetcode-tree-visualizer/leetcode-tree-visualizer-diff.png)
+![LeetCode Tree Visualizer large tree](/images/leetcode-tree-visualizer/leetcode-tree-visualizer-large-tree.png)
+
+Existing limitations:
+* Can't collapse nodes
+* No zoom
+* Support for large trees is limited to browser window size
+
+## Alternatives
+
+For completeness, here are other notable options:
+
+1. https://eniac00.github.io/btv/ — has nice UI, but has pretty much the same problems as LeetCode native tree visualizer
+2. https://leetcode-tree-visualizer.vercel.app — similar to previous one
+3. https://github.com/gaastonsr/treevis — console visualizer
