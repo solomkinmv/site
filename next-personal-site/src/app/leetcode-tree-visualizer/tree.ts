@@ -26,7 +26,7 @@ export class Visualizer {
     resizeWidth(width: number) {
         if (this.c.width == width) return;
 
-        this.resize(width, this.c.height / this.qualityScale);
+        this.resize(width + Visualizer.BASE_PADDING, this.c.height / this.qualityScale);
     }
 
     resize(width: number, height: number) {
@@ -62,7 +62,7 @@ export class Visualizer {
             this.ctx.fillText(node.valueActual!, x, y);
             this.ctx.fillStyle = "black";
         } else if (!node.valueActual) {
-            this.ctx.fillStyle = "green";
+            this.ctx.fillStyle = "LimeGreen";
             this.ctx.fillText(node.valueExpected, x, y);
             this.ctx.fillStyle = "black";
         } else {
@@ -71,7 +71,7 @@ export class Visualizer {
             const expectedX = x + actualTextWidth / 2 + Visualizer.BASE_PADDING;
             this.ctx.fillStyle = "red";
             this.ctx.fillText(node.valueActual, actualX, y);
-            this.ctx.fillStyle = "green";
+            this.ctx.fillStyle = "LimeGreen";
             this.ctx.fillText(node.valueExpected, expectedX, y);
             this.ctx.fillStyle = "black";
             totalWidth += 4;
