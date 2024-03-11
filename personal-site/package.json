@@ -16,7 +16,7 @@
     }
   },
   "dependencies": {
-    "@alpinejs/intersect": "^3.13.5",
+    "@alpinejs/intersect": "^3.13.7",
     "alpinejs": "^3.13.5"
   },
   "devDependencies": {
