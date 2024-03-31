@@ -1,5 +1,6 @@
-import React from "react";
+import React, {AnchorHTMLAttributes, DetailedHTMLProps, HTMLAttributes, ImgHTMLAttributes} from "react";
 import Link from "next/link";
+import {MDXComponents, MDXContent, MDXProps} from "mdx/types";
 
 export function TypographyH1({children}: any) {
     return (
@@ -33,7 +34,16 @@ export function TypographyH4({children}: any) {
     )
 }
 
-export function TypographyP({children}: any) {
+export function TypographyP({children}: any | undefined) {
+    /*
+    In HTML, the <figure> element is a block-level element and it's not allowed to be a child of the <p> element,
+    which is a paragraph-level element.  When a block-level element is encountered in the content of a <p> element,
+    the parser implicitly closes the <p> element before starting the block-level element. This is why your <figure>
+    element appears to be outside of the <p> element.
+     */
+    if (children.type === TypographyImage) {
+        return children;
+    }
     return (
         <p className="leading-7 [&:not(:first-child)]:mt-6">
             {children}
@@ -66,9 +76,26 @@ export function TypographyListItem({children}: any) {
     )
 }
 
+export function TypographyImage(props: any | undefined) {
+    const {alt, src} = props;
+    return (
+        <figure className="lg:-mx-12 xl:-mx-20">
+            <img
+                alt={alt}
+                className="overflow-hidden rounded-lg object-cover"
+                src={src}
+                style={{objectFit: 'contain'}}
+            />
+            {alt && <figcaption className="text-center">{alt}</figcaption>}
+        </figure>
+    );
+}
 
-export function TypographyLink(props: any) {
-    console.log("link", props);
+
+export function TypographyLink(props: any | undefined) {
+    if (!props?.href) {
+        return null;
+    }
     if (props.href.startsWith("#")) {
         return <Link href={props.href}>{props.children}</Link>
     }
