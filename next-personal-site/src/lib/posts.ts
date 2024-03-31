@@ -80,3 +80,31 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
 
     return posts.sort((a, b) => a.date < b.date ? 1 : -1)
 }
+
+export async function getPostWithNearestMeta(slug: string): Promise<{prev: Meta | null, current: BlogPost | null, next: Meta | null}> {
+    const postSlugs = fs.readdirSync(POSTS_FOLDER).map((filename) => {
+        return filename.replace(".mdx", "");
+    });
+
+    const posts: BlogPost[] = []
+
+    for (const slug of postSlugs) {
+        const post = await getPostByName(slug)
+        if (post) {
+            posts.push(post)
+        }
+    }
+
+    // Sort posts by date in descending order
+    posts.sort((a, b) => a.meta.date < b.meta.date ? 1 : -1)
+
+    // Find the index of the current post
+    const currentIndex = posts.findIndex(post => post.meta.id === slug)
+
+    // Get the previous, current and next posts
+    const prevPost = currentIndex > 0 ? posts[currentIndex - 1].meta : null
+    const currentPost = posts[currentIndex] || null
+    const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1].meta : null
+
+    return {prev: prevPost, current: currentPost, next: nextPost}
+}
