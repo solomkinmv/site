@@ -1,12 +1,9 @@
-import {compileMDX} from "next-mdx-remote/rsc";
-import path from "path";
-import {access, readFile} from "fs/promises";
 import {notFound} from "next/navigation";
-import * as fs from "fs";
-import {getPostByName, getPostsMeta} from "@/lib/posts";
+import {getPostByName, getPostsMeta, getPostWithNearestMeta} from "@/lib/posts";
 import getFormattedDate from "@/lib/getFormattedDate";
 import Link from "next/link";
 import {Tag} from "@/components/ui/tag";
+import {TypographyH1} from "@/components/ui/typography";
 
 export const revalidate = 86400
 
@@ -26,7 +23,7 @@ export async function generateStaticParams() {
     }))
 }
 
-export async function generateMetadata({ params: { slug } }: Props) {
+export async function generateMetadata({params: {slug}}: Props) {
 
     const post = await getPostByName(`${slug}`) //deduped!
 
@@ -41,13 +38,13 @@ export async function generateMetadata({ params: { slug } }: Props) {
     }
 }
 
-export default async function Post({ params: { slug } }: Props) {
+export default async function Post({params: {slug}}: Props) {
 
-    const post = await getPostByName(slug) //deduped!
+    const {prev, current, next} = await getPostWithNearestMeta(slug)
 
-    if (!post) notFound()
+    if (!current) notFound()
 
-    const { meta, content } = post
+    const {meta, content} = current
 
     const pubDate = getFormattedDate(meta.date)
 
@@ -57,22 +54,33 @@ export default async function Post({ params: { slug } }: Props) {
 
     return (
         <>
-            <h2 className="text-3xl mt-4 mb-0">{meta.title}</h2>
-            <p className="mt-0 text-sm">
-                {pubDate}
-            </p>
-            <article>
-                {content}
-            </article>
-            <section>
-                <h3>Related:</h3>
-                <div className="flex flex-row gap-4">
-                    {tags}
+            <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
+                <div className="space-y-2 not-prose">
+                    <TypographyH1>{meta.title}</TypographyH1>
+                    <p className="text-gray-500 dark:text-gray-400">Posted on {pubDate}</p>
                 </div>
-            </section>
-            <p className="mb-10">
-                <Link href="/next-personal-site/public">← Back to home</Link>
-            </p>
+
+                {content}
+
+                <section>
+                    <div className="flex flex-row gap-4 mt-8">
+                        {tags}
+                    </div>
+                </section>
+
+                <div className="flex justify-between mt-8">
+                    {prev &&
+                      <Link className="text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${prev?.id}`}>
+                        ←&nbsp;{prev.title}
+                      </Link>}
+                    {next &&
+                      <Link className="text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${next?.id}`}>
+                          {next.title}&nbsp;→
+                      </Link>}
+                </div>
+            </article>
+
+
         </>
     )
 }
