@@ -30,9 +30,9 @@ export const Header = () => {
                 <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://github.com/solomkinmv">
                     <GithubIcon className="h-5 w-5"/>
                 </Link>
-                <Toggle aria-label="Toggle dark mode" variant="outline">
-                    <MoonIcon className="h-5 w-5"/>
-                </Toggle>
+                {/*<Toggle aria-label="Toggle dark mode" variant="outline">*/}
+                {/*    <MoonIcon className="h-5 w-5"/>*/}
+                {/*</Toggle>*/}
             </div>
         </header>
     );
