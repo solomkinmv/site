@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/personal-site" # Location of package manifests
+    directory: "/next-personal-site" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions"
