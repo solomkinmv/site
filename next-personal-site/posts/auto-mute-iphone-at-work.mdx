@@ -1,0 +1,105 @@
+---
+title: "Automatically Mute iPhone At Work"
+date: 2024-05-30
+draft: false
+tags: ["iOS", "Apple Shortcuts", "productivity", "automation"]
+---
+
+I always feel nervous at work that I may forget to mute my iPhone, leave it on the table and leave to get some
+coffee. During this time, my phone may ring and disturb my colleagues. I don't want to disturb whole office with my
+ringtone. I also don't want to miss any important calls after the work. So I decided to automate it using
+Apple Shortcuts.
+
+![Apple Shortcuts](/images/auto-mute-iphone-at-work/apple-shortcuts.jpg)
+
+I've created a shortcut that saves current volume to file in iCloud, then automatically mutes my iPhone when I arrive
+at work. Then I've created another shortcut that unmutes it when I leave and restores previous volume level.
+
+Here's how I did it.
+
+## Store Volume And Mute Shortcut
+
+<figure className="not-prose flex flex-col items-center justify-center">
+  <img
+    src="/images/auto-mute-iphone-at-work/store-volume-and-mute-shortcut.jpeg"
+    alt="Store volume and mute shortcut"
+    className="rounded-lg object-contain mx-auto"
+    width="300"
+  />
+  <figcaption className="text-center mt-2">Store volume and mute shortcut</figcaption>
+</figure>
+
+1. Get the Current Volume: This action retrieves the current volume level of the device.
+2. Set Variable: This action sets a variable named `volume` to the current volume level retrieved by the previous
+action.
+3. If Statement: This checks if the value of `volume` is greater than 0. If true, it triggers the actions within the if
+statement.
+4. Save ‘volume’ to Shortcuts: The value of the `volume` variable is saved to a file within the Shortcuts app. The path
+specified is `VolumeUpdater/previous-volume.txt`, and the file will be overwritten if it exists.
+5. Set Ringtone Volume to 0%: This action sets the device’s ringtone volume to 0%, effectively muting it.
+6. Set Media Volume to 0%: Similar to the previous action, this sets the media volume to 0%.
+7. Otherwise: It seems there are no actions specified for the case where `volume` is not greater than 0.
+8. End If: Marks the end of the if statement.
+
+This shortcut essentially saves the current volume level and mutes the device if the volume was previously above 0.
+
+## Restore Volume Shortcut
+
+<figure className="not-prose flex flex-col items-center justify-center">
+  <img
+    src="/images/auto-mute-iphone-at-work/restore-volume-shortcut.jpeg"
+    alt="Restore volume shortcut"
+    className="rounded-lg object-contain mx-auto"
+    width="300"
+  />
+  <figcaption className="text-center">Restore volume shortcut</figcaption>
+</figure>
+
+1. Get File from Shortcuts: Retrieves a file named `VolumeUpdater/previous-volume.txt` from a specified path within the
+Shortcuts app. If the file is not found, an error will occur.
+2. Set Variable: Assigns the contents of the retrieved file to a variable named `volume`.
+3. If Statement: Checks if the `volume` variable has any value. If it does, it triggers the actions within the if
+statement.
+4. Set Ringtone Volume: Sets the device’s ringtone volume back to the level stored in the `volume` variable.
+5. Set Media Volume: Similarly, sets the device’s media volume back to the level stored in the `volume` variable.
+6. Otherwise: There appear to be no actions specified for the case where the `volume` variable does not have a value.
+7. End If: Marks the end of the if statement.
+
+This shortcut effectively restores the device’s ringtone and media volume to the levels they were at before they were
+muted, assuming the volume was previously saved and the file exists.
+
+## Automate Muting and Unmuting
+
+To automate the muting and unmuting process, I used Focus mode in iOS. I created a Work Focus mode that activates when
+I arrive at work and deactivates when I leave. The Work Focus mode triggers the Store Volume And Mute Shortcut when
+activated and the Restore Volume Shortcut when deactivated.
+
+To trigger the shortcuts, I used the Automation feature in Shortcuts. I created two automations: one when Work Focus
+mode is turned on and another when it is turned off. The automations run the respective shortcuts when triggered.
+
+<figure className="not-prose flex flex-col items-center justify-center">
+  <div className="flex space-x-4">
+    <img
+      src="/images/auto-mute-iphone-at-work/focus-mode-automation.jpeg"
+      alt="Focus mode automation overview"
+      className="rounded-lg object-contain mx-auto mt-0 mb-0"
+      width="300"
+    />
+    <img
+      src="/images/auto-mute-iphone-at-work/focus-mode-automation-details.jpeg"
+      alt="Focus mode automation details"
+      className="rounded-lg object-contain mx-auto mt-0 mb-0"
+      width="300"
+    />
+  </div>
+  <figcaption className="text-center">Focus mode automation</figcaption>
+</figure>
+
+## Conclusion
+
+* You can download "Save Mute Volume" Shortcut using link [here](https://www.icloud.com/shortcuts/6bee0b68d1de468c975297f3eb5ea046).
+* You can download "Restore Volume" Shortcut using link [here](https://www.icloud.com/shortcuts/b75dab0ec5ac4fd2b7b9996097d64b7e).
+
+Automations can't be shared and you need to configure them manually.
+
+This automation has been working well for me, and I no longer have to worry about muting my iPhone when I arrive at work.
