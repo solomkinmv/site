@@ -29,7 +29,7 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
     if (!rawMDX) return undefined
 
-    const {frontmatter, content} = await compileMDX<{ title: string, date: string, tags: string[] }>({
+    const {frontmatter, content} = await compileMDX<{ title: string, date: string, tags: string[], draft: boolean }>({
         source: rawMDX,
         // eslint-disable-next-line react-hooks/rules-of-hooks
         components: useMDXComponents({
@@ -57,7 +57,13 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
 
     const blogPostObj: BlogPost = {
-        meta: {id, title: frontmatter.title, date: frontmatter.date, tags: frontmatter.tags},
+        meta: {
+            id,
+            title: frontmatter.title,
+            date: frontmatter.date,
+            tags: frontmatter.tags,
+            draft: frontmatter.draft ?? false
+        },
         content
     }
     return blogPostObj
@@ -72,7 +78,7 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
 
     for (const slug of postSlugs) {
         const post = await getPostByName(slug)
-        if (post) {
+        if (post && !post.meta.draft) {
             const {meta} = post
             posts.push(meta)
         }
@@ -90,7 +96,7 @@ export async function getPostWithNearestMeta(slug: string): Promise<{prev: Meta 
 
     for (const slug of postSlugs) {
         const post = await getPostByName(slug)
-        if (post) {
+        if (post && !post.meta.draft) {
             posts.push(post)
         }
     }

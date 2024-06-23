@@ -1,0 +1,85 @@
+---
+title: "DnsNameResolverTimeoutException in Spring Boot WebFlux"
+date: 2024-06-17
+draft: false
+tags: ["spring-boot"]
+---
+
+A few weeks ago, I started noticing errors during the [Polidict](https://polidict.com) authentication flow. The application was throwing a `DnsNameResolverTimeoutException` when making network requests. The error messages appeared as follows:
+
+> io.netty.resolver.dns.DnsNameResolverTimeoutException: [10812: /[fdaa:0:0:0:0:0:0:3]:53] DefaultDnsQuestion(www.googleapis.com. IN AAAA) query '10812' via UDP timed out after 5000 milliseconds (no stack trace available)
+
+> Caused by: java.net.UnknownHostException: Failed to resolve 'www.googleapis.com' [A(1), AAAA(28)] after 2 queries
+
+## Problem
+
+Initially, I suspected a network issue and criticized fly.io for it on Twitter.
+
+To resolve the issue, I attempted several approaches:
+
+1. Changed deployment regions multiple times
+2. Reverted to the previous version of Spring Boot
+3. Tuned timeouts in the application properties
+
+However, none of these solutions remedied the problem.
+
+Further investigation revealed that the issue was tied to the DNS resolver used by the application. I found related issues on GitHub:
+
+1. [reactor/reactor-netty#2978](https://github.com/reactor/reactor-netty/issues/2978)
+2. [netty/netty#13660](https://github.com/netty/netty/issues/13660)
+
+The problem seemed to originate from Netty's [`DnsAddressResolverGroup`](https://github.com/netty/netty/blob/4.1/resolver-dns/src/main/java/io/netty/resolver/dns/DnsAddressResolverGroup.java).
+
+Potential resolutions include:
+
+1. Customize the Netty DNS resolver configuration to handle DNS responses more effectively by adjusting timeouts, retries, or other settings.
+2. Switch to a different DNS resolver library that may better manage large DNS responses.
+3. Implement a custom DNS resolver.
+4. Investigate the cause of large DNS responses with your DNS provider to optimize or stabilize the DNS infrastructure.
+
+## My Solution
+
+I implemented a global `WebClientCustomizer` that switches the DNS resolver to [`DefaultAddressResolverGroup`](https://github.com/netty/netty/blob/4.1/resolver/src/main/java/io/netty/resolver/DefaultAddressResolverGroup.java).
+
+```java
+@Component
+public class AddressResolverWebClientCustomizer implements WebClientCustomizer {
+
+    @Override
+    public void customize(WebClient.Builder webClientBuilder) {
+        webClientBuilder.clientConnector(
+                new ReactorClientHttpConnector(HttpClient.create()
+                        .resolver(DefaultAddressResolverGroup.INSTANCE)));
+    }
+}
+```
+
+However, this wasn't sufficient. The issue persisted during the OAuth2 login flow. The `WebClientReactiveAuthorizationCodeTokenResponseClient` uses the default WebClient.
+
+To address this, I created a custom `WebClientReactiveAuthorizationCodeTokenResponseClient` using a customized WebClient.
+
+```java
+    /**
+     * Client with customized WebClient. By default, it uses WebClient.builder().build() which is not customized.
+     * Refer to {@link AddressResolverWebClientCustomizer} for customization details.
+     */
+    @Bean
+    public WebClientReactiveAuthorizationCodeTokenResponseClient webClientReactiveAuthorizationCodeTokenResponseClient(
+            WebClient.Builder webClientBuilder
+    ) {
+        var webClientReactiveAuthorizationCodeTokenResponseClient = new WebClientReactiveAuthorizationCodeTokenResponseClient();
+        webClientReactiveAuthorizationCodeTokenResponseClient.setWebClient(webClientBuilder.build());
+        return webClientReactiveAuthorizationCodeTokenResponseClient;
+    }
+```
+
+The issue is fixed now. I'm still monitoring the application to see if the issue will happen again.
+
+## Improvements
+
+For now I changed resolver for all instances of WebClient provided by Spring Boot. It would be better to change resolver only for the WebClient that is used for OAuth2 login flow.
+To do this I will just move custom resolver creation directly to `webClientReactiveAuthorizationCodeTokenResponseClient` bean declaration.
+
+## Conclusion
+
+If you encounter a `DnsNameResolverTimeoutException` in your Spring Boot application, it's likely due to the Netty DNS resolver. Customizing the DNS resolver configuration, using a different DNS resolver, or implementing a custom resolver may solve the problem.

@@ -5,6 +5,7 @@ type Meta = {
     title: string,
     date: string,
     tags: string[],
+    draft: boolean,
 }
 
 type BlogPost = {
