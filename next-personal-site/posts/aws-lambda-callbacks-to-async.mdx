@@ -1,0 +1,149 @@
+---
+title: "From Callbacks to Async/Await in AWS Lambda"
+date: 2025-02-25
+draft: false
+tags: ["aws", "typescript"]
+description: Learn how to migrate AWS Lambda functions from callback-style to modern async/await pattern in TypeScript, understanding the benefits and implementation details.
+summary: A practical guide to modernizing AWS Lambda functions by moving from callbacks to async/await, with code examples and best practices.
+image: /images/lambda-async/header.jpg
+---
+
+Recently, while reviewing some of our older Lambda functions, I noticed we still had many using the callback pattern. While both approaches work, the differences in readability and maintainability are significant. In this post, I'll explain both approaches and show how to migrate from callbacks to async/await.
+
+When AWS Lambda was first introduced in 2014, JavaScript/Node.js developers were familiar with callback-style programming. This influenced the initial Lambda handler design, which used callbacks to return responses or errors. However, with the introduction of async/await in ECMAScript 2017, we can now write more readable and maintainable Lambda functions.
+
+## The Traditional Callback Approach
+
+The traditional callback approach uses a specific signature for Lambda handlers. The callback function accepts two parameters: an error (if any occurred) and a success response (if the operation succeeded).
+
+```typescript
+type Callback<TResult = any> = (error?: Error | null | string, result?: TResult) => void;
+```
+
+Using this signature, a typical Lambda handler would look like this:
+
+```typescript
+export const handler = (
+    event: APIGatewayProxyEvent,
+    context: Context,
+    callback: Callback<APIGatewayProxyResult>
+) => {
+    try {
+        // Business logic here
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Success' })
+        };
+        callback(null, response);
+    } catch (error) {
+        callback(error);
+    }
+};
+```
+
+When working with asynchronous operations, the code becomes more complex with nested callbacks and promise chains:
+
+```typescript
+export const handler = (
+    event: APIGatewayProxyEvent,
+    context: Context,
+    callback: Callback<APIGatewayProxyResult>
+) => {
+    someAsyncOperation()
+        .then(result => {
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify({ data: result })
+            };
+            callback(null, response);
+        })
+        .catch(error => {
+            callback(error);
+        });
+};
+```
+
+This callback pattern, while functional, leads to several challenges. The code becomes harder to read with nested error handling and multiple asynchronous operations. There's also a higher risk of forgetting to call the callback or handling errors incorrectly.
+
+## The Modern Async/Await Approach
+
+With TypeScript and async/await, we can significantly simplify our Lambda handlers. The key insight is that any Lambda function can be converted to use async/await by simply updating the handler signature. The internal business logic remains unchanged. AWS Lambda has supported async/await since Node.js 8.10 runtime, and it's now the recommended approach for writing Lambda functions.
+
+```typescript
+export const handler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+    try {
+        const result = await someAsyncOperation();
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ data: result })
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal Server Error' })
+        };
+    }
+};
+```
+
+Multiple async operations become much more straightforward to handle. Instead of nested callbacks or promise chains, we can use clean, synchronous-looking code:
+
+```typescript
+export const handler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+    try {
+        const [result1, result2] = await Promise.all([
+            someAsyncOperation1(),
+            someAsyncOperation2()
+        ]);
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ data1: result1, data2: result2 })
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal Server Error' })
+        };
+    }
+};
+```
+
+The async/await approach offers numerous advantages. The code becomes cleaner and more readable with natural error handling using try/catch blocks. Asynchronous operations flow more naturally, and TypeScript provides better type safety with explicit return types. Multiple async operations can be handled elegantly, and there's no need to manage callbacks manually.
+
+Testing becomes much more straightforward with async/await. Instead of dealing with callback assertions, you can use simple async/await patterns in your tests.
+
+```typescript
+// Before (with callbacks)
+test('handler', (done) => {
+    handler(event, context, (err, result) => {
+        expect(result.statusCode).toBe(200);
+        done();
+    });
+});
+
+// After (with async/await)
+test('handler', async () => {
+    const result = await handler(event);
+    expect(result.statusCode).toBe(200);
+});
+
+```
+
+## Best Practices
+
+When writing Lambda functions with async/await, it's important to follow some key practices. Always specify return types explicitly to leverage TypeScript's type checking. Implement proper error handling with try/catch blocks, and ensure you're using appropriate TypeScript types for events and responses. Consider all possible error cases and handle them appropriately in your catch blocks.
+
+## Conclusion
+
+While callback-style Lambda functions continue to work, async/await offers a more modern and maintainable approach. The migration process is straightforward - simply update your handler signature and adjust the return statements. This small change brings immediate benefits in code readability and maintainability.
+
+If you're still using callbacks in your Lambda functions, consider updating them to use async/await.
+
+For more information, check out:
+- [Define Lambda function handler in Node.js - AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)
+- [async function - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
