@@ -6,9 +6,9 @@ import {TypographyH2} from "@/components/ui/typography";
 export const revalidate = 86400
 
 type Props = {
-    params: {
+    params: Promise<{
         tag: string
-    }
+    }>
 }
 
 export async function generateStaticParams() {
@@ -21,14 +21,15 @@ export async function generateStaticParams() {
     return Array.from(tags).map((tag) => ({tag}))
 }
 
-export function generateMetadata({params: {tag}}: Props) {
-
+export async function generateMetadata({params}: Props) {
+    const { tag } = await params;
     return {
         title: `Posts about ${tag}`
     }
 }
 
-export default async function TagPostList({params: {tag}}: Props) {
+export default async function TagPostList({params}: Props) {
+    const { tag } = await params;
     const posts = await getPostsMeta() //deduped!
 
     if (!posts) return <p className="mt-10 text-center">Sorry, no posts available.</p>

@@ -8,9 +8,9 @@ import {TypographyH1} from "@/components/ui/typography";
 export const revalidate = 86400
 
 type Props = {
-    params: {
+    params: Promise<{
         slug: string
-    }
+    }>
 }
 
 export async function generateStaticParams() {
@@ -24,8 +24,8 @@ export async function generateStaticParams() {
     }))
 }
 
-export async function generateMetadata({params: {slug}}: Props) {
-
+export async function generateMetadata({params}: Props) {
+    const { slug } = await params;
     const post = await getPostByName(`${slug}`) //deduped!
 
     if (!post) {
@@ -39,8 +39,8 @@ export async function generateMetadata({params: {slug}}: Props) {
     }
 }
 
-export default async function Post({params: {slug}}: Props) {
-
+export default async function Post({params}: Props) {
+    const { slug } = await params;
     const {prev, current, next} = await getPostWithNearestMeta(slug)
 
     if (!current) notFound()

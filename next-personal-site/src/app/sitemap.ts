@@ -1,6 +1,8 @@
 import {MetadataRoute} from 'next'
 import {getPostsMeta} from "@/lib/posts";
 
+export const dynamic = "force-static";
+
 const ChangeFrequency = {
     ALWAYS: 'always',
     HOURLY: 'hourly',
