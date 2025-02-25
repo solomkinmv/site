@@ -1,12 +1,13 @@
 import {compileMDX} from 'next-mdx-remote/rsc'
-import rehypeSlug from 'rehype-slug'
-import rehypeHighlight from 'rehype-highlight'
 import Video from "@/components/blog/Video";
 import CustomImage from "@/components/blog/CustomImage";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkGfm from 'remark-gfm'
 import path from "path";
 import {access, readFile} from "fs/promises";
 import fs from "fs";
+import rehypeHighlight from 'rehype-highlight'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import {BlogPost, Meta} from "@/lib/types";
 import {useMDXComponents} from "@/mdx-components";
 
@@ -40,9 +41,7 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
         options: {
             parseFrontmatter: true,
             mdxOptions: {
-                remarkPlugins: [
-                    // remarkGfm,
-                ],
+                remarkPlugins: [remarkGfm],
                 rehypePlugins: [
                     rehypeHighlight,
                     rehypeSlug,
@@ -88,7 +87,11 @@ export async function getPostsMeta(): Promise<Meta[] | undefined> {
     return posts.sort((a, b) => a.date < b.date ? 1 : -1)
 }
 
-export async function getPostWithNearestMeta(slug: string): Promise<{prev: Meta | null, current: BlogPost | null, next: Meta | null}> {
+export async function getPostWithNearestMeta(slug: string): Promise<{
+    prev: Meta | null,
+    current: BlogPost | null,
+    next: Meta | null
+}> {
     const postSlugs = fs.readdirSync(POSTS_FOLDER).map((filename) => {
         return filename.replace(".mdx", "");
     });
