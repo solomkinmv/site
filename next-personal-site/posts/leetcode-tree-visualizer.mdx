@@ -16,7 +16,7 @@ lacks tree visualizer support.
 Additionally, the visualizer restricts node displays to no more than three symbols and fails to handle large trees.
 An example input that demonstrates this limitation and results in a truncated display:
 
-```
+```json
 [3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null,3,1,4,null,null,2,6,7,8,null,9,10,11,12,null,null]
 ```
 
@@ -27,6 +27,7 @@ An example input that demonstrates this limitation and results in a truncated di
 And finally, analyzing difference between actual and expected answers can be challenging.
 
 ![LeetCode tree difference new UI](/images/leetcode-tree-visualizer/leetcode-diff-new.png)
+
 ![LeetCode tree difference old UI](/images/leetcode-tree-visualizer/leetcode-diff-old.png)
 
 ## My Solution
@@ -44,6 +45,7 @@ Nice things about it:
 * bigger trees support comparing to LeetCode native visualizer
 
 ![LeetCode Tree Visualizer diff](/images/leetcode-tree-visualizer/leetcode-tree-visualizer-diff.png)
+
 ![LeetCode Tree Visualizer large tree](/images/leetcode-tree-visualizer/leetcode-tree-visualizer-large-tree.png)
 
 Existing limitations:
