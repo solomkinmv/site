@@ -156,3 +156,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* format code blocks */
+@layer components {
+  pre[data-language][data-theme] {
+    overflow-x: auto;
+    padding-block: 1rem;
+    border-radius: 0.5rem;
+
+    [data-line] {
+      padding-inline: 1rem;
+    }
+  }
+}

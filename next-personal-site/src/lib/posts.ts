@@ -5,8 +5,9 @@ import remarkGfm from 'remark-gfm'
 import path from "path";
 import {access, readFile} from "fs/promises";
 import fs from "fs";
-import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
+import rehypeStringify from "rehype-stringify";
+import rehypePrettyCode from "rehype-pretty-code";
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import {BlogPost, Meta} from "@/lib/types";
 import {useMDXComponents} from "@/mdx-components";
@@ -41,9 +42,14 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
         options: {
             parseFrontmatter: true,
             mdxOptions: {
-                remarkPlugins: [remarkGfm],
+                remarkPlugins: [
+                    remarkGfm,
+                ],
                 rehypePlugins: [
-                    rehypeHighlight,
+                    rehypeStringify,
+                    [rehypePrettyCode, {
+                        theme: "catppuccin-frappe",
+                    }],
                     rehypeSlug,
                     [rehypeAutolinkHeadings, {
                         behavior: 'wrap'
