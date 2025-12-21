@@ -6,6 +6,7 @@ import {cn} from "@/lib/utils";
 import {Header} from "@/components/header";
 import {Footer} from "@/components/footer";
 import {GoogleAnalytics} from "@next/third-parties/google";
+import {ThemeProvider} from "@/components/theme-provider";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -23,16 +24,23 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
         <body className={cn(
             "flex flex-col min-h-screen bg-white dark:bg-gray-900 font-sans antialiased",
             fontSans.variable
         )}>
-        <Header/>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+        >
+            <Header/>
 
-        {children}
+            {children}
 
-        <Footer/>
+            <Footer/>
+        </ThemeProvider>
         <GoogleAnalytics gaId="G-4V433C415C"/>
         </body>
         </html>

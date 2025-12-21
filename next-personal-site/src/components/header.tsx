@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
-import {GithubIcon, MoonIcon, TwitterIcon} from "@/components/ui/icons";
-import {Toggle} from "@/components/ui/toggle";
+import {GithubIcon, TwitterIcon} from "@/components/ui/icons";
+import {ThemeToggle} from "@/components/ui/theme-toggle";
 
 export const Header = () => {
     return (
@@ -30,9 +30,7 @@ export const Header = () => {
                 <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://github.com/solomkinmv">
                     <GithubIcon className="h-5 w-5"/>
                 </Link>
-                {/*<Toggle aria-label="Toggle dark mode" variant="outline">*/}
-                {/*    <MoonIcon className="h-5 w-5"/>*/}
-                {/*</Toggle>*/}
+                <ThemeToggle />
             </div>
         </header>
     );
