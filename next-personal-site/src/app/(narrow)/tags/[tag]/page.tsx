@@ -47,9 +47,9 @@ export default async function TagPostList({params}: Props) {
 
     return (
         <>
-            <section className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
+            <section className="max-w-3xl mx-auto">
                 <TypographyH2>Results for: #{tag}</TypographyH2>
-                <ul className="w-full list-none p-0">
+                <ul className="w-full list-none p-0 mt-8 flex flex-col gap-6">
                     {tagPosts.map(post => (
                         <ListItem key={post.id} post={post}/>
                     ))}
