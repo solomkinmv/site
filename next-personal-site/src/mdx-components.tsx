@@ -3,24 +3,43 @@ import {
     TypographyH1,
     TypographyH2,
     TypographyH3,
-    TypographyH4, TypographyImage,
-    TypographyLink, TypographyList, TypographyListItem,
-    TypographyP
+    TypographyH4,
+    TypographyP,
+    TypographyBlockquote,
+    TypographyList,
+    TypographyOrderedList,
+    TypographyListItem,
+    TypographyImage,
+    TypographyLink,
+    TypographyInlineCode,
+    TypographyTable,
+    TypographyTableHead,
+    TypographyTableBody,
+    TypographyTableRow,
+    TypographyTableCell,
+    TypographyTableHeaderCell,
 } from "@/components/ui/typography";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
-    console.log("components", components);
     return {
-        // Allows customizing built-in components, e.g. to add styling.
         h1: TypographyH1,
         h2: TypographyH2,
         h3: TypographyH3,
         h4: TypographyH4,
         p: TypographyP,
+        blockquote: TypographyBlockquote,
         a: TypographyLink,
         ul: TypographyList,
+        ol: TypographyOrderedList,
         li: TypographyListItem,
         img: TypographyImage,
+        code: TypographyInlineCode,
+        table: TypographyTable,
+        thead: TypographyTableHead,
+        tbody: TypographyTableBody,
+        tr: TypographyTableRow,
+        td: TypographyTableCell,
+        th: TypographyTableHeaderCell,
         ...components,
     }
 }
