@@ -61,7 +61,6 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
     const id = fileName.replace(/\.mdx$/, '')
 
-
     const blogPostObj: BlogPost = {
         meta: {
             id,
@@ -73,7 +72,7 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
             description: frontmatter.description,
             image: frontmatter.image,
         },
-        content
+        content,
     }
     return blogPostObj
 }

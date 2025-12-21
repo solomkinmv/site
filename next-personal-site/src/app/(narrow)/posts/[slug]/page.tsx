@@ -4,6 +4,7 @@ import getFormattedDate from "@/lib/getFormattedDate";
 import Link from "next/link";
 import {Tag} from "@/components/ui/tag";
 import {TypographyH1} from "@/components/ui/typography";
+import {TableOfContents} from "@/components/blog/TableOfContents";
 
 export const revalidate = 86400
 
@@ -55,6 +56,7 @@ export default async function Post({params}: Props) {
 
     return (
         <>
+            <TableOfContents />
             <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
                 <div className="space-y-2 not-prose">
                     <TypographyH1>{meta.title}</TypographyH1>
@@ -80,8 +82,6 @@ export default async function Post({params}: Props) {
                       </Link>}
                 </div>
             </article>
-
-
         </>
     )
 }
