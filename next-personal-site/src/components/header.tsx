@@ -7,7 +7,7 @@ import {ThemeToggle} from "@/components/ui/theme-toggle";
 export const Header = () => {
     return (
         <header className="flex items-center justify-between p-6 border-b">
-            <Link className="flex items-center gap-2" href="#">
+            <Link className="flex items-center gap-2" href="/">
                 {/*<MountainIcon className="h-6 w-6"/>*/}
                 <Image src="/logo-192.png" alt="Icon" className="h-6 w-6" width={192} height={192} />
                 <span className="text-lg font-semibold">Maksym Solomkin</span>
