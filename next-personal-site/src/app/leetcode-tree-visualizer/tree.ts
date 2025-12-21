@@ -12,8 +12,17 @@ export class Visualizer {
     private readonly lineWidth: number = Visualizer.BASE_LINE_WIDTH * this.textScale;
 
     private ctx?: CanvasRenderingContext2D;
+    private foregroundColor: string;
+    private errorColor: string;
+    private successColor: string;
 
     constructor(private readonly c: HTMLCanvasElement) {
+        const styles = getComputedStyle(document.documentElement);
+        this.foregroundColor = `hsl(${styles.getPropertyValue('--foreground').trim()})`;
+        this.errorColor = `hsl(${styles.getPropertyValue('--destructive').trim()})`;
+        this.successColor = styles.getPropertyValue('--chart-2').trim()
+            ? `hsl(${styles.getPropertyValue('--chart-2').trim()})`
+            : "#22c55e";
     }
 
     resizeHeight(heightNodes: number) {
@@ -55,25 +64,28 @@ export class Visualizer {
 
         let totalWidth = actualTextWidth + expectedTextWidth;
 
+        this.ctx.fillStyle = this.foregroundColor;
+        this.ctx.strokeStyle = this.foregroundColor;
+
         if (node.valueActual === node.valueExpected) {
             this.ctx.fillText(node.valueActual!, x, y);
         } else if (!node.valueExpected) {
-            this.ctx.fillStyle = "red";
+            this.ctx.fillStyle = this.errorColor;
             this.ctx.fillText(node.valueActual!, x, y);
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = this.foregroundColor;
         } else if (!node.valueActual) {
-            this.ctx.fillStyle = "LimeGreen";
+            this.ctx.fillStyle = this.successColor;
             this.ctx.fillText(node.valueExpected, x, y);
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = this.foregroundColor;
         } else {
 
             const actualX = x - expectedTextWidth / 2 - Visualizer.BASE_PADDING;
             const expectedX = x + actualTextWidth / 2 + Visualizer.BASE_PADDING;
-            this.ctx.fillStyle = "red";
+            this.ctx.fillStyle = this.errorColor;
             this.ctx.fillText(node.valueActual, actualX, y);
-            this.ctx.fillStyle = "LimeGreen";
+            this.ctx.fillStyle = this.successColor;
             this.ctx.fillText(node.valueExpected, expectedX, y);
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = this.foregroundColor;
             totalWidth += 4;
         }
 

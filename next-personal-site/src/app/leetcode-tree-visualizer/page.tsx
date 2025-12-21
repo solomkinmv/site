@@ -1,6 +1,7 @@
 "use client";
 
 import {useEffect, useRef, useState} from "react";
+import {useTheme} from "next-themes";
 import {Tree, Visualizer} from "@/app/leetcode-tree-visualizer/tree";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
@@ -9,6 +10,12 @@ export default function Page() {
     const [inputActual, setInputActual] = useState("[1,2,3,null,5,null,4]");
     const [inputExpected, setInputExpected] = useState("");
     const canvas = useRef<HTMLCanvasElement | null>(null);
+    const {resolvedTheme} = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     function displayTree(inputChunksActual: string[] | undefined,
                          inputChunksExpected: string[] | undefined,
@@ -38,8 +45,9 @@ export default function Page() {
     }
 
     useEffect(() => {
+        if (!mounted) return;
         displayTree(parseInput(inputActual), parseInput(inputExpected), canvas.current!);
-    }, [inputActual, inputExpected]);
+    }, [inputActual, inputExpected, resolvedTheme, mounted]);
 
 
     return (
