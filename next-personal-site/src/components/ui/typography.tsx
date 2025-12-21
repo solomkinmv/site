@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import {ChevronRight} from "lucide-react";
 
 export function TypographyH1({children}: {children: React.ReactNode}) {
     return (
@@ -203,3 +204,18 @@ export function TypographyLink(props: {href?: string; children?: React.ReactNode
         </Link>
     )
 }
+
+export function Collapsible({summary, children}: {summary: string; children: React.ReactNode}) {
+    return (
+        <details className="group my-4 rounded-lg border bg-card">
+            <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 font-semibold transition-colors hover:bg-accent [&::-webkit-details-marker]:hidden">
+                <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+                {summary}
+            </summary>
+            <div className="px-4 pb-4">
+                {children}
+            </div>
+        </details>
+    );
+}
+

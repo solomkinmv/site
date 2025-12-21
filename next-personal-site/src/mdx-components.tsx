@@ -18,6 +18,7 @@ import {
     TypographyTableRow,
     TypographyTableCell,
     TypographyTableHeaderCell,
+    Collapsible,
 } from "@/components/ui/typography";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -40,6 +41,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         tr: TypographyTableRow,
         td: TypographyTableCell,
         th: TypographyTableHeaderCell,
+        Collapsible,
         ...components,
     }
 }
