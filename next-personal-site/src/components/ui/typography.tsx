@@ -61,9 +61,10 @@ export function TypographyList({children}: {children: React.ReactNode}) {
     )
 }
 
-export function TypographyOrderedList({children}: {children: React.ReactNode}) {
+export function TypographyOrderedList(props: React.ComponentPropsWithoutRef<'ol'>) {
+    const {children, ...rest} = props;
     return (
-        <ol className="mt-4 mb-6 ml-6 list-decimal list-outside [&>li]:mt-2">
+        <ol className="mt-4 mb-6 ml-6 list-decimal list-outside [&>li]:mt-2" {...rest}>
             {children}
         </ol>
     )
