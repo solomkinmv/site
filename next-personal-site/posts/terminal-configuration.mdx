@@ -1,0 +1,217 @@
+---
+title: "Terminal Setup for macOS: ZSH + Oh My Zsh"
+date: 2025-12-21
+draft: false
+tags: ["macos", "shell"]
+summary: "ZSH setup with syntax highlighting, autosuggestions, and fuzzy history search."
+description: "Step-by-step terminal configuration for macOS: Oh My Zsh, plugins, themes, aliases, and troubleshooting."
+image: https://user-images.githubusercontent.com/49100982/108254738-764b8700-716c-11eb-9a59-4deb8c8c6193.jpg
+---
+
+I spent way too much time tweaking my terminal setup over the years. This is what I ended up with: syntax highlighting that catches typos before I hit enter, autosuggestions that complete commands from my history as I type, and fuzzy search to dig up that docker command I ran three months ago. The whole setup takes about 10 minutes.
+
+![Terminal with Oh My Zsh and syntax highlighting](https://user-images.githubusercontent.com/49100982/108254738-764b8700-716c-11eb-9a59-4deb8c8c6193.jpg)
+
+## Quick Start
+
+1. Install [iTerm2](https://iterm2.com/) (optional but recommended)
+2. Install [Homebrew](https://brew.sh/) for package management
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+3. Install [fzf](https://github.com/junegunn/fzf) for fuzzy finding
+```sh
+brew install fzf
+```
+4. Install [Oh My Zsh](https://ohmyz.sh/)
+```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+5. Install [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+```sh
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+6. Install [zsh-autocomplete](https://github.com/marlonrichert/zsh-autocomplete)
+```sh
+git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+```
+7. Install [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
+```sh
+git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git \
+  ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+```
+8. Add plugins to `~/.zshrc` (see [Configuration](#configuration)) and reload:
+```sh
+source ~/.zshrc
+```
+
+## Key Components
+
+### Terminal Application
+
+Terminal.app works, but lacks split panes and GPU acceleration. I use iTerm2, but there are other options depending on what you need:
+
+- **[iTerm2](https://github.com/gnachman/iTerm2)**: Split panes, search, extensive customization. What most Mac developers use.
+- **[Ghostty](https://github.com/ghostty-org/ghostty)**: Released late 2024, GPU-accelerated, very fast startup. New terminal, still lacks some features like ligatures.
+- **[Kitty](https://github.com/kovidgoyal/kitty)**: GPU-accelerated, highly configurable via `kitty.conf`. Steeper learning curve.
+- **[Alacritty](https://github.com/alacritty/alacritty)**: Minimal and fast. No tabs or splits - pair with tmux.
+
+### Shell Framework: Oh My Zsh
+
+[Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) handles plugin loading and provides ~300 plugins out of the box. Instead of writing shell scripts, you add plugin names to an array in `~/.zshrc`.
+
+If startup feels slow, [zinit](https://github.com/zdharma-continuum/zinit) or [antidote](https://github.com/mattmc3/antidote) offer lazy loading for faster shell init.
+
+### Autocompletion Plugins
+
+These two plugins do different things, and I use both:
+
+- **[zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)**: Shows gray text at your cursor with a suggestion from your history. Press right arrow to accept.
+- **[zsh-autocomplete](https://github.com/marlonrichert/zsh-autocomplete)**: Shows a dropdown menu below your prompt with possible completions. Navigate with arrows, press Tab to select.
+
+You can use one or both depending on preference. I like having both since they complement each other.
+
+- **[fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)**: Highlights commands as you type. Valid commands turn green, typos turn red.
+
+### History Search
+
+Use `Ctrl+R` to trigger history search. With fzf installed and enabled through Oh My Zsh, you get a fuzzy finder for your command history that's much more powerful than the default search.
+
+![fzf history search in action](https://armno.in.th/images/fzf-history/h-in-action.png)
+
+### Themes
+
+Themes control how your prompt looks but don't affect behavior. Oh My Zsh includes [many built-in themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes) configured via the `ZSH_THEME` variable in `~/.zshrc`:
+
+```sh
+ZSH_THEME="robbyrussell"  # minimal, fast
+# ZSH_THEME="agnoster"    # shows git branch, needs Nerd Fonts
+```
+
+Some themes (like `agnoster`, `powerlevel10k`) require special fonts to display icons and symbols correctly. Install [Nerd Fonts](https://www.nerdfonts.com/) to get these working:
+
+```sh
+brew install --cask font-meslo-lg-nerd-font
+```
+
+Then set the font in your terminal app settings. If you see broken characters or squares in your prompt, you likely need to install and configure a Nerd Font.
+
+For a cross-shell alternative, check out [Starship](https://github.com/starship/starship), a fast, customizable prompt that works across different shells.
+
+![Starship demo](https://raw.githubusercontent.com/starship/starship/master/media/demo.gif)
+
+## Configuration
+
+Here's a recommended Oh My Zsh plugins configuration for `~/.zshrc`:
+
+```sh
+plugins=(
+    git                      # aliases: gst, gco, gp, gcmsg, etc.
+    macos                    # ofd (open Finder), pfd (print Finder dir)
+    zsh-autosuggestions      # gray text suggestions from history
+    zsh-autocomplete         # dropdown completion menu
+    fzf                      # fuzzy finder integration
+    sudo                     # press Esc twice to add sudo
+    colored-man-pages        # syntax highlighting in man pages
+    history-substring-search # must be after zsh-autosuggestions
+    fast-syntax-highlighting # must be last
+    # Optional:
+    # aws docker npm
+)
+```
+
+**Performance tip:** Each plugin adds to your shell startup time. Only include plugins you actually use. If shell init feels slow, try removing some plugins.
+
+### Extending PATH
+
+To add directories to your PATH:
+
+```sh
+export PATH=$PATH:/path/to/your/bin
+```
+
+### Aliases and Functions
+
+Shortcuts for frequently used commands. Add to your `~/.zshrc`:
+
+```sh
+# Create directory and cd into it
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Quick navigation
+alias ..="cd .."
+alias ...="cd ../.."
+
+# List files with details
+alias ll="ls -la"
+
+# Confirm before overwriting
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+
+# Git shortcuts
+alias gst="git status"
+alias gp="git pull"
+alias gc="git commit"
+```
+
+## Optional: Terminal Multiplexers
+
+Use tmux or Zellij if you want session management and window splitting:
+
+- **[tmux](https://github.com/tmux/tmux)**: The classic choice. Powerful and widely used.
+- **[Zellij](https://github.com/zellij-org/zellij)**: Modern alternative to tmux with a more user-friendly interface.
+
+Both let you split screens, manage workspaces, and keep sessions running after disconnection (useful for SSH - reconnect and your session is still there).
+
+## Troubleshooting
+
+### Slow shell startup
+
+Too many plugins or a heavy theme can slow things down. Measure shell init time with:
+
+```sh
+time zsh -i -c exit
+```
+
+Anything under 0.5s is fine. If it's slower, remove unused plugins or switch to a lighter theme like `robbyrussell`.
+
+### Plugins not loading
+
+Check that the plugin exists in `~/.oh-my-zsh/custom/plugins/` and is spelled correctly in the plugins array.
+
+### Autosuggestions not showing
+
+Verify `zsh-autosuggestions` is in your plugins array. Some terminal color schemes make suggestions invisible. Try a different terminal or theme.
+
+### Broken prompt or weird characters
+
+Your theme likely requires Nerd Fonts. See [Themes section](#themes) for installation. Or switch to a simpler theme like `robbyrussell`.
+
+### Command not found after PATH change
+
+Changes to `~/.zshrc` require reloading. Run `source ~/.zshrc` or restart your terminal.
+
+## Quick Reference: Keyboard Shortcuts
+
+These work in ZSH and most other shells:
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+A` | Move to beginning of line |
+| `Ctrl+E` | Move to end of line |
+| `Ctrl+U` | Clear entire line |
+| `Ctrl+W` | Delete word before cursor |
+| `Ctrl+R` | Search command history |
+| `Ctrl+L` | Clear screen (keeps scrollback) |
+| `Cmd+K` | Clear screen and scrollback (iTerm2) |
+| `Tab` | Autocomplete |
+
+## Further Reading
+
+- [Oh My Zsh Plugins List](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)
+- [Oh My Zsh Themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)
+- [Homebrew](https://brew.sh/)
