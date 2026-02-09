@@ -32,6 +32,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: ChangeFrequency.WEEKLY,
             priority: 0.9,
+        },
+        {
+            url: 'https://solomk.in/apps/medical-codes',
+            lastModified: new Date(),
+            changeFrequency: ChangeFrequency.MONTHLY,
+            priority: 0.8,
         }
     ];
 
