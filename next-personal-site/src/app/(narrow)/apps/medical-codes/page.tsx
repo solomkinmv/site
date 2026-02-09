@@ -30,6 +30,40 @@ export default function MedichniKodiPage() {
                 </p>
             </section>
 
+            {/* Screenshots */}
+            <section className="py-8 border-t border-gray-200 dark:border-gray-700">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <Image
+                        src="/images/apps/medical-codes/achi-main.png"
+                        alt="Огляд класів АКМІ"
+                        width={300}
+                        height={650}
+                        className="rounded-xl shadow-md"
+                    />
+                    <Image
+                        src="/images/apps/medical-codes/idc-10-main.png"
+                        alt="Огляд класів МКХ-10"
+                        width={300}
+                        height={650}
+                        className="rounded-xl shadow-md"
+                    />
+                    <Image
+                        src="/images/apps/medical-codes/achi-single.png"
+                        alt="Деталі коду процедури"
+                        width={300}
+                        height={650}
+                        className="rounded-xl shadow-md"
+                    />
+                    <Image
+                        src="/images/apps/medical-codes/achi-bookmarks.png"
+                        alt="Збережені коди"
+                        width={300}
+                        height={650}
+                        className="rounded-xl shadow-md"
+                    />
+                </div>
+            </section>
+
             {/* Features */}
             <section className="py-8 border-t border-gray-200 dark:border-gray-700">
                 <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
