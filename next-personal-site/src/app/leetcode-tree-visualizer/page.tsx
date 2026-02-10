@@ -52,6 +52,8 @@ export default function Page() {
 
     return (
         <main className="flex-1 p-6 md:p-10 flex flex-col items-center">
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">LeetCode Tree Visualizer</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 text-center max-w-2xl">Visualize and compare binary trees from LeetCode problems. Supports large trees, long node text, and diff visualization between actual and expected answers.</p>
             <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="input-actual">Actual tree</Label>
                 <Input type="text"

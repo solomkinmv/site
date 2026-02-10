@@ -35,8 +35,25 @@ export async function generateMetadata({params}: Props) {
         }
     }
 
+    const description = post.meta.description ?? post.meta.summary;
+
     return {
         title: post.meta.title,
+        description,
+        openGraph: {
+            type: 'article',
+            title: post.meta.title,
+            description,
+            url: `/posts/${slug}`,
+            images: post.meta.image ? [{ url: post.meta.image }] : [],
+            publishedTime: post.meta.date,
+            tags: post.meta.tags,
+        },
+        twitter: {
+            title: post.meta.title,
+            description,
+            images: post.meta.image ? [post.meta.image] : [],
+        },
     }
 }
 

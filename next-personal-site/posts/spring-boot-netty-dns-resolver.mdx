@@ -1,5 +1,5 @@
 ---
-title: "DnsNameResolverTimeoutException in Spring Boot WebFlux"
+title: "Fixing DnsNameResolverTimeoutException in Spring Boot"
 date: 2024-06-17
 draft: false
 tags: ["spring-boot"]
@@ -9,9 +9,9 @@ description: "Fix DnsNameResolverTimeoutException errors in Spring Boot WebFlux 
 
 A few weeks ago, I started noticing errors during the [Polidict](https://polidict.com) authentication flow. The application was throwing a `DnsNameResolverTimeoutException` when making network requests. The error messages appeared as follows:
 
-> io.netty.resolver.dns.DnsNameResolverTimeoutException: [10812: /[fdaa:0:0:0:0:0:0:3]:53] DefaultDnsQuestion(www.googleapis.com. IN AAAA) query '10812' via UDP timed out after 5000 milliseconds (no stack trace available)
+> io.netty.resolver.dns.DnsNameResolverTimeoutException: [10812: /[fdaa:0:0:0:0:0:0:3]:53] DefaultDnsQuestion(`www.googleapis.com`. IN AAAA) query '10812' via UDP timed out after 5000 milliseconds (no stack trace available)
 
-> Caused by: java.net.UnknownHostException: Failed to resolve 'www.googleapis.com' [A(1), AAAA(28)] after 2 queries
+> Caused by: java.net.UnknownHostException: Failed to resolve '`www.googleapis.com`' [A(1), AAAA(28)] after 2 queries
 
 ## Problem
 
