@@ -15,8 +15,8 @@ export default function MedichniKodiPage() {
             {/* Hero */}
             <section className="flex flex-col items-center text-center py-8">
                 <Image
-                    src="/images/apps/medical-codes/icon.png"
-                    alt=""
+                    src="/images/apps/medical-codes/icon.webp"
+                    alt="Medical Codes app icon"
                     width={128}
                     height={128}
                     className="rounded-[28px] shadow-lg"
@@ -34,28 +34,28 @@ export default function MedichniKodiPage() {
             <section className="py-8 border-t border-gray-200 dark:border-gray-700">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <Image
-                        src="/images/apps/medical-codes/achi-main.png"
+                        src="/images/apps/medical-codes/achi-main.webp"
                         alt="Огляд класів АКМІ"
                         width={300}
                         height={650}
                         className="rounded-xl shadow-md"
                     />
                     <Image
-                        src="/images/apps/medical-codes/idc-10-main.png"
+                        src="/images/apps/medical-codes/idc-10-main.webp"
                         alt="Огляд класів МКХ-10"
                         width={300}
                         height={650}
                         className="rounded-xl shadow-md"
                     />
                     <Image
-                        src="/images/apps/medical-codes/achi-single.png"
+                        src="/images/apps/medical-codes/achi-single.webp"
                         alt="Деталі коду процедури"
                         width={300}
                         height={650}
                         className="rounded-xl shadow-md"
                     />
                     <Image
-                        src="/images/apps/medical-codes/achi-bookmarks.png"
+                        src="/images/apps/medical-codes/achi-bookmarks.webp"
                         alt="Збережені коди"
                         width={300}
                         height={650}

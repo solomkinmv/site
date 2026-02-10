@@ -1,7 +1,7 @@
 import {getPostsMeta} from "@/lib/posts"
 import Link from "next/link"
 import ListItem from "@/components/blog/ListItem";
-import {TypographyH2} from "@/components/ui/typography";
+import {TypographyH1} from "@/components/ui/typography";
 
 export const revalidate = 86400
 
@@ -24,7 +24,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({params}: Props) {
     const { tag } = await params;
     return {
-        title: `Posts about ${tag}`
+        title: `Posts about ${tag}`,
+        description: `Browse blog posts tagged with "${tag}" covering software engineering topics and tutorials.`,
+        openGraph: {
+            title: `Posts about ${tag}`,
+            description: `Browse blog posts tagged with "${tag}" covering software engineering topics and tutorials.`,
+        },
     }
 }
 
@@ -40,7 +45,7 @@ export default async function TagPostList({params}: Props) {
         return (
             <div className="text-center">
                 <p className="mt-10">Sorry, no posts for that keyword.</p>
-                <Link href="/next-personal-site/public">Back to Home</Link>
+                <Link href="/">Back to Home</Link>
             </div>
         )
     }
@@ -48,7 +53,7 @@ export default async function TagPostList({params}: Props) {
     return (
         <>
             <section className="max-w-3xl mx-auto">
-                <TypographyH2>Results for: #{tag}</TypographyH2>
+                <TypographyH1>Results for: #{tag}</TypographyH1>
                 <ul className="w-full list-none p-0 mt-8 flex flex-col gap-6">
                     {tagPosts.map(post => (
                         <ListItem key={post.id} post={post}/>

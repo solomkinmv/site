@@ -14,8 +14,18 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
+    metadataBase: new URL('https://solomk.in'),
     title: "Maksym Solomkin",
-    description: "Personal website of Maksym Solomkin",
+    description: "Software engineering blog by Maksym Solomkin covering Spring Boot, AWS, TypeScript, React, and developer productivity",
+    openGraph: {
+        type: 'website',
+        locale: 'en_US',
+        siteName: 'Maksym Solomkin',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        creator: '@solomkinmv',
+    },
 };
 
 export default function RootLayout({
