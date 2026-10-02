@@ -1,6 +1,7 @@
 'use client';
 
 import {useEffect, useState, useCallback, useRef} from 'react';
+import {usePathname} from 'next/navigation';
 import {cn} from '@/lib/utils';
 
 interface Heading {
@@ -15,16 +16,17 @@ const SCROLL_OFFSET = 128; // Matches top-32 (8rem = 128px)
 function getHeadingElements(article: HTMLElement): HTMLHeadingElement[] {
     const elements = Array.from(article.querySelectorAll(HEADING_SELECTOR));
     return elements.filter((el): el is HTMLHeadingElement =>
-        el instanceof HTMLHeadingElement
+        el instanceof HTMLHeadingElement && !!el.textContent?.trim()
     );
 }
 
 function generateHeadingId(text: string, index: number): string {
     const slug = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-    return slug || `heading-${index}`;
+    return `${slug || 'heading'}-${index}`;
 }
 
 export function TableOfContents() {
+    const pathname = usePathname();
     const [headings, setHeadings] = useState<Heading[]>([]);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const headingElementsRef = useRef<HTMLHeadingElement[]>([]);
@@ -38,25 +40,26 @@ export function TableOfContents() {
         headingElementsRef.current = elements;
 
         const items: Heading[] = elements
-            .map((el, index) => ({
-                id: el.id || generateHeadingId(el.textContent?.trim() ?? '', index),
-                text: el.textContent?.trim() ?? '',
-                level: el.tagName === 'H2' ? 2 : 3,
-            }))
-            .filter((h): h is Heading => h.text !== '');
+            .map((el, index) => {
+                el.id ||= generateHeadingId(el.textContent?.trim() ?? '', index);
+                return {
+                    id: el.id,
+                    text: el.textContent?.trim() ?? '',
+                    level: el.tagName === 'H2' ? 2 : 3,
+                };
+            });
 
         setHeadings(items);
-    }, []);
+        setActiveIndex(0);
+    }, [pathname]);
 
     const updateActiveHeading = useCallback(() => {
         const elements = headingElementsRef.current;
         if (elements.length === 0) return;
 
-        const scrollY = window.scrollY;
-
         let currentIndex = 0;
         for (let i = 0; i < elements.length; i++) {
-            if (elements[i].offsetTop <= scrollY + SCROLL_OFFSET) {
+            if (elements[i].getBoundingClientRect().top <= SCROLL_OFFSET) {
                 currentIndex = i;
             }
         }
@@ -82,17 +85,10 @@ export function TableOfContents() {
             window.removeEventListener('scroll', throttledUpdate);
             if (rafIdRef.current !== null) {
                 cancelAnimationFrame(rafIdRef.current);
+                rafIdRef.current = null;
             }
         };
     }, [headings.length, updateActiveHeading]);
-
-    const handleClick = (index: number) => {
-        const elements = headingElementsRef.current;
-        if (elements[index]) {
-            elements[index].scrollIntoView({behavior: 'smooth'});
-            setActiveIndex(index);
-        }
-    };
 
     if (headings.length === 0) {
         return null;
@@ -107,19 +103,19 @@ export function TableOfContents() {
             <ul className="space-y-2 text-sm" role="list">
                 {headings.map(({id, text, level}, index) => (
                     <li key={id}>
-                        <button
-                            type="button"
+                        <a
+                            href={`#${id}`}
                             className={cn(
                                 'block w-full text-left text-muted-foreground hover:text-foreground transition-colors',
                                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
                                 level === 3 && 'pl-4',
                                 activeIndex === index && 'text-foreground font-medium'
                             )}
-                            onClick={() => handleClick(index)}
+                            onClick={() => setActiveIndex(index)}
                             aria-current={activeIndex === index ? 'location' : undefined}
                         >
                             {text}
-                        </button>
+                        </a>
                     </li>
                 ))}
             </ul>

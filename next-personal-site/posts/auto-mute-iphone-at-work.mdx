@@ -5,7 +5,7 @@ draft: false
 tags: ["ios", "apple-shortcuts", "productivity", "automation"]
 summary: "Automate iPhone muting at work using Apple Shortcuts and Focus mode, with automatic volume restoration when leaving."
 description: "Learn how to automatically mute your iPhone when arriving at work and restore volume when leaving using Apple Shortcuts, Focus mode, and automation."
-image: /images/auto-mute-iphone-at-work/apple-shortcuts.jpg
+image: /images/auto-mute-iphone-at-work/apple-shortcuts.webp
 ---
 
 I always feel nervous at work that I may forget to mute my iPhone, leave it on the table and leave to get some
@@ -13,7 +13,7 @@ coffee. During this time, my phone may ring and disturb my colleagues. I don't w
 ringtone. I also don't want to miss any important calls after the work. So I decided to automate it using
 Apple Shortcuts.
 
-![Apple Shortcuts](/images/auto-mute-iphone-at-work/apple-shortcuts.jpg)
+![Apple Shortcuts](/images/auto-mute-iphone-at-work/apple-shortcuts.webp)
 
 I've created a shortcut that saves current volume to file in iCloud, then automatically mutes my iPhone when I arrive
 at work. Then I've created another shortcut that unmutes it when I leave and restores previous volume level.
@@ -23,12 +23,13 @@ Here's how I did it.
 ## Store Volume And Mute Shortcut
 
 <figure className="not-prose flex flex-col items-center justify-center">
-  <img
+  <Image
     src="/images/auto-mute-iphone-at-work/store-volume-and-mute-shortcut.webp"
     alt="Store volume and mute shortcut"
     className="rounded-lg object-contain mx-auto"
     width="300"
-  />
+    height="726"
+    loading="lazy" />
   <figcaption className="text-center mt-2">Store volume and mute shortcut</figcaption>
 </figure>
 
@@ -49,12 +50,13 @@ This shortcut essentially saves the current volume level and mutes the device if
 ## Restore Volume Shortcut
 
 <figure className="not-prose flex flex-col items-center justify-center">
-  <img
+  <Image
     src="/images/auto-mute-iphone-at-work/restore-volume-shortcut.webp"
     alt="Restore volume shortcut"
     className="rounded-lg object-contain mx-auto"
     width="300"
-  />
+    height="593"
+    loading="lazy" />
   <figcaption className="text-center">Restore volume shortcut</figcaption>
 </figure>
 
@@ -81,19 +83,21 @@ To trigger the shortcuts, I used the Automation feature in Shortcuts. I created 
 mode is turned on and another when it is turned off. The automations run the respective shortcuts when triggered.
 
 <figure className="not-prose flex flex-col items-center justify-center">
-  <div className="flex space-x-4">
-    <img
-      src="/images/auto-mute-iphone-at-work/focus-mode-automation.jpeg"
+  <div className="grid grid-cols-2 gap-4 min-w-0">
+    <Image
+      src="/images/auto-mute-iphone-at-work/focus-mode-automation.webp"
       alt="Focus mode automation overview"
       className="rounded-lg object-contain mx-auto mt-0 mb-0"
       width="300"
-    />
-    <img
-      src="/images/auto-mute-iphone-at-work/focus-mode-automation-details.jpeg"
+      height="594"
+      loading="lazy" />
+    <Image
+      src="/images/auto-mute-iphone-at-work/focus-mode-automation-details.webp"
       alt="Focus mode automation details"
       className="rounded-lg object-contain mx-auto mt-0 mb-0"
       width="300"
-    />
+      height="595"
+      loading="lazy" />
   </div>
   <figcaption className="text-center">Focus mode automation</figcaption>
 </figure>

@@ -8,8 +8,8 @@ import {Home, FileText, TreeDeciduous} from "lucide-react";
 export const Header = () => {
     return (
         <header className="flex items-center justify-between p-4 md:p-6 border-b">
-            <Link className="flex items-center gap-2" href="/">
-                <Image src="/logo-192.png" alt="Icon" className="h-6 w-6" width={192} height={192} />
+            <Link className="flex items-center gap-2" href="/" aria-label="Maksym Solomkin home">
+                <Image src="/logo-192.png" alt="" className="h-6 w-6" width={192} height={192} />
                 <span className="hidden md:inline text-lg font-semibold">Maksym Solomkin</span>
             </Link>
             <nav className="flex gap-2 md:gap-4">

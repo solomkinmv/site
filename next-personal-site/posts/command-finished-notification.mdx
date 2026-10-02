@@ -5,7 +5,7 @@ draft: false
 tags: ["macos", "shell"]
 summary: "A simple bash script to get notified when long-running terminal commands finish with a persistent macOS dialog box."
 description: "Create a bash script to display persistent macOS notifications when terminal commands complete, avoiding the frustration of forgotten long-running tasks."
-image: /images/command-finished-notification/alert-screenshot.png
+image: /images/command-finished-notification/alert-screenshot.webp
 ---
 
 Recently I've been executing a lot of long-running commands in the terminal. The biggest problem I've had is that I'll 
@@ -49,7 +49,7 @@ $ alert python3 parse-data.py
 
 The script will execute the command and then send a notification when the command finishes. The notification will look like this:
 
-![Alert example](/images/command-finished-notification/alert-screenshot.png)
+![Alert example](/images/command-finished-notification/alert-screenshot.webp)
 
 ## An alternative approach
 
@@ -58,7 +58,7 @@ If you don't want to have that intrusive dialog box, you can display standard no
 But be aware that notifications will hide automatically after a few seconds. So, if you're not paying attention or 
 you're in Do Not Disturb Mode, you may miss the notification.
 
-![Alert example](/images/command-finished-notification/notification-screenshot.png)
+![Alert example](/images/command-finished-notification/notification-screenshot.webp)
 
 
 ```bash

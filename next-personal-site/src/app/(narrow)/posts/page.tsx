@@ -7,8 +7,10 @@ import type {Metadata} from "next";
 
 export const metadata: Metadata = {
     title: "All Posts",
+    alternates: {canonical: '/posts'},
     description: "Browse all blog posts about software engineering, Spring Boot, AWS, TypeScript, React, and developer productivity.",
     openGraph: {
+        images: ['/opengraph-image.png'],
         title: "All Posts",
         description: "Browse all blog posts about software engineering, Spring Boot, AWS, TypeScript, React, and developer productivity.",
     },

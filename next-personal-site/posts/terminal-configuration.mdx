@@ -5,12 +5,12 @@ draft: false
 tags: ["macos", "shell"]
 summary: "ZSH setup with syntax highlighting, autosuggestions, and fuzzy history search."
 description: "Step-by-step terminal configuration for macOS: Oh My Zsh, plugins, themes, aliases, and troubleshooting."
-image: https://user-images.githubusercontent.com/49100982/108254738-764b8700-716c-11eb-9a59-4deb8c8c6193.jpg
+image: /images/terminal-configuration/terminal.webp
 ---
 
 I spent way too much time tweaking my terminal setup over the years. This is what I ended up with: syntax highlighting that catches typos before I hit enter, autosuggestions that complete commands from my history as I type, and fuzzy search to dig up that docker command I ran three months ago. The whole setup takes about 10 minutes.
 
-![Terminal with Oh My Zsh and syntax highlighting](https://user-images.githubusercontent.com/49100982/108254738-764b8700-716c-11eb-9a59-4deb8c8c6193.jpg)
+![Terminal with Oh My Zsh and syntax highlighting](/images/terminal-configuration/terminal.webp)
 
 ## Quick Start
 
@@ -77,7 +77,7 @@ You can use one or both depending on preference. I like having both since they c
 
 Use `Ctrl+R` to trigger history search. With fzf installed and enabled through Oh My Zsh, you get a fuzzy finder for your command history that's much more powerful than the default search.
 
-![fzf history search in action](https://armno.in.th/images/fzf-history/h-in-action.png)
+![fzf history search in action](/images/terminal-configuration/fzf-history.webp)
 
 ### Themes
 
@@ -98,7 +98,7 @@ Then set the font in your terminal app settings. If you see broken characters or
 
 For a cross-shell alternative, check out [Starship](https://github.com/starship/starship), a fast, customizable prompt that works across different shells.
 
-![Starship demo](https://raw.githubusercontent.com/starship/starship/master/media/demo.gif)
+<video src="/images/terminal-configuration/starship-demo.mp4" poster="/images/terminal-configuration/starship-demo.webp" width="960" height="602" controls playsInline preload="none" aria-label="Starship prompt demo" className="h-auto max-w-full rounded-lg" />
 
 ## Configuration
 

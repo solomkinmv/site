@@ -1,34 +1,36 @@
 import React from "react";
 import Link from "next/link";
 import {ChevronRight} from "lucide-react";
+import Image from 'next/image';
+import {imageSize} from '@/lib/images';
 
-export function TypographyH1({children}: {children: React.ReactNode}) {
+export function TypographyH1({children, ...props}: React.ComponentPropsWithoutRef<'h1'>) {
     return (
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl" {...props}>
             {children}
         </h1>
     )
 }
 
-export function TypographyH2({children}: {children: React.ReactNode}) {
+export function TypographyH2({children, ...props}: React.ComponentPropsWithoutRef<'h2'>) {
     return (
-        <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0" {...props}>
             {children}
         </h2>
     )
 }
 
-export function TypographyH3({children}: {children: React.ReactNode}) {
+export function TypographyH3({children, ...props}: React.ComponentPropsWithoutRef<'h3'>) {
     return (
-        <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
+        <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight" {...props}>
             {children}
         </h3>
     )
 }
 
-export function TypographyH4({children}: {children: React.ReactNode}) {
+export function TypographyH4({children, ...props}: React.ComponentPropsWithoutRef<'h4'>) {
     return (
-        <h4 className="mt-6 scroll-m-20 text-xl font-semibold tracking-tight">
+        <h4 className="mt-6 scroll-m-20 text-xl font-semibold tracking-tight" {...props}>
             {children}
         </h4>
     )
@@ -157,32 +159,31 @@ export function TypographyTableRow({children}: {children: React.ReactNode}) {
     )
 }
 
-export function TypographyTableCell({children}: {children: React.ReactNode}) {
+export function TypographyTableCell({children, ...props}: React.ComponentPropsWithoutRef<'td'>) {
     return (
-        <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+        <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right" {...props}>
             {children}
         </td>
     )
 }
 
-export function TypographyTableHeaderCell({children}: {children: React.ReactNode}) {
+export function TypographyTableHeaderCell({children, ...props}: React.ComponentPropsWithoutRef<'th'>) {
     return (
-        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right" {...props}>
             {children}
         </th>
     )
 }
 
-export function TypographyImage(props: {alt?: string; src?: string}) {
+export async function TypographyImage(props: {alt?: string; src?: string}) {
     const {alt, src} = props;
+    if (!src) return null;
+    const {width, height} = await imageSize(src);
+    const image = <Image alt={alt ?? ''} src={src} width={width} height={height}
+                         loading="lazy" className="h-auto max-w-full rounded-lg object-contain" />;
     return (
         <figure className="flex flex-col items-center lg:-mx-12 xl:-mx-20">
-            <img
-                alt={alt}
-                className="overflow-hidden rounded-lg object-cover"
-                src={src}
-                style={{objectFit: 'contain'}}
-            />
+            {image}
             {alt && <figcaption className="mt-2 text-center text-sm text-muted-foreground">{alt}</figcaption>}
         </figure>
     );
@@ -219,4 +220,3 @@ export function Collapsible({summary, children}: {summary: string; children: Rea
         </details>
     );
 }
-

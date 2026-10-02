@@ -36,23 +36,25 @@ export async function generateMetadata({params}: Props) {
     }
 
     const description = post.meta.description ?? post.meta.summary;
+    const image = post.meta.image ?? '/opengraph-image.png';
 
     return {
         title: post.meta.title,
         description,
+        alternates: {canonical: `/posts/${encodeURIComponent(slug)}`},
         openGraph: {
             type: 'article',
             title: post.meta.title,
             description,
             url: `/posts/${slug}`,
-            images: post.meta.image ? [{ url: post.meta.image }] : [],
+            images: [{ url: image }],
             publishedTime: post.meta.date,
             tags: post.meta.tags,
         },
         twitter: {
             title: post.meta.title,
             description,
-            images: post.meta.image ? [post.meta.image] : [],
+            images: [image],
         },
     }
 }
@@ -83,18 +85,18 @@ export default async function Post({params}: Props) {
                 {content}
 
                 <section>
-                    <div className="flex flex-row gap-4 mt-8">
+                    <div className="flex flex-wrap gap-4 mt-8">
                         {tags}
                     </div>
                 </section>
 
-                <div className="flex justify-between mt-8">
+                <div className="grid grid-cols-2 gap-4 mt-8">
                     {prev &&
-                      <Link className="text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${prev?.id}`}>
+                      <Link className="min-w-0 break-words text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${prev?.id}`}>
                         ←&nbsp;{prev.title}
                       </Link>}
                     {next &&
-                      <Link className="text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${next?.id}`}>
+                      <Link className="col-start-2 min-w-0 break-words text-right text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${next?.id}`}>
                           {next.title}&nbsp;→
                       </Link>}
                 </div>

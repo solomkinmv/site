@@ -1,4 +1,5 @@
 import type {MDXComponents} from 'mdx/types'
+import Image from 'next/image'
 import {
     TypographyH1,
     TypographyH2,
@@ -23,6 +24,7 @@ import {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
+        Image,
         h1: TypographyH1,
         h2: TypographyH2,
         h3: TypographyH3,

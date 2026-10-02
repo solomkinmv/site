@@ -15,9 +15,9 @@ export default function ListItem({post}: Props) {
     return (
         <li className="list-none">
             <Card className="p-4">
-                <div className="flex gap-4">
-                    <div className="flex-1">
-                        <h3 className="text-xl font-semibold tracking-tight">
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1 min-w-0">
+                        <h3 className="text-xl font-semibold tracking-tight break-words">
                             <Link href={`/posts/${id}`} className="hover:underline">
                                 {title}
                             </Link>

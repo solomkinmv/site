@@ -25,8 +25,10 @@ export async function generateMetadata({params}: Props) {
     const { tag } = await params;
     return {
         title: `Posts about ${tag}`,
+        alternates: {canonical: `/tags/${encodeURIComponent(tag)}`},
         description: `Browse blog posts tagged with "${tag}" covering software engineering topics and tutorials.`,
         openGraph: {
+            images: ['/opengraph-image.png'],
             title: `Posts about ${tag}`,
             description: `Browse blog posts tagged with "${tag}" covering software engineering topics and tutorials.`,
         },

@@ -17,6 +17,8 @@ export const metadata: Metadata = {
     metadataBase: new URL('https://solomk.in'),
     title: "Maksym Solomkin",
     description: "Software engineering blog by Maksym Solomkin covering Spring Boot, AWS, TypeScript, React, and developer productivity",
+    icons: { icon: '/logo-192.png', apple: '/logo-192.png' },
+    alternates: {canonical: '/'},
     openGraph: {
         type: 'website',
         locale: 'en_US',
@@ -25,6 +27,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         creator: '@solomkinmv',
+        images: ['/opengraph-image.png'],
     },
 };
 
@@ -45,6 +48,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded focus:bg-background focus:p-4 focus:text-foreground">Skip to content</a>
             <Header/>
 
             {children}

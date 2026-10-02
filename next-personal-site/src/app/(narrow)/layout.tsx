@@ -6,7 +6,7 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <main className="flex-1 p-6 md:p-10">
+        <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 break-words p-6 md:p-10">
             {children}
         </main>
     )

@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Maksym Solomkin's website
 
-## Getting Started
+Next.js App Router site with MDX posts, a LeetCode tree visualizer, and a Medical Codes app page. GitHub Pages hosts the static export at [solomk.in](https://solomk.in).
 
-First, run the development server:
+Use Node.js 24.11 or newer. Run commands from `next-personal-site`:
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Development runs at http://localhost:3000. Before shipping:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run lint
+npm test
+npm run build
+npm run check:export
+npm audit
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+`npm run build` checks TypeScript and writes the deployable site to `out/`. `check:export` checks local links, assets, heading anchors, image dimensions, canonical and sharing metadata, the sitemap, and manifest icons across every exported page. Preview the export with a static file server, for example `npx serve out`. This project uses `output: "export"`; a Next.js production server is unnecessary.
 
-## Learn More
+Posts live in `posts/*.mdx`. Set `draft: true` to exclude a post from the public listing, export, and sitemap. Shared MDX components are in `src/mdx-components.tsx`.
 
-To learn more about Next.js, take a look at the following resources:
+Store article images under `public/images`; Markdown images get measured dimensions at build time. Prefer WebP and native `<video controls preload="none">` for long demos. Keep the original assets when replacing existing public URLs. In blog JSX, use literal attributes such as `width="300"`; `next-mdx-remote` disables JavaScript expressions by default.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+UI primitives follow shadcn's `new-york` Tailwind 4 registry. To review upstream changes, run `npx shadcn@latest add button card dropdown-menu input label textarea toggle --dry-run`. Preserve the existing `@/lib/utils` import when updating the registry's `cn` import, and retain the site's theme tokens and custom components.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The Pages workflow installs the lockfile, runs lint, regression tests, the production build and export checks, then deploys pushes to `main`. Dependabot checks npm packages and GitHub Actions weekly.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+See the [October 1, 2026 audit](docs/audit-2026-10-01.md) for findings and validation.

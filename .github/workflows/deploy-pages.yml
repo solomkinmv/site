@@ -42,7 +42,10 @@ jobs:
         working-directory: next-personal-site
         run: |
           npm ci
+          npm run lint
+          npm test
           npm run build
+          npm run check:export
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

@@ -8,6 +8,7 @@ const appStoreUrl =
 
 export const metadata: Metadata = {
     title: "Медичні Коди — АКМІ та МКХ-10 для iOS",
+    alternates: {canonical: '/apps/medical-codes'},
     description:
         "Безкоштовний iOS-додаток для пошуку медичних кодів АКМІ (ACHI) та МКХ-10 (ICD-10). Понад 23 000 кодів офлайн, українською та англійською.",
     other: {

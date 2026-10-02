@@ -1,3 +1,26 @@
+export function parseTreeInput(input: string): string[] {
+    if (input.length > 100_000) throw new Error('Use a smaller tree (at most 100,000 input characters).');
+    const value = input.trim();
+    if (!value) return [];
+    if (value.startsWith('[') !== value.endsWith(']')) {
+        throw new Error('Use matching square brackets, for example [1,2,3,null,4].');
+    }
+    const content = value.startsWith('[') ? value.slice(1, -1).trim() : value;
+    if (!content) return [];
+    const chunks = content.split(',').map(chunk => chunk.trim());
+    if (chunks.length > 5_000) throw new Error('Use a smaller tree (at most 5,000 values per input).');
+    if (chunks.some(chunk => !chunk || /[\[\]]/.test(chunk))) {
+        throw new Error('Separate node values with commas and use null for missing nodes.');
+    }
+    while (chunks.at(-1) === 'null') chunks.pop();
+    let slots = 1;
+    for (const chunk of chunks) {
+        if (slots === 0) throw new Error('A node has no parent. Remove values after the tree ends.');
+        slots += chunk === 'null' ? -1 : 1;
+    }
+    return chunks;
+}
+
 export class Visualizer {
     private static readonly BASE_TEXT_SIZE: number = 16;
     private static readonly BASE_LINE_WIDTH: number = 1;
@@ -16,7 +39,10 @@ export class Visualizer {
     private errorColor: string;
     private successColor: string;
 
-    constructor(private readonly c: HTMLCanvasElement) {
+    private readonly c: HTMLCanvasElement;
+
+    constructor(c: HTMLCanvasElement) {
+        this.c = c;
         const styles = getComputedStyle(document.documentElement);
         this.foregroundColor = `hsl(${styles.getPropertyValue('--foreground').trim()})`;
         this.errorColor = `hsl(${styles.getPropertyValue('--destructive').trim()})`;
@@ -29,7 +55,7 @@ export class Visualizer {
         const actualHeight = heightNodes * (3 * Visualizer.BASE_TEXT_SIZE + 4 * Visualizer.BASE_PADDING) +
             Visualizer.BASE_TEXT_SIZE + 3 * Visualizer.BASE_PADDING;
 
-        this.resize(innerWidth, actualHeight);
+        this.resize(1, actualHeight);
     }
 
     resizeWidth(width: number) {
@@ -39,12 +65,21 @@ export class Visualizer {
     }
 
     resize(width: number, height: number) {
-        console.log("resize", width, height)
+        const pixelsWide = Math.ceil(width * this.qualityScale);
+        const pixelsHigh = Math.ceil(height * this.qualityScale);
+        // ponytail: portable canvas budget; tile the drawing if larger trees become necessary.
+        if (!Number.isFinite(width) || !Number.isFinite(height) || width < 0 || height < 0 ||
+            pixelsWide > 16_384 || pixelsHigh > 16_384 || pixelsWide * pixelsHigh > 16_000_000) {
+            throw new Error('This drawing exceeds the canvas size limit. Use fewer nodes or shorter labels.');
+        }
         this.c.setAttribute("style", `width: ${width}px; height: ${height}px;`);
-        this.c.height = height * this.qualityScale;
-        this.c.width = width * this.qualityScale;
+        this.c.height = pixelsHigh;
+        this.c.width = pixelsWide;
+        this.ctx = undefined;
+        if (!width || !height) return;
 
-        this.ctx = this.c.getContext("2d")!;
+        this.ctx = this.c.getContext("2d") ?? undefined;
+        if (!this.ctx) throw new Error('Canvas drawing is unavailable in this browser.');
         this.ctx.font = `${this.textSize}px arial`;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
@@ -156,16 +191,27 @@ export class TreeNode {
 export class Tree {
     private root: TreeNode | undefined;
 
-    constructor(private readonly visualizer: Visualizer) {
+    private readonly visualizer: Visualizer;
+
+    constructor(visualizer: Visualizer) {
         this.visualizer = visualizer;
     }
 
     public build(chunksActual: string[] | undefined, chunksExpected: string[] | undefined) {
+        if ((chunksActual?.length ?? 0) > 5_000 || (chunksExpected?.length ?? 0) > 5_000) {
+            throw new Error('Use a smaller tree (at most 5,000 values per input).');
+        }
+        if (!chunksActual?.length && !chunksExpected?.length) {
+            this.root = undefined;
+            this.visualizer.resize(0, 0);
+            return;
+        }
         this.root = new TreeNode(chunksActual?.[0], undefined);
         let actualNodes = [this.root];
         for (let i = 1, api = 0; i < (chunksActual?.length || 0); i += 2, api++) {
             // actual
             let parent = actualNodes[api];
+            if (!parent) throw new Error('An actual node has no parent.');
             if (chunksActual?.[i] !== "null") {
                 let leftNode = new TreeNode(chunksActual?.[i], undefined);
                 parent.left = leftNode;
@@ -181,6 +227,7 @@ export class Tree {
         let expectedNodes = [this.root];
         for (let i = 1, pi = 0; i < (chunksExpected?.length || 0); i += 2, pi++) {
             let parent = expectedNodes[pi];
+            if (!parent) throw new Error('An expected node has no parent.');
             if (chunksExpected?.[i] !== "null") {
                 let leftNode = parent.left;
                 if (leftNode) {
@@ -210,7 +257,17 @@ export class Tree {
 
     private findDepth(node: TreeNode | undefined): number {
         if (!node) return 0;
-        return 1 + Math.max(this.findDepth(node.left), this.findDepth(node.right));
+        const queue = [{node, depth: 1}];
+        let depth = 0;
+        for (let i = 0; i < queue.length; i++) {
+            const current = queue[i];
+            depth = Math.max(depth, current.depth);
+            // ponytail: bound recursive layout to 128 levels; use iterative layout for deeper trees.
+            if (depth > 128) throw new Error('Use a shallower tree (at most 128 levels).');
+            if (current.node.left) queue.push({node: current.node.left, depth: current.depth + 1});
+            if (current.node.right) queue.push({node: current.node.right, depth: current.depth + 1});
+        }
+        return depth;
     }
 
     private findWidth(node: TreeNode | undefined): number {
@@ -225,8 +282,8 @@ export class Tree {
         let queue: TreeNode[] = [];
         queue.push(this.root)
 
-        while (queue.length !== 0) {
-            let node = queue.shift()!
+        for (let i = 0; i < queue.length; i++) {
+            let node = queue[i];
             this.visualizer.drawNode(node);
 
             if (node.left) {
