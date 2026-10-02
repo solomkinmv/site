@@ -29,4 +29,4 @@ UI primitives follow shadcn's `new-york` Tailwind 4 registry. To review upstream
 
 The Pages workflow installs the lockfile, runs lint, regression tests, the production build and export checks, then deploys pushes to `main`. Dependabot checks npm packages and GitHub Actions weekly.
 
-See the [October 1, 2026 audit](docs/audit-2026-10-01.md) for findings and validation.
+This README contains current setup and maintenance guidance. Historical audit snapshots live under `docs/audits/` with filenames prefixed by `YYYY-MM-DD`. See the [October 1, 2026 audit](docs/audits/2026-10-01-website-audit.md) for findings and validation from that date. These documentation files are kept in Git and are not part of the deployed static export.

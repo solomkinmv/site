@@ -1,4 +1,6 @@
-# Website audit — October 1, 2026
+# Website audit — October 1, 2026 (historical snapshot)
+
+This is a record of the October 1, 2026 audit. Dependency versions, verification results, and production observations apply to that audit. Use the [README](../../README.md) for current setup and checks.
 
 Reviewed and repaired `/Users/max/.codex/worktrees/87f6/site` on `codex/site-audit`, starting from current `origin/main` (`49edf37`). The other site checkout was not edited. Scope: dependencies, current shadcn sources, deployment workflow, static export, accessibility, local browser behavior, and read-only production/link checks. Updated after the follow-up remediation.
 
@@ -26,7 +28,7 @@ Reviewed and repaired `/Users/max/.codex/worktrees/87f6/site` on `codex/site-aud
 
 ## Dependency update
 
-Verified against the npm registry during this follow-up: Next.js and its companion packages are 16.3.8, the current stable release; React and React DOM are 19.3.0. Radix UI is 1.6.7 and Sharp is 0.35.5, declared explicitly for build-time image measurement. Updated Radix, Lucide, Shiki, Tailwind Merge, Babel, ESLint, PostCSS, globals and type packages to current compatible stable versions. Tailwind 4.3.3 and TypeScript 7.0.2 were already current.
+Verified against the npm registry during this follow-up: Next.js and its companion packages are 16.3.8, the stable release at the time of the audit; React and React DOM are 19.3.0. Radix UI is 1.6.7 and Sharp is 0.35.5, declared explicitly for build-time image measurement. Updated Radix, Lucide, Shiki, Tailwind Merge, Babel, ESLint, PostCSS, globals and type packages to current compatible stable versions. Tailwind 4.3.3 and TypeScript 7.0.2 were already current.
 
 Babel's ESLint parser stays on its updated stable 8.0.6 release because it supports the installed Babel 8 and ESLint 10. npm's `latest` tag points at 7.29.9, whose peer requirements do not support this toolchain; that is the sole `npm outdated` entry. Removed four unused dependencies: `gray-matter`, `remark-parse`, `remark-rehype` and `@typescript/native-preview`. Existing GitHub Actions already use current release majors.
 
