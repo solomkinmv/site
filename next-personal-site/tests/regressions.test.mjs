@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {parseTreeInput, Tree, Visualizer} from '../src/app/leetcode-tree-visualizer/tree.ts';
 import getFormattedDate from '../src/lib/getFormattedDate.ts';
-import {imageSize} from '../src/lib/images.ts';
+import {imageSize, imagesInRow} from '../src/lib/images.ts';
+import {createElement, Fragment} from 'react';
 
 test('tree input accepts sparse trees and rejects missing values or parents', () => {
     for (const input of ['', '  ', '[]', '[null]', '[null,null]']) {
@@ -89,4 +90,13 @@ test('article images use measured dimensions and stay inside public/images', asy
     for (const src of ['/images/../../package.json', 'https://example.com/image.png']) {
         await assert.rejects(imageSize(src), /Store article images/);
     }
+});
+
+test('image rows find images inside MDX paragraphs and preserve their order and captions', () => {
+    const first = {src: '/images/first.webp', alt: 'Overview', title: 'First caption'};
+    const second = {src: '/images/second.webp', alt: 'Details'};
+    const children = createElement(Fragment, null,
+        createElement('p', null, createElement('img', first), ' ', createElement('img', second)));
+    assert.deepEqual(imagesInRow(children), [first, {...second, title: undefined}]);
+    assert.deepEqual(imagesInRow(createElement('p', null, 'Plain text')), []);
 });

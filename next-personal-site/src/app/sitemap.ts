@@ -1,5 +1,6 @@
 import {MetadataRoute} from 'next'
 import {getPostsMeta} from "@/lib/posts";
+import {projects} from "@/lib/projects";
 
 export const dynamic = "force-static";
 
@@ -33,12 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: ChangeFrequency.WEEKLY,
             priority: 0.9,
         },
-        {
-            url: 'https://solomk.in/apps/medical-codes',
+        ...projects.map(project => ({
+            url: `https://solomk.in${project.href}`,
             lastModified: new Date(),
             changeFrequency: ChangeFrequency.MONTHLY,
             priority: 0.8,
-        }
+        })),
     ];
 
     const postsMeta = await getPostsMeta();

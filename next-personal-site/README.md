@@ -25,6 +25,10 @@ Posts live in `posts/*.mdx`. Set `draft: true` to exclude a post from the public
 
 Store article images under `public/images`; Markdown images get measured dimensions at build time. Prefer WebP and native `<video controls preload="none">` for long demos. Keep the original assets when replacing existing public URLs. In blog JSX, use literal attributes such as `width="300"`; `next-mdx-remote` disables JavaScript expressions by default.
 
+Post frontmatter uses `image` for social previews and an optional `cardImage` for listing thumbnails. Thumbnails fall back to `image`; a dedicated `cardImage` fills the thumbnail with a crop. Set `cardImagePosition` (CSS `object-position`, such as `center top`) to adjust that crop. Images inside articles are placed explicitly in Markdown.
+
+The generated blog illustrations use `cover-2026-10-02.webp` (1200 × 630) and `card-2026-10-02.webp` (960 × 720) inside each post's image directory. A cover is placed at the start of the article with `![|no-zoom](...)`; instructional screenshots stay in the body.
+
 UI primitives follow shadcn's `new-york` Tailwind 4 registry. To review upstream changes, run `npx shadcn@latest add button card dropdown-menu input label textarea toggle --dry-run`. Preserve the existing `@/lib/utils` import when updating the registry's `cn` import, and retain the site's theme tokens and custom components.
 
 The Pages workflow installs the lockfile, runs lint, regression tests, the production build and export checks, then deploys pushes to `main`. Dependabot checks npm packages and GitHub Actions weekly.

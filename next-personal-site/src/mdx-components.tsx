@@ -11,6 +11,7 @@ import {
     TypographyOrderedList,
     TypographyListItem,
     TypographyImage,
+    ImageRow,
     TypographyLink,
     TypographyInlineCode,
     TypographyTable,
@@ -25,6 +26,7 @@ import {
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
         Image,
+        ImageRow,
         h1: TypographyH1,
         h2: TypographyH2,
         h3: TypographyH3,

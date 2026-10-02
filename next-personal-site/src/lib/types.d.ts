@@ -9,6 +9,8 @@ export type Meta = {
     summary?: string;
     description?: string;
     image?: string;
+    cardImage?: string;
+    cardImagePosition?: string;
 }
 
 export type BlogPost = {

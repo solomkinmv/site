@@ -1,26 +1,60 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, BookmarkCheck, Globe, WifiOff, Moon, Layers } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import { Search, BookmarkCheck, Globe, WifiOff, Moon, Layers, ArrowLeft } from "lucide-react";
 
 const appStoreUrl =
     "https://apps.apple.com/ua/app/%D0%BC%D0%B5%D0%B4%D0%B8%D1%87%D0%BD%D1%96-%D0%BA%D0%BE%D0%B4%D0%B8/id6758305387";
+const title = "Медичні Коди — АКМІ та МКХ-10 для iOS";
+const description = "Безкоштовний iOS-додаток для пошуку медичних кодів АКМІ (ACHI) та МКХ-10 (ICD-10). Понад 23 000 кодів офлайн, українською та англійською.";
+const pageUrl = "https://solomk.in/apps/medical-codes";
+const image = "/images/apps/medical-codes/icon.webp";
 
 export const metadata: Metadata = {
-    title: "Медичні Коди — АКМІ та МКХ-10 для iOS",
+    title,
     alternates: {canonical: '/apps/medical-codes'},
-    description:
-        "Безкоштовний iOS-додаток для пошуку медичних кодів АКМІ (ACHI) та МКХ-10 (ICD-10). Понад 23 000 кодів офлайн, українською та англійською.",
+    description,
+    openGraph: {
+        type: "website", locale: "uk_UA", title, description, url: pageUrl,
+        images: [{url: image, width: 128, height: 128, alt: "Медичні Коди"}],
+    },
+    twitter: {card: "summary", title, description, images: [image]},
     other: {
         "apple-itunes-app": "app-id=6758305387",
     },
 };
 
 export default function MedichniKodiPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": pageUrl,
+        url: pageUrl,
+        name: title,
+        description,
+        inLanguage: "uk",
+        mainEntity: {
+            "@type": "SoftwareApplication",
+            name: "Медичні Коди",
+            description,
+            url: appStoreUrl,
+            image: `https://solomk.in${image}`,
+            applicationCategory: "MedicalApplication",
+            operatingSystem: "iOS",
+            featureList: ["АКМІ та МКХ-10", "Офлайн-пошук", "Закладки", "Українська та англійська мови"],
+            author: {"@type": "Person", name: "Maksym Solomkin", url: "https://solomk.in"},
+        },
+    };
+
     return (
         <div className="max-w-3xl mx-auto" lang="uk">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd).replace(/</g, "\\u003c")}} />
+            <Link href="/#projects" className="mb-8 inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="size-4" aria-hidden="true" /> Усі проєкти
+            </Link>
             {/* Hero */}
-            <section className="flex flex-col items-center text-center py-8">
+            <section className="flex flex-col items-center text-center pb-12 pt-4">
                 <Image
                     src="/images/apps/medical-codes/icon.webp"
                     alt="Medical Codes app icon"
@@ -28,26 +62,25 @@ export default function MedichniKodiPage() {
                     height={128}
                     className="rounded-[28px] shadow-lg"
                 />
-                <h1 className="mt-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
+                <h1 className="mt-6 font-display text-5xl tracking-tight text-foreground">
                     Медичні Коди
                 </h1>
-                <p className="mt-2 text-lg text-gray-600 dark:text-gray-400 max-w-md">
+                <p className="mt-2 text-lg text-muted-foreground max-w-md">
                     Довідник кодів АКМІ та МКХ-10 у вашому iPhone. Понад 23 000
                     медичних кодів офлайн.
                 </p>
-                <Link
-                    href={appStoreUrl}
-                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-white text-sm font-medium hover:bg-gray-800 transition-colors dark:bg-white dark:text-black dark:hover:bg-gray-200"
-                >
-                    <svg viewBox="0 0 384 512" className="h-5 w-5 fill-current">
-                        <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
-                    </svg>
-                    Завантажити в App Store
-                </Link>
+                <Button asChild size="lg" className="mt-6 h-11 rounded-full px-6">
+                    <Link href={appStoreUrl}>
+                        <svg viewBox="0 0 384 512" className="h-5 w-5 fill-current" aria-hidden="true">
+                            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
+                        </svg>
+                        Завантажити в App Store
+                    </Link>
+                </Button>
             </section>
 
             {/* Screenshots */}
-            <section className="py-8 border-t border-gray-200 dark:border-gray-700">
+            <section className="py-8 border-t border-border">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <Image
                         src="/images/apps/medical-codes/achi-main.webp"
@@ -81,8 +114,8 @@ export default function MedichniKodiPage() {
             </section>
 
             {/* Features */}
-            <section className="py-8 border-t border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+            <section className="py-8 border-t border-border">
+                <h2 className="font-display text-3xl tracking-tight text-foreground mb-6">
                     Можливості
                 </h2>
                 <div className="grid gap-6 sm:grid-cols-2">
@@ -120,13 +153,13 @@ export default function MedichniKodiPage() {
             </section>
 
             {/* About classifiers */}
-            <section className="py-8 border-t border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <section className="py-8 border-t border-border">
+                <h2 className="font-display text-3xl tracking-tight text-foreground mb-4">
                     Про класифікатори
                 </h2>
-                <div className="space-y-4 text-gray-600 dark:text-gray-400">
+                <div className="space-y-4 text-muted-foreground">
                     <div>
-                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                        <h3 className="font-medium text-foreground">
                             АКМІ (НК 026:2021)
                         </h3>
                         <p className="mt-1">
@@ -136,7 +169,7 @@ export default function MedichniKodiPage() {
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                        <h3 className="font-medium text-foreground">
                             МКХ-10 (НК 025:2021)
                         </h3>
                         <p className="mt-1">
@@ -155,19 +188,19 @@ export default function MedichniKodiPage() {
             {/* Support */}
             <section
                 id="support"
-                className="py-8 border-t border-gray-200 dark:border-gray-700"
+                className="py-8 border-t border-border"
             >
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                <h2 className="font-display text-3xl tracking-tight text-foreground mb-4">
                     Підтримка
                 </h2>
-                <div className="space-y-3 text-gray-600 dark:text-gray-400">
+                <div className="space-y-3 text-muted-foreground">
                     <p>
                         Маєте питання, пропозиції чи зауваження? Напишіть нам:
                     </p>
                     <p>
                         <Link
                             href="mailto:support+achi@solomk.in?subject=Медичні Коди — Підтримка"
-                            className="text-violet-600 dark:text-violet-400 hover:underline"
+                            className="text-highlight underline underline-offset-4 hover:text-foreground"
                         >
                             support+achi@solomk.in
                         </Link>
@@ -176,10 +209,17 @@ export default function MedichniKodiPage() {
                         Розробник:{" "}
                         <Link
                             href="https://solomk.in"
-                            className="text-violet-600 dark:text-violet-400 hover:underline"
+                            className="text-highlight underline underline-offset-4 hover:text-foreground"
                         >
                             solomk.in
                         </Link>
+                    </p>
+                    <p>
+                        Також доступний{" "}
+                        <Link href="https://t.me/achi_selector_bot" className="text-highlight underline underline-offset-4 hover:text-foreground">
+                            Telegram-бот
+                        </Link>
+                        {" "}для пошуку кодів.
                     </p>
                 </div>
             </section>
@@ -198,14 +238,14 @@ function Feature({
 }) {
     return (
         <div className="flex gap-3">
-            <div className="flex-shrink-0 mt-0.5 text-violet-600 dark:text-violet-400">
+            <div className="flex-shrink-0 mt-0.5 text-highlight">
                 {icon}
             </div>
             <div>
-                <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                <h3 className="font-medium text-foreground">
                     {title}
                 </h3>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground">
                     {description}
                 </p>
             </div>

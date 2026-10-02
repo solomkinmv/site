@@ -32,7 +32,7 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
     if (!rawMDX) return undefined
 
-    const {frontmatter, content} = await compileMDX<{ title: string, date: string, tags: string[], draft: boolean, summary?: string, description?: string, image?: string }>({
+    const {frontmatter, content} = await compileMDX<Omit<Meta, "id">>({
         source: rawMDX,
         // eslint-disable-next-line react-hooks/rules-of-hooks
         components: useMDXComponents({
@@ -71,6 +71,8 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
             summary: frontmatter.summary,
             description: frontmatter.description,
             image: frontmatter.image,
+            cardImage: frontmatter.cardImage,
+            cardImagePosition: frontmatter.cardImagePosition,
         },
         content,
     }

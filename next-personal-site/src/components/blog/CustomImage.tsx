@@ -1,4 +1,4 @@
-import Image from "next/image"
+import {BlogImage} from "@/components/blog/BlogImage";
 import {imageSize} from '@/lib/images';
 
 type Props = {
@@ -10,17 +10,5 @@ type Props = {
 export default async function CustomImage({ src, alt, priority }: Props) {
     const {width, height} = await imageSize(src);
 
-    return (
-
-        <div className="w-full h-full">
-            <Image
-                className="h-auto max-w-full rounded-lg mx-auto"
-                src={src}
-                alt={alt}
-                width={width}
-                height={height}
-                preload={priority === true || priority === 'true'}
-            />
-        </div>
-    )
+    return <BlogImage src={src} alt={alt} width={width} height={height} preload={priority === true || priority === 'true'} />;
 }

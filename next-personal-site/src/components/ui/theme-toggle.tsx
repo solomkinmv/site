@@ -20,27 +20,26 @@ export function ThemeToggle() {
     setMounted(true)
   }, [])
 
-  if (!mounted) {
-    return null
-  }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="ghost" size="icon" className="relative size-11 rounded-full" disabled={!mounted}>
           <Sun
+            aria-hidden="true"
             className={`h-[1.2rem] w-[1.2rem] transition-all ${
               theme === "light" ? "rotate-0 scale-100" : "rotate-90 scale-0"
             }`}
           />
           <Moon
+            aria-hidden="true"
             className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
               theme === "dark" ? "rotate-0 scale-100" : "rotate-90 scale-0"
             }`}
           />
           <SunMoon
+            aria-hidden="true"
             className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
-              theme === "system" ? "rotate-0 scale-100" : "rotate-90 scale-0"
+              !mounted || (theme !== "light" && theme !== "dark") ? "rotate-0 scale-100" : "rotate-90 scale-0"
             }`}
           />
           <span className="sr-only">Toggle theme</span>
