@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import {Inter as FontSans} from "next/font/google";
+import {Manrope, Newsreader} from "next/font/google";
 import "./globals.css";
 import React from "react";
 import {cn} from "@/lib/utils";
@@ -8,9 +8,16 @@ import {Footer} from "@/components/footer";
 import {GoogleAnalytics} from "@next/third-parties/google";
 import {ThemeProvider} from "@/components/theme-provider";
 
-const fontSans = FontSans({
+const fontSans = Manrope({
     subsets: ["latin"],
-    variable: "--font-sans",
+    variable: "--font-manrope",
+    display: "swap",
+})
+const fontDisplay = Newsreader({
+    subsets: ["latin"],
+    variable: "--font-newsreader",
+    style: ["normal", "italic"],
+    display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -39,8 +46,9 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
         <body className={cn(
-            "flex flex-col min-h-screen bg-white dark:bg-gray-900 font-sans antialiased",
-            fontSans.variable
+            "flex min-h-screen flex-col font-sans antialiased",
+            fontSans.variable,
+            fontDisplay.variable
         )}>
         <ThemeProvider
             attribute="class"

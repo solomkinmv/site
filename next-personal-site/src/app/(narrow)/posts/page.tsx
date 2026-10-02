@@ -26,15 +26,17 @@ export default async function PostList() {
     return (
         <>
             <section className="max-w-3xl mx-auto">
-                <TypographyH1>All posts</TypographyH1>
-                <div className="flex flex-wrap gap-2 mt-4">
+                <p className="page-kicker mb-4">The blog</p>
+                <TypographyH1>Writing<span className="text-highlight">.</span></TypographyH1>
+                <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">Notes on software, useful tools, and things learned while building.</p>
+                <div className="flex flex-wrap gap-2 mt-8" aria-label="Browse by topic">
                     {allTags.map(tag => (
                         <Link key={tag} href={`/tags/${tag}`}>
                             <Tag text={tag}/>
                         </Link>
                     ))}
                 </div>
-                <ul className="w-full list-none p-0 mt-8 flex flex-col gap-6">
+                <ul className="mt-8 w-full list-none divide-y border-y p-0">
                     {posts.map(post => (
                         <ListItem key={post.id} post={post}/>
                     ))}

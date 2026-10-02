@@ -1,0 +1,83 @@
+export const projects = [
+    {
+        id: "polidict", title: "Polidict", category: "Language learning",
+        description: "A home for your vocabulary. Learn new words with spaced repetition and personalized practice.",
+        href: "/projects/polidict", appUrl: "https://polidict.com", action: "Visit Polidict",
+        image: "/images/home/polidict-opengraph.webp", width: 2000, height: 1000,
+        source: null,
+        details: {
+            title: "Polidict — Vocabulary App with Spaced Repetition",
+            description: "Polidict is a vocabulary app by Maksym Solomkin. Save words, organize collections, and practice with spaced repetition on the web, iPhone, and iPad.",
+            lede: "A vocabulary app for the words you actually want to remember.",
+            platform: "Web, iPhone & iPad", operatingSystem: "Web, iOS, iPadOS", applicationCategory: "EducationalApplication",
+            overview: [
+                "Polidict brings a personal dictionary and a review routine together. Save words you encounter while reading, working, or studying, then keep their meanings and examples in one place. Your vocabulary grows around what you need to learn.",
+                "Spaced repetition turns that collection into regular practice. Reviews adapt to your results, while separate progress for writing, listening, speaking, and definitions helps you see where a word still needs attention.",
+            ],
+            features: [
+                {title: "Your own vocabulary", description: "Save words with editable definitions, translations, pronunciation, and images."},
+                {title: "Spaced repetition", description: "Review on an adaptive schedule, with practice for recall, writing, listening, and speaking."},
+                {title: "Focused collections", description: "Group vocabulary by topic, course, or source and practice one collection at a time."},
+                {title: "AI-assisted definitions", description: "Get suggested meanings and examples, then choose the version you want to keep."},
+            ],
+        },
+    },
+    {
+        id: "hotkys", title: "Hotkys", category: "Developer productivity",
+        description: "Useful shortcuts for your favorite macOS apps, with a Raycast extension to keep them a keystroke away.",
+        href: "/projects/hotkys", appUrl: "https://hotkys.com", action: "Visit Hotkys",
+        image: "/images/home/hotkys-opengraph.webp", width: 1280, height: 672,
+        source: "https://github.com/solomkinmv/hotkys",
+        details: {
+            title: "Hotkys — macOS Keyboard Shortcuts & Raycast Extension",
+            description: "Hotkys is a searchable macOS keyboard shortcuts database by Maksym Solomkin. Find app shortcuts on the web or search and run them with its Raycast extension.",
+            lede: "Find the shortcut you need, right when you need it.",
+            platform: "Web & Raycast for macOS", operatingSystem: "macOS", applicationCategory: "ProductivityApplication",
+            overview: [
+                "Hotkys is a searchable reference for macOS keyboard shortcuts. Instead of interrupting your work to dig through an app’s menus, look up the action you want and see the keys that trigger it.",
+                "The catalog covers everyday tools and developer apps, including Finder, Notes, Visual Studio Code, Xcode, and Obsidian. A companion Raycast extension brings the same lookup into your launcher and can run the selected shortcut.",
+            ],
+            features: [
+                {title: "Browse by application", description: "Find shortcuts for the app you are using, with a dedicated catalog for each application."},
+                {title: "Search by action", description: "Look up what you want to do rather than trying to remember a key combination."},
+                {title: "Use it from Raycast", description: "List, search, and run shortcuts through the companion macOS extension."},
+                {title: "An open catalog", description: "Shortcut data lives on GitHub, where contributors can add applications and improve existing entries."},
+            ],
+            resource: {href: "https://hotkys.com/raycast-extension", label: "Get the Raycast extension"},
+        },
+    },
+    {
+        id: "medical-codes", title: "Medical Codes", category: "iOS app",
+        description: "Ukrainian medical classifications in your pocket. More than 23,000 codes, available entirely offline.",
+        href: "/apps/medical-codes",
+        appUrl: "https://apps.apple.com/ua/app/%D0%BC%D0%B5%D0%B4%D0%B8%D1%87%D0%BD%D1%96-%D0%BA%D0%BE%D0%B4%D0%B8/id6758305387",
+        action: "Download Medical Codes",
+        image: null, width: null, height: null,
+        source: "https://github.com/solomkinmv/medical-classification",
+        details: null,
+    },
+    {
+        id: "leetcode-tree-visualizer", title: "LeetCode Tree Visualizer", category: "Developer tool",
+        description: "Make sense of binary trees. Visualize LeetCode inputs and spot the differences between answers.",
+        href: "/projects/leetcode-tree-visualizer", appUrl: "/leetcode-tree-visualizer", action: "Open Tree Visualizer",
+        image: "/images/home/leetcode-tree-viz.webp", width: 1280, height: 610,
+        source: "https://github.com/solomkinmv/site/blob/main/next-personal-site/src/app/leetcode-tree-visualizer/tree.ts",
+        details: {
+            title: "LeetCode Tree Visualizer — Binary Tree & Answer Comparison Tool",
+            description: "A browser tool by Maksym Solomkin for visualizing binary trees in LeetCode format. Compare actual and expected answers and inspect long node values.",
+            lede: "Turn a list of values into a tree you can understand.",
+            platform: "Web", operatingSystem: "Web", applicationCategory: "DeveloperApplication",
+            overview: [
+                "Debugging a binary-tree problem is easier when you can see the structure. This tool takes LeetCode’s level-order input and draws the nodes and branches, so you can follow a test case without sketching it by hand.",
+                "Add an expected answer to compare it with your actual output. The visualization highlights differences between nodes, helping you find the part of the tree that your algorithm built incorrectly. Leave the expected input empty to explore a single tree.",
+            ],
+            features: [
+                {title: "LeetCode input format", description: "Paste comma-separated values with or without brackets. Use null for missing nodes."},
+                {title: "Compare two answers", description: "See differences between your actual output and the expected binary tree."},
+                {title: "Readable node values", description: "Inspect long labels in a compact drawing, with horizontal scrolling for wider trees."},
+                {title: "Drawn in your browser", description: "The tree is rendered on a canvas as you edit the input. No account is needed."},
+            ],
+            resource: {href: "/posts/leetcode-tree-visualizer", label: "Read how I built the visualizer"},
+        },
+    },
+];

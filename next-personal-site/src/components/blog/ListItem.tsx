@@ -2,42 +2,41 @@ import Link from "next/link"
 import Image from "next/image"
 import getFormattedDate from "@/lib/getFormattedDate"
 import {Meta} from "@/lib/types";
-import {Card} from "@/components/ui/card";
+import {ArrowUpRight} from "lucide-react";
 
 type Props = {
     post: Meta
 }
 
 export default function ListItem({post}: Props) {
-    const {id, title, date, summary, image} = post
+    const {id, title, date, summary, image, cardImage, cardImagePosition} = post
+    const thumbnail = cardImage ?? image
     const formattedDate = getFormattedDate(date)
 
     return (
-        <li className="list-none">
-            <Card className="p-4">
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-xl font-semibold tracking-tight break-words">
-                            <Link href={`/posts/${id}`} className="hover:underline">
-                                {title}
-                            </Link>
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{formattedDate}</p>
-                        {summary && (
-                            <p className="text-sm mt-2">{summary}</p>
-                        )}
-                    </div>
-                    {image && (
-                        <Image
-                            src={image}
-                            alt={title}
-                            width={160}
-                            height={160}
-                            className="object-contain rounded-md flex-shrink-0"
-                        />
+        <li className="group list-none py-7">
+            <Link href={`/posts/${id}`} className="flex items-start gap-4 sm:gap-6">
+                <div className="flex-1 min-w-0">
+                    <time dateTime={date} className="text-xs text-muted-foreground">{formattedDate}</time>
+                    <h3 className="mt-2 text-lg font-semibold leading-snug tracking-tight transition-colors group-hover:text-highlight sm:text-xl">
+                        {title}
+                    </h3>
+                    {summary && (
+                        <p className="mt-2 text-sm leading-7 text-muted-foreground">{summary}</p>
                     )}
                 </div>
-            </Card>
+                {thumbnail && (
+                    <Image
+                        src={thumbnail}
+                        alt=""
+                        width={192}
+                        height={144}
+                        className={`mt-1 h-18 w-24 shrink-0 rounded-lg border bg-muted sm:h-36 sm:w-48 ${cardImage ? "object-cover" : "object-contain"}`}
+                        style={cardImagePosition ? {objectPosition: cardImagePosition} : undefined}
+                    />
+                )}
+                <ArrowUpRight className="mt-2 hidden size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground sm:block" aria-hidden="true" />
+            </Link>
         </li>
     )
 }

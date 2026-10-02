@@ -1,43 +1,35 @@
-import React from 'react';
-import Image from "next/image";
-import Link from 'next/link';
-import {GithubIcon, TwitterIcon} from "@/components/ui/icons";
-import {ThemeToggle} from "@/components/ui/theme-toggle";
-import {Home, FileText, TreeDeciduous} from "lucide-react";
+"use client";
 
-export const Header = () => {
+import Image from "next/image";
+import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {ThemeToggle} from "@/components/ui/theme-toggle";
+import {cn} from "@/lib/utils";
+
+export function Header() {
+    const pathname = usePathname();
+
     return (
-        <header className="flex items-center justify-between p-4 md:p-6 border-b">
-            <Link className="flex items-center gap-2" href="/" aria-label="Maksym Solomkin home">
-                <Image src="/logo-192.png" alt="" className="h-6 w-6" width={192} height={192} />
-                <span className="hidden md:inline text-lg font-semibold">Maksym Solomkin</span>
+        <header className="site-shell flex min-h-24 flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b py-5">
+            <Link className="flex min-h-11 items-center gap-2.5" href="/" aria-label="Maksym Solomkin home">
+                <Image src="/logo-192.png" alt="" width={192} height={192} className="size-8 dark:invert" />
+                <span className="text-sm font-semibold tracking-tight">Maksym Solomkin<span className="text-highlight">.</span></span>
             </Link>
-            <nav className="flex gap-2 md:gap-4">
-                <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/">
-                    <Home className="h-5 w-5 md:hidden" aria-hidden="true" />
-                    <span className="hidden md:inline">Home</span>
-                    <span className="sr-only md:hidden">Home</span>
-                </Link>
-                <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/posts">
-                    <FileText className="h-5 w-5 md:hidden" aria-hidden="true" />
-                    <span className="hidden md:inline">Posts</span>
-                    <span className="sr-only md:hidden">Posts</span>
-                </Link>
-                <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="/leetcode-tree-visualizer">
-                    <TreeDeciduous className="h-5 w-5 md:hidden" aria-hidden="true" />
-                    <span className="hidden md:inline">LeetCode Tree Visualizer</span>
-                    <span className="sr-only md:hidden">LeetCode Tree Visualizer</span>
-                </Link>
-            </nav>
-            <div className="flex items-center space-x-2 md:space-x-4">
-                <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://twitter.com/solomkinmv" aria-label="Twitter">
-                    <TwitterIcon className="h-5 w-5" aria-hidden="true" />
-                </Link>
-                <Link className="text-gray-900 dark:text-gray-100 hover:underline" href="https://github.com/solomkinmv" aria-label="GitHub">
-                    <GithubIcon className="h-5 w-5" aria-hidden="true" />
-                </Link>
+            <div className="flex items-center gap-3 sm:gap-6">
+                <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-4">
+                    {[
+                        {href: "/", label: "Home", active: pathname === "/"},
+                        {href: "/#projects", label: "Projects", active: pathname.startsWith("/projects/") || pathname.startsWith("/apps/") || pathname === "/leetcode-tree-visualizer"},
+                        {href: "/posts", label: "Writing", active: pathname.startsWith("/posts") || pathname.startsWith("/tags/")},
+                    ].map(({href, label, active}) => (
+                        <Link key={label} href={href} aria-current={active ? (href === "/#projects" ? "location" : "page") : undefined}
+                            className={cn("inline-flex min-h-11 items-center px-2 text-sm transition-colors hover:text-foreground", active ? "text-foreground" : "text-muted-foreground")}>
+                            {label}
+                        </Link>
+                    ))}
+                </nav>
                 <ThemeToggle />
             </div>
         </header>
     );
-};
+}

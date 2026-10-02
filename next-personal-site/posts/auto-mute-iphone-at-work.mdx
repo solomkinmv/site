@@ -5,8 +5,11 @@ draft: false
 tags: ["ios", "apple-shortcuts", "productivity", "automation"]
 summary: "Automate iPhone muting at work using Apple Shortcuts and Focus mode, with automatic volume restoration when leaving."
 description: "Learn how to automatically mute your iPhone when arriving at work and restore volume when leaving using Apple Shortcuts, Focus mode, and automation."
-image: /images/auto-mute-iphone-at-work/apple-shortcuts.webp
+image: /images/auto-mute-iphone-at-work/cover-2026-10-02.webp
+cardImage: /images/auto-mute-iphone-at-work/card-2026-10-02.webp
 ---
+
+![|no-zoom](/images/auto-mute-iphone-at-work/cover-2026-10-02.webp)
 
 I always feel nervous at work that I may forget to mute my iPhone, leave it on the table and leave to get some
 coffee. During this time, my phone may ring and disturb my colleagues. I don't want to disturb whole office with my
@@ -22,16 +25,7 @@ Here's how I did it.
 
 ## Store Volume And Mute Shortcut
 
-<figure className="not-prose flex flex-col items-center justify-center">
-  <Image
-    src="/images/auto-mute-iphone-at-work/store-volume-and-mute-shortcut.webp"
-    alt="Store volume and mute shortcut"
-    className="rounded-lg object-contain mx-auto"
-    width="300"
-    height="726"
-    loading="lazy" />
-  <figcaption className="text-center mt-2">Store volume and mute shortcut</figcaption>
-</figure>
+![Store volume and mute shortcut](/images/auto-mute-iphone-at-work/store-volume-and-mute-shortcut.webp)
 
 1. Get the Current Volume: This action retrieves the current volume level of the device.
 2. Set Variable: This action sets a variable named `volume` to the current volume level retrieved by the previous
@@ -49,16 +43,7 @@ This shortcut essentially saves the current volume level and mutes the device if
 
 ## Restore Volume Shortcut
 
-<figure className="not-prose flex flex-col items-center justify-center">
-  <Image
-    src="/images/auto-mute-iphone-at-work/restore-volume-shortcut.webp"
-    alt="Restore volume shortcut"
-    className="rounded-lg object-contain mx-auto"
-    width="300"
-    height="593"
-    loading="lazy" />
-  <figcaption className="text-center">Restore volume shortcut</figcaption>
-</figure>
+![Restore volume shortcut](/images/auto-mute-iphone-at-work/restore-volume-shortcut.webp)
 
 1. Get File from Shortcuts: Retrieves a file named `VolumeUpdater/previous-volume.txt` from a specified path within the
 Shortcuts app. If the file is not found, an error will occur.
@@ -82,25 +67,13 @@ activated and the Restore Volume Shortcut when deactivated.
 To trigger the shortcuts, I used the Automation feature in Shortcuts. I created two automations: one when Work Focus
 mode is turned on and another when it is turned off. The automations run the respective shortcuts when triggered.
 
-<figure className="not-prose flex flex-col items-center justify-center">
-  <div className="grid grid-cols-2 gap-4 min-w-0">
-    <Image
-      src="/images/auto-mute-iphone-at-work/focus-mode-automation.webp"
-      alt="Focus mode automation overview"
-      className="rounded-lg object-contain mx-auto mt-0 mb-0"
-      width="300"
-      height="594"
-      loading="lazy" />
-    <Image
-      src="/images/auto-mute-iphone-at-work/focus-mode-automation-details.webp"
-      alt="Focus mode automation details"
-      className="rounded-lg object-contain mx-auto mt-0 mb-0"
-      width="300"
-      height="595"
-      loading="lazy" />
-  </div>
-  <figcaption className="text-center">Focus mode automation</figcaption>
-</figure>
+<ImageRow>
+
+![Focus mode automation overview](/images/auto-mute-iphone-at-work/focus-mode-automation.webp)
+
+![Focus mode automation details](/images/auto-mute-iphone-at-work/focus-mode-automation-details.webp)
+
+</ImageRow>
 
 ## Conclusion
 

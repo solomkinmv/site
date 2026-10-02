@@ -76,10 +76,12 @@ export default async function Post({params}: Props) {
     return (
         <>
             <TableOfContents />
-            <article className="prose prose-gray max-w-3xl mx-auto dark:prose-invert">
-                <div className="space-y-2 not-prose">
+            <article className="prose reading-prose max-w-3xl mx-auto">
+                <div className="not-prose mb-10 border-b pb-8">
+                    <Link href="/posts" className="mb-6 inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">← All writing</Link>
+                    <p className="page-kicker mb-4">Engineering notes</p>
                     <TypographyH1>{meta.title}</TypographyH1>
-                    <p className="text-gray-500 dark:text-gray-400">Posted on {pubDate}</p>
+                    <p className="mt-4 text-sm text-muted-foreground"><time dateTime={meta.date}>{pubDate}</time> · Maksym Solomkin</p>
                 </div>
 
                 {content}
@@ -90,13 +92,13 @@ export default async function Post({params}: Props) {
                     </div>
                 </section>
 
-                <div className="grid grid-cols-2 gap-4 mt-8">
+                <div className="not-prose grid grid-cols-2 gap-6 mt-10 border-t pt-8 text-sm">
                     {prev &&
-                      <Link className="min-w-0 break-words text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${prev?.id}`}>
+                      <Link className="min-w-0 break-words text-muted-foreground hover:text-foreground" href={`/posts/${prev?.id}`}>
                         ←&nbsp;{prev.title}
                       </Link>}
                     {next &&
-                      <Link className="col-start-2 min-w-0 break-words text-right text-gray-900 dark:text-gray-100 hover:underline" href={`/posts/${next?.id}`}>
+                      <Link className="col-start-2 min-w-0 break-words text-right text-muted-foreground hover:text-foreground" href={`/posts/${next?.id}`}>
                           {next.title}&nbsp;→
                       </Link>}
                 </div>

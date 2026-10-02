@@ -5,7 +5,11 @@ draft: false
 tags: ["spring-boot"]
 summary: "Resolving DnsNameResolverTimeoutException in Spring Boot WebFlux by switching from Netty's DNS resolver to DefaultAddressResolverGroup."
 description: "Fix DnsNameResolverTimeoutException errors in Spring Boot WebFlux applications by customizing the DNS resolver configuration and OAuth2 WebClient setup."
+image: /images/spring-boot-netty-dns-resolver/cover-2026-10-02.webp
+cardImage: /images/spring-boot-netty-dns-resolver/card-2026-10-02.webp
 ---
+
+![|no-zoom](/images/spring-boot-netty-dns-resolver/cover-2026-10-02.webp)
 
 A few weeks ago, I started noticing errors during the [Polidict](https://polidict.com) authentication flow. The application was throwing a `DnsNameResolverTimeoutException` when making network requests. The error messages appeared as follows:
 

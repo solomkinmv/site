@@ -96,10 +96,10 @@ export function TableOfContents() {
 
     return (
         <nav
-            className="hidden xl:block fixed top-32 w-56 max-h-[calc(100vh-10rem)] overflow-y-auto left-[calc(50%+385px+1rem)]"
+            className="hidden min-[96rem]:block fixed top-32 w-52 max-h-[calc(100vh-10rem)] overflow-y-auto left-[calc(50%+480px+2rem)] border-l pl-5"
             aria-label="Table of contents"
         >
-            <p className="text-sm font-semibold text-foreground mb-4">On this page</p>
+            <p className="page-kicker mb-4">On this page</p>
             <ul className="space-y-2 text-sm" role="list">
                 {headings.map(({id, text, level}, index) => (
                     <li key={id}>
