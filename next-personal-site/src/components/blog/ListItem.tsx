@@ -33,7 +33,7 @@ export default function ListItem({post}: Props) {
                             alt={title}
                             width={160}
                             height={160}
-                            className="object-cover rounded-md flex-shrink-0"
+                            className="object-contain rounded-md flex-shrink-0"
                         />
                     )}
                 </div>
