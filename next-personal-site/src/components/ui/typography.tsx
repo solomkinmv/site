@@ -212,7 +212,7 @@ export function TypographyLink(props: {href?: string; children?: React.ReactNode
     return (
         <Link
             href={props.href}
-            className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+            className="font-medium text-highlight underline underline-offset-4 hover:text-foreground"
         >
             {props.children}
         </Link>

@@ -15,7 +15,7 @@ export default async function HomePage() {
             <section className="grid items-center gap-10 pb-16 pt-4 sm:pb-20 sm:pt-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.58fr)] md:gap-12" aria-labelledby="intro">
                 <div>
                     <p className="page-kicker flex items-center gap-3">
-                        <span className="h-px w-8 bg-highlight" aria-hidden="true" />
+                        <span className="h-px w-8 bg-brand" aria-hidden="true" />
                         Software engineer
                     </p>
                     <h1 id="intro" className="mt-6 font-display text-[clamp(3.5rem,8.5vw,6.5rem)] leading-[1.05] tracking-[-0.045em]">
@@ -26,7 +26,7 @@ export default async function HomePage() {
                         This is where I share my projects and what I learn along the way.
                     </p>
                     <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm sm:gap-x-6">
-                        <Button asChild variant="outline" className="h-11 rounded-full px-5 shadow-none">
+                        <Button asChild className="h-11 rounded-full bg-brand px-5 text-brand-foreground shadow-none hover:bg-brand/85">
                             <a href="#projects">Explore my work <ArrowDown aria-hidden="true" /></a>
                         </Button>
                         <Link href="https://github.com/solomkinmv" className="inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground">
@@ -113,7 +113,7 @@ export default async function HomePage() {
                     <h2 id="connect-title" className="font-display text-4xl tracking-tight">Let’s connect.</h2>
                     <p className="mt-2 text-sm text-muted-foreground">Find me on GitHub, LinkedIn, or around the web.</p>
                 </div>
-                <Button asChild className="h-11 rounded-full px-5">
+                <Button asChild className="h-11 rounded-full bg-brand px-5 text-brand-foreground hover:bg-brand/85">
                     <Link href="https://www.linkedin.com/in/solomkinmv/">Say hello on LinkedIn <ArrowUpRight aria-hidden="true" /></Link>
                 </Button>
             </section>

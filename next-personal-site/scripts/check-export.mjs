@@ -45,6 +45,12 @@ function checkPath(url, source) {
 
 for (const file of pages) {
     const html = readFileSync(path.join(output, file), 'utf8');
+    const footer = html.match(/<footer\b[^>]*>([\s\S]*?)<\/footer>/)?.[1] ?? '';
+    assert.match(footer, /role="radiogroup"[^>]*aria-label="Color theme"/, `${file}: missing footer theme selector`);
+    assert.doesNotMatch(html.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)?.[1] ?? '', /aria-label="Color theme"/, `${file}: theme selector must stay in the footer`);
+    const themeOptions = [...footer.matchAll(/<button\b[^>]*role="radio"[^>]*>/g)]
+        .map(([button]) => button.match(/aria-label="([^"]+)"/)?.[1]);
+    assert.deepEqual(themeOptions, ['Light', 'Dark', 'System'], `${file}: theme choices must be directly accessible`);
     const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
     assert.equal(ids.length, new Set(ids).size, `${file}: duplicate IDs`);
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, `${file}: expected one h1`);

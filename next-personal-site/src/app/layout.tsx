@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     metadataBase: new URL('https://solomk.in'),
     title: "Maksym Solomkin",
     description: "Software engineering blog by Maksym Solomkin covering Spring Boot, AWS, TypeScript, React, and developer productivity",
-    icons: { icon: '/logo-192.png', apple: '/logo-192.png' },
+    icons: { icon: '/logo-ms-32.png', apple: '/logo-ms-192.png' },
     alternates: {canonical: '/'},
     openGraph: {
         type: 'website',

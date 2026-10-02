@@ -16,6 +16,8 @@
   --font-sans: var(--font-manrope);
   --font-display: var(--font-newsreader);
   --color-highlight: hsl(var(--highlight));
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -91,7 +93,7 @@
   --tw-prose-body: var(--color-foreground);
   --tw-prose-headings: var(--color-foreground);
   --tw-prose-lead: var(--color-muted-foreground);
-  --tw-prose-links: var(--color-foreground);
+  --tw-prose-links: var(--color-highlight);
   --tw-prose-bold: var(--color-foreground);
   --tw-prose-counters: var(--color-muted-foreground);
   --tw-prose-bullets: var(--color-muted-foreground);
@@ -116,50 +118,54 @@
 
 @layer base {
   :root {
-    --background: 42 25% 97%;
-    --foreground: 220 8% 19%;
-    --card: 42 25% 97%;
-    --card-foreground: 220 8% 19%;
-    --popover: 42 25% 99%;
-    --popover-foreground: 220 8% 19%;
-    --primary: 220 8% 19%;
-    --primary-foreground: 42 25% 97%;
-    --secondary: 40 16% 93%;
-    --secondary-foreground: 220 8% 19%;
-    --muted: 40 16% 93%;
-    --muted-foreground: 220 4% 43%;
-    --accent: 40 16% 91%;
-    --accent-foreground: 220 8% 19%;
+    --background: 35 14% 92%;
+    --foreground: 30 8% 23%;
+    --card: 35 16% 95%;
+    --card-foreground: 30 8% 23%;
+    --popover: 35 16% 96%;
+    --popover-foreground: 30 8% 23%;
+    --primary: 30 10% 27%;
+    --primary-foreground: 35 16% 95%;
+    --secondary: 35 12% 88%;
+    --secondary-foreground: 30 8% 23%;
+    --muted: 35 12% 88%;
+    --muted-foreground: 30 6% 39%;
+    --accent: 30 80% 88%;
+    --accent-foreground: 30 8% 23%;
     --destructive: 0 72% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 10% 85%;
-    --input: 40 10% 82%;
-    --ring: 24 55% 35%;
-    --highlight: 24 55% 35%;
+    --border: 35 10% 78%;
+    --input: 35 8% 50%;
+    --ring: 27 100% 33%;
+    --highlight: 27 100% 33%;
+    --brand: 29.4 100% 54.7%;
+    --brand-foreground: 30 6% 18%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 220 7% 11%;
-    --foreground: 40 16% 89%;
-    --card: 220 6% 14%;
-    --card-foreground: 40 16% 89%;
-    --popover: 220 6% 14%;
-    --popover-foreground: 40 16% 89%;
-    --primary: 40 16% 89%;
-    --primary-foreground: 220 7% 11%;
-    --secondary: 220 6% 17%;
-    --secondary-foreground: 40 16% 89%;
-    --muted: 220 6% 17%;
-    --muted-foreground: 40 7% 65%;
-    --accent: 220 6% 21%;
-    --accent-foreground: 40 16% 89%;
-    --destructive: 0 85% 70%;
-    --destructive-foreground: 220 7% 11%;
-    --border: 220 5% 25%;
-    --input: 220 5% 30%;
-    --ring: 28 65% 68%;
-    --highlight: 28 65% 68%;
+    --background: 30 6% 19%;
+    --foreground: 35 14% 84%;
+    --card: 30 6% 22%;
+    --card-foreground: 35 14% 84%;
+    --popover: 30 6% 25%;
+    --popover-foreground: 35 14% 84%;
+    --primary: 35 14% 82%;
+    --primary-foreground: 30 6% 19%;
+    --secondary: 30 6% 25%;
+    --secondary-foreground: 35 14% 84%;
+    --muted: 30 6% 25%;
+    --muted-foreground: 35 8% 72%;
+    --accent: 28 32% 27%;
+    --accent-foreground: 35 14% 84%;
+    --destructive: 0 65% 75%;
+    --destructive-foreground: 30 6% 19%;
+    --border: 30 6% 35%;
+    --input: 30 6% 60%;
+    --ring: 29.6 100% 61.5%;
+    --highlight: 29.6 100% 61.5%;
+    --brand: 29.6 100% 61.5%;
+    --brand-foreground: 30 6% 18%;
   }
 }
 
@@ -176,8 +182,8 @@
     border-radius: 2px;
   }
   ::selection {
-    background: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--color-brand);
+    color: var(--color-brand-foreground);
   }
 }
 

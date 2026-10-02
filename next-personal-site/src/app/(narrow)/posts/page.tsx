@@ -27,7 +27,7 @@ export default async function PostList() {
         <>
             <section className="max-w-3xl mx-auto">
                 <p className="page-kicker mb-4">The blog</p>
-                <TypographyH1>Writing<span className="text-highlight">.</span></TypographyH1>
+                <TypographyH1>Writing<span className="text-brand" aria-hidden="true">.</span></TypographyH1>
                 <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">Notes on software, useful tools, and things learned while building.</p>
                 <div className="flex flex-wrap gap-2 mt-8" aria-label="Browse by topic">
                     {allTags.map(tag => (
