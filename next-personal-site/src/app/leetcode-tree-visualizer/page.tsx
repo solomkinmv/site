@@ -36,7 +36,6 @@ export default function Page() {
 
     return (
         <main id="main-content" tabIndex={-1} className="site-shell min-w-0 flex-1 py-12 sm:py-16">
-            <p className="page-kicker mb-4">Developer tool</p>
             <h1 className="font-display text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">LeetCode Tree Visualizer</h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">Visualize and compare binary trees from LeetCode problems. Supports large trees, long node text, and diff visualization between actual and expected answers.</p>
             <Card className="mt-10 shadow-none">

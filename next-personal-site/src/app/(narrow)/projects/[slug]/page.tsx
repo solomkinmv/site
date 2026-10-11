@@ -66,10 +66,9 @@ export default async function ProjectPage({params}: Props) {
                 <ArrowLeft className="size-4" aria-hidden="true" /> All projects
             </Link>
             <header>
-                <p className="page-kicker">{project.category}</p>
-                <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">{project.title}</h1>
+                <h1 className="max-w-3xl font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">{project.title}</h1>
                 <p className="mt-5 max-w-2xl text-xl leading-relaxed text-muted-foreground">{details.lede}</p>
-                <p className="mt-4 text-sm text-muted-foreground">Built by Maksym Solomkin · {details.platform}</p>
+                <p className="mt-4 text-sm text-muted-foreground">{project.category} · {details.platform} · Built by Maksym Solomkin</p>
                 <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
                     <Button asChild className="h-11 rounded-full px-5">
                         <Link href={project.appUrl}>{project.action} <ArrowUpRight aria-hidden="true" /></Link>
@@ -84,7 +83,7 @@ export default async function ProjectPage({params}: Props) {
 
             <figure className="my-10 overflow-hidden rounded-xl border bg-muted sm:my-12">
                 <Image src={project.image} alt={`${project.title} interface preview`} width={project.width} height={project.height}
-                    sizes="(max-width: 1023px) 100vw, 960px" className="h-auto w-full" priority />
+                    sizes="(max-width: 1023px) 100vw, 960px" className="h-auto w-full" preload />
             </figure>
 
             <section className="grid gap-6 border-t py-9 sm:grid-cols-[1fr_2fr] sm:gap-12" aria-labelledby="about-title">
@@ -112,7 +111,7 @@ export default async function ProjectPage({params}: Props) {
             </section>
 
             <nav className="mt-3 border-t pt-8" aria-label="Other projects">
-                <p className="page-kicker mb-4">Explore another project</p>
+                <h2 className="mb-4 text-sm font-semibold">Explore another project</h2>
                 <div className="flex flex-wrap gap-x-8 gap-y-2">
                     {projects.filter(other => other.id !== project.id).map(other => (
                         <Link key={other.id} href={other.href} className="inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-foreground">

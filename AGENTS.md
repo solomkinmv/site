@@ -12,7 +12,7 @@ Maksym Solomkin's website at [solomk.in](https://solomk.in): a Next.js App Route
 | `next-personal-site/src/mdx-components.tsx` | Shared MDX element mappings and components                      |
 | `next-personal-site/posts`                  | Blog posts as `<slug>.mdx`                                      |
 | `next-personal-site/public/images`          | Article and page images, one directory per post                 |
-| `next-personal-site/scripts`                | `check-export.mjs` validates the exported site                  |
+| `next-personal-site/scripts`                | `check-export.mjs` validates the export; `generate-image-variants.mjs` builds responsive images |
 | `next-personal-site/tests`                  | `node:test` regression tests                                    |
 | `next-personal-site/docs`                   | Blog image style guide and dated audits (not deployed)          |
 
@@ -24,7 +24,7 @@ Use Node.js 24.11 or newer and npm. Run everything from `next-personal-site`:
 - `npm run dev` — dev server at http://localhost:3000
 - `npm run lint` — ESLint
 - `npm test` — regression tests (`node --test tests/*.test.mjs`)
-- `npm run build` — `tsc --noEmit`, then `next build` into `out/`
+- `npm run build` — `tsc --noEmit`, `next build` into `out/`, then `scripts/generate-image-variants.mjs` writes the responsive WebP widths referenced by `src/lib/image-loader.ts`
 - `npm run check:export` — checks links, assets, anchors, image dimensions, metadata, sitemap and manifest in `out/` (run after `build`)
 
 ## Posts and MDX
@@ -35,6 +35,7 @@ Use Node.js 24.11 or newer and npm. Run everything from `next-personal-site`:
 - JavaScript expressions are disabled in post MDX; use literal JSX attributes such as `width="300"`.
 - The remark/rehype plugin list lives in `src/lib/posts.ts`; there is no `@next/mdx` loader.
 - Store images under `public/images/<slug>/`; prefer WebP. Keep originals when replacing existing public URLs.
+- Render images with `next/image` and a realistic `sizes`; the custom loader serves `<name>-<width>w.webp` variants (only `deviceSizes`/`imageSizes` from `next.config.mjs`). The dev server serves originals.
 
 ## Blog imagery
 

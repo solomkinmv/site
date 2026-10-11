@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run typecheck && next build",
+    "build": "npm run typecheck && next build && node scripts/generate-image-variants.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",

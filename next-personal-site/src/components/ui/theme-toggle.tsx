@@ -26,7 +26,7 @@ export function ThemeToggle() {
       value={mounted ? theme ?? "system" : ""}
       onValueChange={setTheme}
       disabled={!mounted}
-      className="inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border p-1 shadow-sm"
+      className="inline-flex shrink-0 items-center rounded-full border border-border p-0.5 shadow-sm"
     >
       {themes.map(({ value, label, Icon }) => (
         <RadioGroup.Item
@@ -34,7 +34,7 @@ export function ThemeToggle() {
           value={value}
           aria-label={label}
           title={`${label} theme`}
-          className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=checked]:shadow-sm"
+          className="inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=checked]:bg-foreground data-[state=checked]:text-background data-[state=checked]:shadow-sm"
         >
           <Icon aria-hidden="true" className="size-4" />
         </RadioGroup.Item>

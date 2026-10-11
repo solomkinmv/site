@@ -3,6 +3,7 @@ import {readFileSync, readdirSync, statSync} from 'node:fs';
 import path from 'node:path';
 
 const output = path.resolve('out');
+const sourceOf = src => src.replace(/(-\d+w)?\.(webp|png|jpe?g)$/, '');
 const pages = readdirSync(output, {recursive: true}).filter(file => file.endsWith('.html'));
 assert.ok(pages.length > 0, 'Run npm run build before checking the export.');
 
@@ -27,10 +28,10 @@ const treeCardImage = treeFrontmatter.match(/^cardImage: (.+)$/m)?.[1];
 assert.ok(treeImage && treeCardImage && treeImage !== treeCardImage, 'Tree visualizer: expected separate cover and thumbnail.');
 for (const file of ['posts.html', 'tags/leetcode.html']) {
     const html = readFileSync(path.join(output, file), 'utf8');
-    assert.ok([...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].some(([, src]) => src === treeCardImage), `${file}: dedicated card image must be used.`);
+    assert.ok([...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].some(([, src]) => sourceOf(src) === sourceOf(treeCardImage)), `${file}: dedicated card image must be used.`);
 }
 const treePost = readFileSync(path.join(output, 'posts/leetcode-tree-visualizer.html'), 'utf8');
-assert.ok([...treePost.matchAll(/<img\b[^>]*src="([^"]+)"/g)].some(([, src]) => src === treeImage), 'Tree visualizer: main cover must appear in the article.');
+assert.ok([...treePost.matchAll(/<img\b[^>]*src="([^"]+)"/g)].some(([, src]) => sourceOf(src) === sourceOf(treeImage)), 'Tree visualizer: main cover must appear in the article.');
 for (const name of ['og:image', 'twitter:image']) {
     const image = treePost.match(new RegExp(`<meta (?:property|name)="${name}" content="([^"]+)"`))?.[1];
     assert.equal(image, new URL(treeImage, 'https://solomk.in').href, `Tree visualizer: ${name} must keep the main image.`);
@@ -72,6 +73,9 @@ for (const file of pages) {
     }
     for (const [image] of html.matchAll(/<img\b[^>]*>/g)) {
         assert.ok(/\bwidth="\d+"/.test(image) && /\bheight="\d+"/.test(image), `${file}: image dimensions missing`);
+        for (const candidate of image.match(/\bsrcSet="([^"]+)"/i)?.[1].split(',') ?? []) {
+            checkPath(new URL(candidate.trim().split(/\s+/)[0], 'https://solomk.in'), file);
+        }
     }
     for (const match of html.matchAll(/<(?:a|img|video|script|link)\b[^>]*\b(?:href|src)="([^"]+)"/g)) {
         const target = match[1];

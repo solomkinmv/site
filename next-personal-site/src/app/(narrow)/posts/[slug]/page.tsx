@@ -79,7 +79,6 @@ export default async function Post({params}: Props) {
             <article className="prose reading-prose max-w-3xl mx-auto">
                 <div className="not-prose mb-10 border-b pb-8">
                     <Link href="/posts" className="mb-6 inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">← All writing</Link>
-                    <p className="page-kicker mb-4">Engineering notes</p>
                     <TypographyH1>{meta.title}</TypographyH1>
                     <p className="mt-4 text-sm text-muted-foreground"><time dateTime={meta.date}>{pubDate}</time> · Maksym Solomkin</p>
                 </div>

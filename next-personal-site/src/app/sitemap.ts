@@ -63,6 +63,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
     })
 
-    console.log("Generated sitemap: ", sitePages);
     return sitePages;
 }
