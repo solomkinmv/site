@@ -94,38 +94,6 @@ export function TypographyInlineCode(props: React.HTMLAttributes<HTMLElement> & 
     )
 }
 
-export function TypographyLead({children}: {children: React.ReactNode}) {
-    return (
-        <p className="text-muted-foreground text-xl">
-            {children}
-        </p>
-    )
-}
-
-export function TypographyLarge({children}: {children: React.ReactNode}) {
-    return (
-        <div className="text-lg font-semibold">
-            {children}
-        </div>
-    )
-}
-
-export function TypographySmall({children}: {children: React.ReactNode}) {
-    return (
-        <small className="text-sm leading-none font-medium">
-            {children}
-        </small>
-    )
-}
-
-export function TypographyMuted({children}: {children: React.ReactNode}) {
-    return (
-        <p className="text-muted-foreground text-sm">
-            {children}
-        </p>
-    )
-}
-
 export function TypographyTable({children}: {children: React.ReactNode}) {
     return (
         <div className="my-6 w-full overflow-y-auto">

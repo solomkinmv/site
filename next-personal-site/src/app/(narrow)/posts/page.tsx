@@ -19,8 +19,6 @@ export const metadata: Metadata = {
 export default async function PostList() {
     const posts = await getPostsMeta()
 
-    if (!posts) return <p className="mt-10 text-center">Sorry, no posts available.</p>
-
     const allTags = Array.from(new Set(posts.flatMap(post => post.tags))).sort()
 
     return (

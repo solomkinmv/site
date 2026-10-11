@@ -26,6 +26,15 @@ async function readPostFile(slug: string) {
     return fileContent;
 }
 
+type Frontmatter = Omit<Meta, "id" | "draft"> & {draft?: boolean}
+
+function isFrontmatter(data: Record<string, unknown>): data is Frontmatter {
+    const {title, date, tags} = data
+    return typeof title === "string" && title.trim() !== ""
+        && typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)
+        && Array.isArray(tags) && tags.every((tag) => typeof tag === "string")
+}
+
 const postCache = new Map<string, Promise<BlogPost | undefined>>()
 
 export function getPostByName(fileName: string): Promise<BlogPost | undefined> {
@@ -42,7 +51,7 @@ async function compilePost(fileName: string): Promise<BlogPost | undefined> {
 
     if (!rawMDX) return undefined
 
-    const {frontmatter, content} = await compileMDX<Omit<Meta, "id">>({
+    const {frontmatter, content} = await compileMDX({
         source: rawMDX,
         // eslint-disable-next-line react-hooks/rules-of-hooks
         components: useMDXComponents({
@@ -67,6 +76,10 @@ async function compilePost(fileName: string): Promise<BlogPost | undefined> {
             },
         }
     })
+
+    if (!isFrontmatter(frontmatter)) {
+        throw new Error(`Invalid frontmatter in posts/${fileName}.mdx: title, date (YYYY-MM-DD) and tags (string[]) are required`)
+    }
 
     const id = fileName.replace(/\.mdx$/, '')
 

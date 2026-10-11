@@ -12,9 +12,7 @@ type Props = {
 }
 
 export async function generateStaticParams() {
-    const posts = await getPostsMeta() //deduped!
-
-    if (!posts) return []
+    const posts = await getPostsMeta()
 
     const tags = new Set(posts.map(post => post.tags).flat())
 
@@ -37,9 +35,7 @@ export async function generateMetadata({params}: Props) {
 
 export default async function TagPostList({params}: Props) {
     const { tag } = await params;
-    const posts = await getPostsMeta() //deduped!
-
-    if (!posts) return <p className="mt-10 text-center">Sorry, no posts available.</p>
+    const posts = await getPostsMeta()
 
     const tagPosts = posts.filter(post => post.tags.includes(tag))
 

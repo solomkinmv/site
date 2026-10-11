@@ -93,7 +93,7 @@ export default async function HomePage() {
                 </div>
             </section>
 
-            {posts && posts.length > 0 && (
+            {posts.length > 0 && (
                 <section className="mt-16 border-t pt-8 sm:mt-20" aria-labelledby="writing-title">
                     <div className="mb-4 flex items-baseline justify-between gap-4">
                         <h2 id="writing-title" className="text-xl font-semibold tracking-tight">Recent writing</h2>
