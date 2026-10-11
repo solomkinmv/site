@@ -29,7 +29,7 @@ Post frontmatter uses `image` for social previews and an optional `cardImage` fo
 
 The generated blog illustrations use `cover-2026-10-02.webp` (1200 × 630) and `card-2026-10-02.webp` (960 × 720) inside each post's image directory. A cover is placed at the start of the article with `![|no-zoom](...)`; instructional screenshots stay in the body.
 
-UI primitives follow shadcn's `new-york` Tailwind 4 registry. To review upstream changes, run `npx shadcn@latest add button card dropdown-menu input label textarea toggle --dry-run`. Preserve the existing `@/lib/utils` import when updating the registry's `cn` import, and retain the site's theme tokens and custom components.
+UI primitives follow shadcn's `new-york` Tailwind 4 registry. To review upstream changes, run `npx shadcn@latest add button card input label --dry-run --diff`. Preserve the existing `@/lib/utils` import when updating the registry's `cn` import, and retain the site's theme tokens and custom components.
 
 The Pages workflow installs the lockfile, runs lint, regression tests, the production build and export checks, then deploys pushes to `main`. Dependabot checks npm packages and GitHub Actions weekly.
 

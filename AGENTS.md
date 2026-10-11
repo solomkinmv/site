@@ -33,7 +33,7 @@ Use Node.js 24.11 or newer and npm. Run everything from `next-personal-site`:
 - Frontmatter: `title`, `date` (`YYYY-MM-DD`), `tags` (array), `draft`, `summary`, `description`, `image` (social preview), optional `cardImage` (listing thumbnail, falls back to `image`) and `cardImagePosition` (CSS `object-position`).
 - `draft: true` excludes a post from listings, static params, and the sitemap.
 - JavaScript expressions are disabled in post MDX; use literal JSX attributes such as `width="300"`.
-- The remark/rehype plugin list is duplicated in `next.config.mjs` and `src/lib/posts.ts`; keep both in sync.
+- The remark/rehype plugin list lives in `src/lib/posts.ts`; there is no `@next/mdx` loader.
 - Store images under `public/images/<slug>/`; prefer WebP. Keep originals when replacing existing public URLs.
 
 ## Blog imagery

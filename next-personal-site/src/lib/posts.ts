@@ -6,7 +6,6 @@ import path from "path";
 import {access, readFile} from "fs/promises";
 import fs from "fs";
 import rehypeSlug from 'rehype-slug'
-import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import {BlogPost, Meta} from "@/lib/types";
@@ -27,7 +26,18 @@ async function readPostFile(slug: string) {
     return fileContent;
 }
 
-export async function getPostByName(fileName: string): Promise<BlogPost | undefined> {
+const postCache = new Map<string, Promise<BlogPost | undefined>>()
+
+export function getPostByName(fileName: string): Promise<BlogPost | undefined> {
+    let post = postCache.get(fileName)
+    if (!post) {
+        post = compilePost(fileName)
+        postCache.set(fileName, post)
+    }
+    return post
+}
+
+async function compilePost(fileName: string): Promise<BlogPost | undefined> {
     const rawMDX = await readPostFile(fileName)
 
     if (!rawMDX) return undefined
@@ -46,7 +56,6 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
                     remarkGfm,
                 ],
                 rehypePlugins: [
-                    rehypeStringify,
                     [rehypePrettyCode, {
                         theme: "catppuccin-frappe",
                     }],
@@ -79,22 +88,18 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
     return blogPostObj
 }
 
-export async function getPostsMeta(): Promise<Meta[] | undefined> {
-    const postSlugs = fs.readdirSync(POSTS_FOLDER).map((filename) => {
-        return filename.replace(".mdx", "");
-    });
+function getPostSlugs(): string[] {
+    return fs.readdirSync(POSTS_FOLDER)
+        .filter((filename) => filename.endsWith(".mdx"))
+        .map((filename) => filename.replace(/\.mdx$/, ""));
+}
 
-    const posts: Meta[] = []
+export async function getPostsMeta(): Promise<Meta[]> {
+    const posts = await Promise.all(getPostSlugs().map(getPostByName))
 
-    for (const slug of postSlugs) {
-        const post = await getPostByName(slug)
-        if (post && !post.meta.draft) {
-            const {meta} = post
-            posts.push(meta)
-        }
-    }
-
-    return posts.sort((a, b) => a.date < b.date ? 1 : -1)
+    return posts
+        .flatMap((post) => post && !post.meta.draft ? [post.meta] : [])
+        .sort((a, b) => a.date < b.date ? 1 : -1)
 }
 
 export async function getPostWithNearestMeta(slug: string): Promise<{
@@ -102,29 +107,13 @@ export async function getPostWithNearestMeta(slug: string): Promise<{
     current: BlogPost | null,
     next: Meta | null
 }> {
-    const postSlugs = fs.readdirSync(POSTS_FOLDER).map((filename) => {
-        return filename.replace(".mdx", "");
-    });
+    const posts = await getPostsMeta()
+    const currentIndex = posts.findIndex(post => post.id === slug)
+    const current = currentIndex === -1 ? null : await getPostByName(slug) ?? null
 
-    const posts: BlogPost[] = []
-
-    for (const slug of postSlugs) {
-        const post = await getPostByName(slug)
-        if (post && !post.meta.draft) {
-            posts.push(post)
-        }
+    return {
+        prev: currentIndex > 0 ? posts[currentIndex - 1] : null,
+        current,
+        next: currentIndex !== -1 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null,
     }
-
-    // Sort posts by date in descending order
-    posts.sort((a, b) => a.meta.date < b.meta.date ? 1 : -1)
-
-    // Find the index of the current post
-    const currentIndex = posts.findIndex(post => post.meta.id === slug)
-
-    // Get the previous, current and next posts
-    const prevPost = currentIndex > 0 ? posts[currentIndex - 1].meta : null
-    const currentPost = posts[currentIndex] || null
-    const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1].meta : null
-
-    return {prev: prevPost, current: currentPost, next: nextPost}
 }

@@ -180,7 +180,7 @@ export async function TypographyImage(props: {alt?: string; src?: string; title?
     const {src, title, className} = props;
     if (!src) return null;
     const zoomable = !props.alt?.endsWith('|no-zoom');
-    const alt = zoomable ? props.alt ?? '' : props.alt!.slice(0, -'|no-zoom'.length).trim();
+    const alt = zoomable ? props.alt ?? '' : (props.alt ?? '').slice(0, -'|no-zoom'.length).trim();
     const caption = title || alt;
     const {width, height} = await imageSize(src);
     return (
