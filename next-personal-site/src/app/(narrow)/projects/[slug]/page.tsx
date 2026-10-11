@@ -66,9 +66,10 @@ export default async function ProjectPage({params}: Props) {
                 <ArrowLeft className="size-4" aria-hidden="true" /> All projects
             </Link>
             <header>
-                <h1 className="max-w-3xl font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">{project.title}</h1>
+                <p className="page-kicker">{project.category}</p>
+                <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">{project.title}</h1>
                 <p className="mt-5 max-w-2xl text-xl leading-relaxed text-muted-foreground">{details.lede}</p>
-                <p className="mt-4 text-sm text-muted-foreground">{project.category} · {details.platform} · Built by Maksym Solomkin</p>
+                <p className="mt-4 text-sm text-muted-foreground">Built by Maksym Solomkin · {details.platform}</p>
                 <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
                     <Button asChild className="h-11 rounded-full px-5">
                         <Link href={project.appUrl}>{project.action} <ArrowUpRight aria-hidden="true" /></Link>

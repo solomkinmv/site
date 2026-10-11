@@ -14,11 +14,15 @@ export default async function HomePage() {
         <>
             <section className="grid items-center gap-10 pb-16 pt-4 sm:pb-20 sm:pt-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.58fr)] md:gap-12" aria-labelledby="intro">
                 <div>
-                    <h1 id="intro" className="font-display text-[clamp(3.5rem,8.5vw,6.5rem)] leading-[1.05] tracking-[-0.045em]">
+                    <p className="page-kicker flex items-center gap-3">
+                        <span className="h-px w-8 bg-brand" aria-hidden="true" />
+                        Software engineer
+                    </p>
+                    <h1 id="intro" className="mt-6 font-display text-[clamp(3.5rem,8.5vw,6.5rem)] leading-[1.05] tracking-[-0.045em]">
                         Maksym <span className="italic">Solomkin.</span>
                     </h1>
                     <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                        I’m a software engineer building distributed backend systems and useful tools.
+                        I build distributed backend systems and useful tools.
                         This is where I share my projects and what I learn along the way.
                     </p>
                     <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm sm:gap-x-6">
@@ -41,7 +45,10 @@ export default async function HomePage() {
             </section>
 
             <section id="projects" className="scroll-mt-8 border-t pt-8" aria-labelledby="projects-title">
-                <h2 id="projects-title" className="mb-8 text-xl font-semibold tracking-tight">Selected projects</h2>
+                <div className="mb-8 flex items-baseline justify-between gap-4">
+                    <h2 id="projects-title" className="text-xl font-semibold tracking-tight">Selected projects</h2>
+                    <span className="page-kicker" aria-hidden="true">01 / Work</span>
+                </div>
                 <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
                     {projects.map(project => (
                         <Card key={project.id} id={project.id} className="group gap-5 rounded-none border-0 bg-transparent py-0 shadow-none">
@@ -65,12 +72,12 @@ export default async function HomePage() {
                                 </div>
                             </Link>
                             <CardContent className="px-0">
+                                <p className="page-kicker mb-2">{project.category}</p>
                                 <h3 className="text-xl font-semibold tracking-tight">
                                     <Link href={project.href} className="inline-flex items-center gap-2 transition-colors hover:text-highlight">
                                         {project.title} <ArrowRight className="size-4 text-muted-foreground" aria-hidden="true" />
                                     </Link>
                                 </h3>
-                                <p className="mt-1 text-xs text-muted-foreground">{project.category}</p>
                                 <p className="mt-2 text-sm leading-7 text-muted-foreground">{project.description}</p>
                                 <div className="mt-2 flex flex-wrap gap-x-5 text-xs text-muted-foreground">
                                     <Link href={project.href} className="inline-flex min-h-11 items-center gap-1 underline-offset-4 hover:text-foreground hover:underline">
@@ -88,7 +95,10 @@ export default async function HomePage() {
 
             {posts && posts.length > 0 && (
                 <section className="mt-16 border-t pt-8 sm:mt-20" aria-labelledby="writing-title">
-                    <h2 id="writing-title" className="mb-4 text-xl font-semibold tracking-tight">Recent writing</h2>
+                    <div className="mb-4 flex items-baseline justify-between gap-4">
+                        <h2 id="writing-title" className="text-xl font-semibold tracking-tight">Recent writing</h2>
+                        <span className="page-kicker" aria-hidden="true">02 / Writing</span>
+                    </div>
                     <ul className="list-none divide-y p-0">
                         {posts.slice(0, 3).map(post => <ListItem key={post.id} post={post} />)}
                     </ul>

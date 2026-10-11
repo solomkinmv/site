@@ -46,6 +46,7 @@ Before generating or replacing blog covers, thumbnails, or sharing images, read 
 - Tailwind CSS 4 with theme tokens in `src/app/globals.css`; shadcn `new-york` style, `slate` base color, CSS variables (`components.json`).
 - Aliases: `@/components`, `@/components/ui`, `@/lib`, `@/lib/utils` (`cn`), `@/hooks`.
 - When updating shadcn primitives, keep the `@/lib/utils` import, the site's theme tokens, and custom components.
+- The `page-kicker` labels above headings (hero role with the brand rule, project categories) and the homepage `01 / Work`, `02 / Writing` section markers are intentional brand elements. Keep them even when a design skill flags eyebrows or section numbers.
 
 ## Delivery
 
