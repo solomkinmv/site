@@ -15,9 +15,11 @@ type Props = {
 };
 
 export function BlogImage({src, alt, width, height, zoomable = true, preload = false}: Props) {
+    const portrait = height > width;
     const image = <Image src={src} alt={alt} width={width} height={height} preload={preload}
+        sizes={portrait ? "(max-width: 639px) 100vw, 384px" : "(max-width: 1023px) 100vw, 960px"}
         className="my-0 h-auto w-full rounded-lg" />;
-    const className = `mx-auto block w-full rounded-lg ${height > width ? "max-w-sm" : ""}`;
+    const className = `mx-auto block w-full rounded-lg ${portrait ? "max-w-sm" : ""}`;
 
     if (!zoomable) return <div className={className}>{image}</div>;
 
@@ -36,7 +38,7 @@ export function BlogImage({src, alt, width, height, zoomable = true, preload = f
                 <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100vw-1rem)] max-w-6xl -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-background p-2 pt-14 shadow-xl sm:p-6 sm:pt-16">
                     <Dialog.Title className="sr-only">{alt || "Image preview"}</Dialog.Title>
                     <Dialog.Description className="sr-only">Enlarged image. Press Escape or use the close button to return to the article.</Dialog.Description>
-                    <Image src={src} alt={alt} width={width} height={height}
+                    <Image src={src} alt={alt} width={width} height={height} sizes="(max-width: 1152px) 100vw, 1152px"
                         className="mx-auto max-h-[calc(90dvh-5rem)] w-full object-contain" />
                     <Dialog.Close asChild>
                         <Button variant="ghost" size="icon" className="absolute right-2 top-2 size-11 rounded-full" aria-label="Close image preview">

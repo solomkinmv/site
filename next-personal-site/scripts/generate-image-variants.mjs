@@ -1,5 +1,5 @@
 import {existsSync, readFileSync, readdirSync} from 'node:fs';
-import {mkdir} from 'node:fs/promises';
+import {copyFile, mkdir} from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -29,7 +29,9 @@ for (const [url, {base, width}] of requested) {
     const source = sources.map(ext => path.join(output, `${base}${ext}`)).find(existsSync);
     if (!source) throw new Error(`No source image for ${url}`);
     await mkdir(path.dirname(target), {recursive: true});
-    await sharp(source).resize({width, withoutEnlargement: true}).webp({quality: 80}).toFile(target);
+    const {width: natural} = await sharp(source).metadata();
+    if (source.endsWith('.webp') && natural <= width) await copyFile(source, target);
+    else await sharp(source).resize({width, withoutEnlargement: true}).webp({quality: 80}).toFile(target);
     generated++;
 }
 console.log(`Generated ${generated} responsive image variants for ${new Set([...requested.values()].map(v => v.base)).size} images.`);
