@@ -1,19 +1,13 @@
-import {compileMDX} from 'next-mdx-remote/rsc'
-import Video from "@/components/blog/Video";
-import CustomImage from "@/components/blog/CustomImage";
-import remarkGfm from 'remark-gfm'
 import path from "path";
 import {access, readFile} from "fs/promises";
 import fs from "fs";
-import rehypeSlug from 'rehype-slug'
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import {BlogPost, Meta} from "@/lib/types";
-import {useMDXComponents} from "@/mdx-components";
+import {parse} from "yaml";
+import {Meta} from "@/lib/types";
 
 const POSTS_FOLDER = path.join(process.cwd(), "posts");
+const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
 
-async function readPostFile(slug: string) {
+export async function readPostFile(slug: string) {
     const filePath = path.resolve(path.join(POSTS_FOLDER, `${slug}.mdx`));
 
     try {
@@ -28,77 +22,52 @@ async function readPostFile(slug: string) {
 
 type Frontmatter = Omit<Meta, "id" | "draft"> & {draft?: boolean}
 
-function isFrontmatter(data: Record<string, unknown>): data is Frontmatter {
+function isRecord(data: unknown): data is Record<string, unknown> {
+    return typeof data === "object" && data !== null && !Array.isArray(data)
+}
+
+function isFrontmatter(data: unknown): data is Frontmatter {
+    if (!isRecord(data)) return false
     const {title, date, tags} = data
     return typeof title === "string" && title.trim() !== ""
         && typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)
         && Array.isArray(tags) && tags.every((tag) => typeof tag === "string")
 }
 
-const postCache = new Map<string, Promise<BlogPost | undefined>>()
+const metaCache = new Map<string, Promise<Meta | undefined>>()
 
-export function getPostByName(fileName: string): Promise<BlogPost | undefined> {
-    let post = postCache.get(fileName)
-    if (!post) {
-        post = compilePost(fileName)
-        postCache.set(fileName, post)
+export function getPostMeta(slug: string): Promise<Meta | undefined> {
+    let meta = metaCache.get(slug)
+    if (!meta) {
+        meta = readPostMeta(slug)
+        metaCache.set(slug, meta)
     }
-    return post
+    return meta
 }
 
-async function compilePost(fileName: string): Promise<BlogPost | undefined> {
-    const rawMDX = await readPostFile(fileName)
+async function readPostMeta(slug: string): Promise<Meta | undefined> {
+    const rawMDX = await readPostFile(slug)
 
     if (!rawMDX) return undefined
 
-    const {frontmatter, content} = await compileMDX({
-        source: rawMDX,
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        components: useMDXComponents({
-            Video,
-            CustomImage,
-        }),
-        options: {
-            parseFrontmatter: true,
-            mdxOptions: {
-                remarkPlugins: [
-                    remarkGfm,
-                ],
-                rehypePlugins: [
-                    [rehypePrettyCode, {
-                        theme: "catppuccin-frappe",
-                    }],
-                    rehypeSlug,
-                    [rehypeAutolinkHeadings, {
-                        behavior: 'wrap'
-                    }],
-                ],
-            },
-        }
-    })
+    const frontmatter: unknown = parse(rawMDX.match(FRONTMATTER)?.[1] ?? "")
 
     if (!isFrontmatter(frontmatter)) {
-        throw new Error(`Invalid frontmatter in posts/${fileName}.mdx: title, date (YYYY-MM-DD) and tags (string[]) are required`)
+        throw new Error(`Invalid frontmatter in posts/${slug}.mdx: title, date (YYYY-MM-DD) and tags (string[]) are required`)
     }
 
-    const id = fileName.replace(/\.mdx$/, '')
-
-    const blogPostObj: BlogPost = {
-        meta: {
-            id,
-            title: frontmatter.title,
-            date: frontmatter.date,
-            tags: frontmatter.tags,
-            draft: frontmatter.draft ?? false,
-            summary: frontmatter.summary,
-            description: frontmatter.description,
-            image: frontmatter.image,
-            cardImage: frontmatter.cardImage,
-            cardImagePosition: frontmatter.cardImagePosition,
-        },
-        content,
+    return {
+        id: slug,
+        title: frontmatter.title,
+        date: frontmatter.date,
+        tags: frontmatter.tags,
+        draft: frontmatter.draft ?? false,
+        summary: frontmatter.summary,
+        description: frontmatter.description,
+        image: frontmatter.image,
+        cardImage: frontmatter.cardImage,
+        cardImagePosition: frontmatter.cardImagePosition,
     }
-    return blogPostObj
 }
 
 function getPostSlugs(): string[] {
@@ -108,25 +77,9 @@ function getPostSlugs(): string[] {
 }
 
 export async function getPostsMeta(): Promise<Meta[]> {
-    const posts = await Promise.all(getPostSlugs().map(getPostByName))
+    const posts = await Promise.all(getPostSlugs().map(getPostMeta))
 
     return posts
-        .flatMap((post) => post && !post.meta.draft ? [post.meta] : [])
+        .flatMap((meta) => meta && !meta.draft ? [meta] : [])
         .sort((a, b) => a.date < b.date ? 1 : -1)
-}
-
-export async function getPostWithNearestMeta(slug: string): Promise<{
-    prev: Meta | null,
-    current: BlogPost | null,
-    next: Meta | null
-}> {
-    const posts = await getPostsMeta()
-    const currentIndex = posts.findIndex(post => post.id === slug)
-    const current = currentIndex === -1 ? null : await getPostByName(slug) ?? null
-
-    return {
-        prev: currentIndex > 0 ? posts[currentIndex - 1] : null,
-        current,
-        next: currentIndex !== -1 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null,
-    }
 }

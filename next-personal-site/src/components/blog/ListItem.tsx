@@ -6,9 +6,10 @@ import {ArrowUpRight} from "lucide-react";
 
 type Props = {
     post: Meta
+    headingLevel?: "h2" | "h3"
 }
 
-export default function ListItem({post}: Props) {
+export default function ListItem({post, headingLevel: Heading = "h3"}: Props) {
     const {id, title, date, summary, image, cardImage, cardImagePosition} = post
     const thumbnail = cardImage ?? image
     const formattedDate = getFormattedDate(date)
@@ -18,9 +19,9 @@ export default function ListItem({post}: Props) {
             <Link href={`/posts/${id}`} className="flex items-start gap-4 sm:gap-6">
                 <div className="flex-1 min-w-0">
                     <time dateTime={date} className="text-xs text-muted-foreground">{formattedDate}</time>
-                    <h3 className="mt-2 text-lg font-semibold leading-snug tracking-tight transition-colors group-hover:text-highlight sm:text-xl">
+                    <Heading className="mt-2 text-lg font-semibold leading-snug tracking-tight transition-colors group-hover:text-highlight sm:text-xl">
                         {title}
-                    </h3>
+                    </Heading>
                     {summary && (
                         <p className="mt-2 text-sm leading-7 text-muted-foreground">{summary}</p>
                     )}

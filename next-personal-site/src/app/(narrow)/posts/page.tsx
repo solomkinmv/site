@@ -35,7 +35,7 @@ export default async function PostList() {
                 </div>
                 <ul className="mt-8 w-full list-none divide-y border-y p-0">
                     {posts.map(post => (
-                        <ListItem key={post.id} post={post}/>
+                        <ListItem key={post.id} post={post} headingLevel="h2"/>
                     ))}
                 </ul>
             </section>

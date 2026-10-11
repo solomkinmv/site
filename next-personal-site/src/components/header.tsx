@@ -14,7 +14,7 @@ export function Header() {
                 <Image src="/logo-ms-192.png" alt="" width={32} height={32} loading="eager" className="size-8 shrink-0" />
                 <span className="text-sm font-semibold tracking-tight group-focus-visible:underline group-focus-visible:decoration-highlight group-focus-visible:decoration-2 group-focus-visible:underline-offset-4">Maksym Solomkin<span className="text-brand" aria-hidden="true">.</span></span>
             </Link>
-            <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-4">
+            <nav aria-label="Main navigation" className="flex flex-wrap items-center gap-1 sm:gap-4">
                 {[
                     {href: "/", label: "Home", active: pathname === "/"},
                     {href: "/#projects", label: "Projects", active: pathname.startsWith("/projects/") || pathname.startsWith("/apps/") || pathname === "/leetcode-tree-visualizer"},

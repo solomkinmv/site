@@ -8,7 +8,7 @@ Maksym Solomkin's website at [solomk.in](https://solomk.in): a Next.js App Route
 | ------------------------------------------- | --------------------------------------------------------------- |
 | `next-personal-site/src/app`                | App Router pages, `sitemap.ts`, `robots.ts`, `manifest.ts`      |
 | `next-personal-site/src/components`         | Site components; `ui/` holds shadcn primitives, `blog/` post UI |
-| `next-personal-site/src/lib`                | Post loading (`posts.ts`), types, project data (`projects.ts`)  |
+| `next-personal-site/src/lib`                | Post metadata (`posts.ts`), MDX compilation (`post-content.ts`), types, project data (`projects.ts`) |
 | `next-personal-site/src/mdx-components.tsx` | Shared MDX element mappings and components                      |
 | `next-personal-site/posts`                  | Blog posts as `<slug>.mdx`                                      |
 | `next-personal-site/public/images`          | Article and page images, one directory per post                 |
@@ -29,11 +29,11 @@ Use Node.js 24.11 or newer and npm. Run everything from `next-personal-site`:
 
 ## Posts and MDX
 
-- Posts are loaded from `posts/*.mdx` by `src/lib/posts.ts` through `next-mdx-remote`; the slug is the file name.
+- Posts live in `posts/*.mdx`; the slug is the file name. `src/lib/posts.ts` reads frontmatter only (listings, metadata, sitemap); `src/lib/post-content.ts` compiles the body through `next-mdx-remote`. Keep MDX component imports out of `posts.ts` so listing pages don't ship article-only client code.
 - Frontmatter: `title`, `date` (`YYYY-MM-DD`), `tags` (array), `draft`, `summary`, `description`, `image` (social preview), optional `cardImage` (listing thumbnail, falls back to `image`) and `cardImagePosition` (CSS `object-position`).
 - `draft: true` excludes a post from listings, static params, and the sitemap.
 - JavaScript expressions are disabled in post MDX; use literal JSX attributes such as `width="300"`.
-- The remark/rehype plugin list lives in `src/lib/posts.ts`; there is no `@next/mdx` loader.
+- The remark/rehype plugin list lives in `src/lib/post-content.ts`; there is no `@next/mdx` loader.
 - Store images under `public/images/<slug>/`; prefer WebP. Keep originals when replacing existing public URLs.
 - Render images with `next/image` and a realistic `sizes`; the custom loader serves `<name>-<width>w.webp` variants (only `deviceSizes`/`imageSizes` from `next.config.mjs`). The dev server serves originals.
 

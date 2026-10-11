@@ -5,13 +5,10 @@ import {
     TypographyH2,
     TypographyH3,
     TypographyH4,
-    TypographyP,
     TypographyBlockquote,
     TypographyList,
     TypographyOrderedList,
     TypographyListItem,
-    TypographyImage,
-    ImageRow,
     TypographyLink,
     TypographyInlineCode,
     TypographyTable,
@@ -22,6 +19,7 @@ import {
     TypographyTableHeaderCell,
     Collapsible,
 } from "@/components/ui/typography";
+import {ImageRow, TypographyImage, TypographyP} from "@/components/blog/ArticleImage";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {

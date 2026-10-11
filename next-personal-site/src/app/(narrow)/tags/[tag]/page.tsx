@@ -55,7 +55,7 @@ export default async function TagPostList({params}: Props) {
                 <TypographyH1>Posts about <span className="text-highlight">#{tag}</span></TypographyH1>
                 <ul className="mt-8 w-full list-none divide-y border-y p-0">
                     {tagPosts.map(post => (
-                        <ListItem key={post.id} post={post}/>
+                        <ListItem key={post.id} post={post} headingLevel="h2"/>
                     ))}
                 </ul>
             </section>

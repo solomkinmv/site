@@ -13,12 +13,12 @@ export default async function HomePage() {
     return (
         <>
             <section className="grid items-center gap-10 pb-16 pt-4 sm:pb-20 sm:pt-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.58fr)] md:gap-12" aria-labelledby="intro">
-                <div>
+                <div className="min-w-0">
                     <p className="page-kicker flex items-center gap-3">
                         <span className="h-px w-8 bg-brand" aria-hidden="true" />
                         Software engineer
                     </p>
-                    <h1 id="intro" className="mt-6 font-display text-[clamp(3.5rem,8.5vw,6.5rem)] leading-[1.05] tracking-[-0.045em]">
+                    <h1 id="intro" className="mt-6 font-display text-[clamp(min(3.5rem,15vw),8.5vw,6.5rem)] leading-[1.05] tracking-[-0.045em]">
                         Maksym <span className="italic">Solomkin.</span>
                     </h1>
                     <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
@@ -26,7 +26,7 @@ export default async function HomePage() {
                         This is where I share my projects and what I learn along the way.
                     </p>
                     <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm sm:gap-x-6">
-                        <Button asChild className="h-11 rounded-full bg-brand px-5 text-brand-foreground shadow-none hover:bg-brand/85">
+                        <Button asChild className="h-auto min-h-11 whitespace-normal rounded-full bg-brand px-5 py-2 text-center text-brand-foreground shadow-none hover:bg-brand/85">
                             <a href="#projects">Explore my work <ArrowDown aria-hidden="true" /></a>
                         </Button>
                         <Link href="https://github.com/solomkinmv" className="inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground">
@@ -45,7 +45,7 @@ export default async function HomePage() {
             </section>
 
             <section id="projects" className="scroll-mt-8 border-t pt-8" aria-labelledby="projects-title">
-                <div className="mb-8 flex items-baseline justify-between gap-4">
+                <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h2 id="projects-title" className="text-xl font-semibold tracking-tight">Selected projects</h2>
                     <span className="page-kicker" aria-hidden="true">01 / Work</span>
                 </div>
@@ -95,7 +95,7 @@ export default async function HomePage() {
 
             {posts.length > 0 && (
                 <section className="mt-16 border-t pt-8 sm:mt-20" aria-labelledby="writing-title">
-                    <div className="mb-4 flex items-baseline justify-between gap-4">
+                    <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                         <h2 id="writing-title" className="text-xl font-semibold tracking-tight">Recent writing</h2>
                         <span className="page-kicker" aria-hidden="true">02 / Writing</span>
                     </div>
@@ -113,7 +113,7 @@ export default async function HomePage() {
                     <h2 id="connect-title" className="font-display text-4xl tracking-tight">Let’s connect.</h2>
                     <p className="mt-2 text-sm text-muted-foreground">Find me on GitHub, LinkedIn, or around the web.</p>
                 </div>
-                <Button asChild className="h-11 rounded-full bg-brand px-5 text-brand-foreground hover:bg-brand/85">
+                <Button asChild className="h-auto min-h-11 whitespace-normal rounded-full bg-brand px-5 py-2 text-center text-brand-foreground hover:bg-brand/85">
                     <Link href="https://www.linkedin.com/in/solomkinmv/">Say hello on LinkedIn <ArrowUpRight aria-hidden="true" /></Link>
                 </Button>
             </section>

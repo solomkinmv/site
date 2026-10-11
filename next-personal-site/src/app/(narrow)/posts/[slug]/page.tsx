@@ -1,5 +1,6 @@
 import {notFound} from "next/navigation";
-import {getPostByName, getPostsMeta, getPostWithNearestMeta} from "@/lib/posts";
+import {getPostMeta, getPostsMeta} from "@/lib/posts";
+import {getPostWithNearestMeta} from "@/lib/post-content";
 import getFormattedDate from "@/lib/getFormattedDate";
 import Link from "next/link";
 import {Tag} from "@/components/ui/tag";
@@ -25,32 +26,32 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({params}: Props) {
     const { slug } = await params;
-    const post = await getPostByName(`${slug}`)
+    const meta = await getPostMeta(slug)
 
-    if (!post) {
+    if (!meta) {
         return {
             title: 'Post Not Found'
         }
     }
 
-    const description = post.meta.description ?? post.meta.summary;
-    const image = post.meta.image ?? '/opengraph-image.png';
+    const description = meta.description ?? meta.summary;
+    const image = meta.image ?? '/opengraph-image.png';
 
     return {
-        title: post.meta.title,
+        title: meta.title,
         description,
         alternates: {canonical: `/posts/${encodeURIComponent(slug)}`},
         openGraph: {
             type: 'article',
-            title: post.meta.title,
+            title: meta.title,
             description,
             url: `/posts/${slug}`,
             images: [{ url: image }],
-            publishedTime: post.meta.date,
-            tags: post.meta.tags,
+            publishedTime: meta.date,
+            tags: meta.tags,
         },
         twitter: {
-            title: post.meta.title,
+            title: meta.title,
             description,
             images: [image],
         },

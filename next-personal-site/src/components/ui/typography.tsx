@@ -1,9 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import {ChevronRight} from "lucide-react";
-import {imageSize, imagesInRow} from '@/lib/images';
-import {BlogImage} from '@/components/blog/BlogImage';
-import {cn} from '@/lib/utils';
 
 export function TypographyH1({children, ...props}: React.ComponentPropsWithoutRef<'h1'>) {
     return (
@@ -34,17 +31,6 @@ export function TypographyH4({children, ...props}: React.ComponentPropsWithoutRe
         <h4 className="mt-6 scroll-m-20 text-xl font-semibold tracking-tight" {...props}>
             {children}
         </h4>
-    )
-}
-
-export function TypographyP({children}: {children: React.ReactNode}) {
-    if (children && typeof children === 'object' && 'type' in children && children.type === TypographyImage) {
-        return children;
-    }
-    return (
-         <p className="leading-7 not-first:mt-6">
-            {children}
-        </p>
     )
 }
 
@@ -96,7 +82,7 @@ export function TypographyInlineCode(props: React.HTMLAttributes<HTMLElement> & 
 
 export function TypographyTable({children}: {children: React.ReactNode}) {
     return (
-        <div className="my-6 w-full overflow-y-auto">
+        <div className="my-6 w-full overflow-x-auto">
             <table className="w-full">
                 {children}
             </table>
@@ -142,31 +128,6 @@ export function TypographyTableHeaderCell({children, ...props}: React.ComponentP
             {children}
         </th>
     )
-}
-
-export async function TypographyImage(props: {alt?: string; src?: string; title?: string; className?: string}) {
-    const {src, title, className} = props;
-    if (!src) return null;
-    const zoomable = !props.alt?.endsWith('|no-zoom');
-    const alt = zoomable ? props.alt ?? '' : (props.alt ?? '').slice(0, -'|no-zoom'.length).trim();
-    const caption = title || alt;
-    const {width, height} = await imageSize(src);
-    return (
-        <figure className={cn("not-prose my-10 min-w-0 lg:-mx-24", className)}>
-            <BlogImage src={src} alt={alt} width={width} height={height} zoomable={zoomable} />
-            {caption && <figcaption className="mt-3 text-center text-sm text-muted-foreground">{caption}</figcaption>}
-        </figure>
-    );
-}
-
-export function ImageRow({children}: {children: React.ReactNode}) {
-    const images = imagesInRow(children);
-    if (images.length === 0) return <>{children}</>;
-    return (
-        <div data-slot="image-row" className="not-prose my-10 flex flex-col gap-6 sm:flex-row lg:-mx-24">
-            {images.map((image, index) => <TypographyImage key={`${image.src}-${index}`} {...image} className="my-0 flex-1 lg:mx-0" />)}
-        </div>
-    );
 }
 
 export function TypographyLink(props: {href?: string; children?: React.ReactNode}) {
