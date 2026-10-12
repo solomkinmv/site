@@ -56,7 +56,7 @@ export default async function HomePage() {
                                 <div className="flex aspect-[2/1] items-center justify-center transition-transform duration-300 motion-safe:group-hover:scale-[1.02]">
                                     {project.image ? (
                                         <Image src={project.image} alt={`${project.title} preview`} width={project.width} height={project.height}
-                                            sizes="(max-width: 639px) 100vw, 50vw" className="h-full w-full object-contain" />
+                                            sizes="(max-width: 639px) 100vw, 50vw" className="h-full w-full object-cover object-top" />
                                     ) : (
                                         <div className="flex h-full items-center justify-center gap-4 px-6 py-5">
                                             {[

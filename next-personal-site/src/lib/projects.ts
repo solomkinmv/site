@@ -3,7 +3,7 @@ export const projects = [
         id: "polidict", title: "Polidict", category: "Language learning",
         description: "A home for your vocabulary. Learn new words with spaced repetition and personalized practice.",
         href: "/projects/polidict", appUrl: "https://polidict.com", action: "Visit Polidict",
-        image: "/images/home/polidict-opengraph.webp", width: 2000, height: 1000,
+        image: "/images/home/polidict-hero-2026-10-11.webp", width: 2000, height: 1000,
         source: null,
         details: {
             title: "Polidict — Vocabulary App with Spaced Repetition",
